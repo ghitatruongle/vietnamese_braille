@@ -1,0 +1,30 @@
+# ─── Git submodules ───────────────────────────────────────────────────
+# viet_braille_app has its own git repo — ignore at outer level
+/viet_braille_app/
+
+# ─── IDE ─────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ─── Python ──────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+
+# ─── OS ──────────────────────────────────────────────────────────────
+*.log
+*.tmp
+
+# ─── Environment ─────────────────────────────────────────────────────
+.env
+.env.local
+
+# ─── AI / Editor config ─────────────────────────────────────────────
+.openclaude/
