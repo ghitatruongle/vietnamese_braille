@@ -21,8 +21,15 @@ passed = 0
 def check(name, dots, expected):
     global all_checks, passed, errors
     all_checks += 1
+    
+    # Wrap flat list of integers to a list of lists
+    if dots and isinstance(dots[0], int):
+        actual_dots = [dots]
+    else:
+        actual_dots = dots
+        
     chars = []
-    for g in dots:
+    for g in actual_dots:
         if g == " ":
             chars.append(" ")
         elif isinstance(g, (list, tuple)):
