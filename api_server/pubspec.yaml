@@ -1,0 +1,13 @@
+name: viet_braille_api
+description: "REST API for Vietnamese Braille conversion"
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  shelf: ^1.4.0
+  shelf_router: ^1.1.0
+  viet_braille_core:
+    path: ../packages/viet_braille_core

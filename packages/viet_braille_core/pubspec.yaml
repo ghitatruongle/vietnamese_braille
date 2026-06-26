@@ -1,0 +1,12 @@
+name: viet_braille_core
+description: "Core Vietnamese Braille conversion library - text to Braille Unicode and reverse."
+version: 1.0.0
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  # Pure Dart - no external dependencies
+
+dev_dependencies:
+  test: ^1.25.0
