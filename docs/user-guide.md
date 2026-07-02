@@ -47,13 +47,13 @@ Vietnamese Braille là ứng dụng chuyển đổi văn bản tiếng Việt sa
 
 ### Trên Web
 
-1. Mở URL: `https://<owner>.github.io/vietnamese-braille/`
+1. Mở URL: `https://ghitatruongle.github.io/vietnamese-braille/`
 2. Không cần cài đặt
 
 ### Từ Source
 
 ```bash
-git clone https://github.com/<owner>/vietnamese-braille.git
+git clone https://github.com/ghitatruongle/vietnamese-braille.git
 cd vietnamese-braille/viet_braille_app
 flutter pub get
 flutter run
@@ -194,6 +194,6 @@ A: Ứng dụng Flutter hoạt động offline. Chỉ có OCR (Google ML Kit) c�
 
 ## Liên kết
 
-- [GitHub Repository](https://github.com/<owner>/vietnamese-braille)
-- [Báo lỗi](https://github.com/<owner>/vietnamese-braille/issues)
+- [GitHub Repository](https://github.com/ghitatruongle/vietnamese-braille)
+- [Báo lỗi](https://github.com/ghitatruongle/vietnamese-braille/issues)
 - [Đóng góp](CONTRIBUTING.md)

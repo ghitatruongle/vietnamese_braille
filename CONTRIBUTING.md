@@ -13,7 +13,7 @@ Cảm ơn bạn quan tâm đến dự án! Hướng dẫn này giúp bạn bắt
 
 ```bash
 # Clone repository
-git clone https://github.com/<owner>/vietnamese-braille.git
+git clone https://github.com/ghitatruongle/vietnamese-braille.git
 cd vietnamese-braille
 
 # Install Flutter dependencies

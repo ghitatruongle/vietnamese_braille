@@ -55,12 +55,21 @@ class BrailleConverterImpl implements BrailleConverter {
     // 2. Xóa khoảng trắng xung quanh các ký hiệu phép toán và quan hệ khi đi kèm số
     final opRegex = RegExp(r'(\d)\s*([\+\-\*\/x\:=\<\>≈≤≥])\s*(\d)');
     String prev = '';
-    while (text != prev) {
+    int iterations = 0;
+    const maxIterations = 100; // Safeguard against infinite loops
+    
+    while (text != prev && iterations < maxIterations) {
+      iterations++;
       prev = text;
       text = text.replaceAllMapped(
         opRegex,
         (match) => '${match.group(1)}${match.group(2)}${match.group(3)}',
       );
+    }
+    
+    if (iterations >= maxIterations) {
+      // This should never happen in practice, but log for debugging
+      print('WARNING: Operator space removal exceeded max iterations ($maxIterations)');
     }
 
     // 3. Thay thế dấu chấm lửng "..." thành ký tự "…" để ánh xạ ra "⠄⠄⠄" (3 ô chấm 3)
@@ -135,7 +144,7 @@ class BrailleConverterImpl implements BrailleConverter {
         while (j < words.length) {
           if (words[j].isRoman || !words[j].allCaps) break;
           final sep = normalized.substring(words[j - 1].end, words[j].start);
-          if (sep.trim().isNotEmpty || sep.isEmpty) {
+          if (sep.trim().isNotEmpty) {
             break; // chỉ cho phép ngăn cách bằng khoảng trắng
           }
           j++;
@@ -373,14 +382,12 @@ class BrailleConverterImpl implements BrailleConverter {
           // If current char is a toned vowel and previous char is a plain
           // vowel from the same syllable, move tone before the first vowel.
           // But NOT if previous vowel is part of gi/qu cluster (giải, quả).
-          if (!isCapital &&
-              _isTonedVowel(ch) &&
-              !hasConsonantBefore &&
-              prevCharLower.isNotEmpty &&
-              _isVowel(prevCharLower) &&
-              !_isConsonant(prevCharLower) &&
-              !(prevPrevCharLower.isNotEmpty &&
-                  _isConsonant(prevPrevCharLower))) {
+          if (_shouldReorderToneForInitialVowel(
+              currentChar: ch,
+              prevChar: prevCharLower,
+              prevPrevChar: prevPrevCharLower,
+              hasConsonantBefore: hasConsonantBefore,
+              isCapital: isCapital)) {
             final decomposed = _decomposeTonedChar(ch);
             if (decomposed != null && buffer.isNotEmpty) {
               // Previous char was a vowel written to buffer; the tone from
@@ -466,6 +473,33 @@ class BrailleConverterImpl implements BrailleConverter {
   /// Kiểm tra ký tự có phải nguyên âm tiếng Việt (không dấu).
   static bool _isVowel(String ch) {
     return 'aeiouyăâêôơư'.contains(ch);
+  }
+
+  /// Helper: Kiểm tra xem có nên reorder tone cho initial vowel không
+  /// (nguyên âm đầu có dấu, không có phụ âm)
+  bool _shouldReorderToneForInitialVowel({
+    required String currentChar,
+    required String prevChar,
+    required String prevPrevChar,
+    required bool hasConsonantBefore,
+    required bool isCapital,
+  }) {
+    // Không áp dụng nếu là chữ hoa hoặc có phụ âm đầu
+    if (isCapital || hasConsonantBefore) return false;
+    
+    // Current char phải là nguyên âm có dấu
+    if (!_isTonedVowel(currentChar)) return false;
+    
+    // Previous char phải là nguyên âm thường
+    if (prevChar.isEmpty || !_isVowel(prevChar)) return false;
+    
+    // Previous char không được là phụ âm
+    if (_isConsonant(prevChar)) return false;
+    
+    // Previous-previous char không được là phụ âm (tránh trường hợp gi/qu)
+    if (prevPrevChar.isNotEmpty && _isConsonant(prevPrevChar)) return false;
+    
+    return true;
   }
 
   /// Decompose a toned vowel into its tone cell and base vowel mapping.

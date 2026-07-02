@@ -21,7 +21,7 @@
 
 ```bash
 # Clone
-git clone https://github.com/<owner>/vietnamese-braille.git
+git clone https://github.com/ghitatruongle/vietnamese-braille.git
 cd vietnamese-braille/viet_braille_app
 
 # Cài đặt
