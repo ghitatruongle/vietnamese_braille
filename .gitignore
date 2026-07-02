@@ -1,6 +1,6 @@
 # ─── Git submodules ───────────────────────────────────────────────────
-# viet_braille_app has its own git repo — ignore at outer level
-/viet_braille_app/
+# viet_braille_app is a submodule
+# /viet_braille_app/
 
 # ─── IDE ─────────────────────────────────────────────────────────────
 .vscode/
