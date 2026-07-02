@@ -1,7 +1,7 @@
 # Vietnamese Braille Converter
 
-[![Flutter CI](https://github.com/<owner>/vietnamese_braille/actions/workflows/test.yml/badge.svg)](https://github.com/<owner>/vietnamese_braille/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/<owner>/vietnamese_braille/branch/main/graph/badge.svg)](https://codecov.io/gh/<owner>/vietnamese_braille)
+[![Flutter CI](https://github.com/ghitatruongle/vietnamese_braille/actions/workflows/test.yml/badge.svg)](https://github.com/ghitatruongle/vietnamese_braille/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/ghitatruongle/vietnamese_braille/branch/main/graph/badge.svg)](https://codecov.io/gh/ghitatruongle/vietnamese_braille)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > Ứng dụng chuyển đổi văn bản tiếng Việt sang chữ Braille Unicode (8-dot, U+2800–U+28FF)
@@ -44,7 +44,7 @@
 
 ```bash
 # Clone repository
-git clone https://github.com/<owner>/vietnamese_braille.git
+git clone https://github.com/ghitatruongle/vietnamese_braille.git
 cd vietnamese_braille/viet_braille_app
 
 # Install dependencies

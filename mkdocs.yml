@@ -1,6 +1,6 @@
 site_name: Vietnamese Braille
 site_description: Vietnamese Braille Converter - Text to Braille Unicode and reverse
-site_url: https://<owner>.github.io/vietnamese-braille/
+site_url: https://ghitatruongle.github.io/vietnamese-braille/
 
 theme:
   name: material
@@ -44,4 +44,4 @@ markdown_extensions:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/<owner>/vietnamese-braille
+      link: https://github.com/ghitatruongle/vietnamese-braille
