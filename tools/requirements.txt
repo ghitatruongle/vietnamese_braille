@@ -1,4 +1,0 @@
-# Vietnamese Braille verification tools
-pytest>=7.4.0
-pdfplumber>=0.10.0
-pyyaml>=6.0
