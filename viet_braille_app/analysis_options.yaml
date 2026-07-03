@@ -1,0 +1,18 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    - prefer_const_constructors
+    - prefer_final_locals
+    - avoid_print
+    - require_trailing_commas
+    - prefer_single_quotes
+
+analyzer:
+  errors:
+    missing_return: error
+    dead_code: warning
+    unused_import: warning
+  exclude:
+    - '**/*.g.dart'
+    - '**/*.freezed.dart'

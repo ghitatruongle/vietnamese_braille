@@ -1,0 +1,36 @@
+# Build artifacts
+build/
+*.apk
+*.aab
+
+# Dependencies
+.dart_tool/
+.pub/
+pubspec.lock
+
+# Logs
+*.log
+**/logs/
+
+# Environment
+.env
+.env.local
+.env.*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# AI / Editor config
+.openclaude/
+
+# Flutter IDE
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+.flutter-plugins-dependencies
+**/*.iml
