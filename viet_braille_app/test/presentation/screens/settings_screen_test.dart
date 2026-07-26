@@ -66,7 +66,7 @@ void main() {
       await tester.pumpWidget(buildSubject());
       expect(find.text('Chuẩn Braille'), findsOneWidget);
       expect(
-        find.text('8-dot Braille Unicode (U+2800–U+28FF)'),
+        find.text('Braille tiếng Việt 6 chấm + BRF ASCII'),
         findsOneWidget,
       );
     });

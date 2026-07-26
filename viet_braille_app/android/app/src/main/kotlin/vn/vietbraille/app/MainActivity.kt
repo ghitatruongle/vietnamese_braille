@@ -1,4 +1,4 @@
-package com.example.viet_braille_app
+package vn.vietbraille.app
 
 import io.flutter.embedding.android.FlutterActivity
 

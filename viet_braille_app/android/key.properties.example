@@ -1,0 +1,5 @@
+# Sao chép tệp này thành key.properties và không commit khóa thật.
+storeFile=C:/secure/path/viet-braille-release.jks
+storePassword=CHANGE_ME
+keyAlias=viet-braille
+keyPassword=CHANGE_ME

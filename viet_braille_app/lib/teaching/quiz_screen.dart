@@ -2,8 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../core/braille_mapping.dart';
-import '../domain/braille_converter.dart';
+import 'package:viet_braille_core/viet_braille_core.dart';
 
 /// Màn hình quiz Braille — chọn đáp án đúng.
 class QuizScreen extends StatefulWidget {

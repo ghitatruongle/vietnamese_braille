@@ -1,8 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:viet_braille_app/core/braille_mapping.dart';
-import 'package:viet_braille_app/domain/braille_converter.dart';
-import 'package:viet_braille_app/domain/braille_reverse_converter.dart';
-import 'package:viet_braille_app/domain/brf_formatter.dart';
+import 'package:viet_braille_core/viet_braille_core.dart';
 
 /// Integration tests: full pipeline từ text → Braille → BRF → round-trip.
 ///

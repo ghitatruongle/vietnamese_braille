@@ -1,11 +1,11 @@
 {
-    "name": "viet_braille_app",
-    "short_name": "viet_braille_app",
+    "name": "Braille Tiếng Việt",
+    "short_name": "Viet Braille",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Chuyển đổi văn bản tiếng Việt sang Braille Unicode 6 chấm.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

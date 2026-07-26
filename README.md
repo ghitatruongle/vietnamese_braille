@@ -1,191 +1,159 @@
-# Vietnamese Braille Converter
+# Vietnamese Braille
 
-[![Flutter CI](https://github.com/ghitatruongle/vietnamese_braille/actions/workflows/test.yml/badge.svg)](https://github.com/ghitatruongle/vietnamese_braille/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/ghitatruongle/vietnamese_braille/branch/main/graph/badge.svg)](https://codecov.io/gh/ghitatruongle/vietnamese_braille)
+[![CI](https://github.com/ghitatruongle/vietnamese_braille/actions/workflows/ci.yml/badge.svg)](https://github.com/ghitatruongle/vietnamese_braille/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> Ứng dụng chuyển đổi văn bản tiếng Việt sang chữ Braille Unicode (8-dot, U+2800–U+28FF)
->
-> A Flutter app for converting Vietnamese text to Braille Unicode, with reverse conversion, OCR, and BRF export.
+Ứng dụng Flutter chuyển đổi văn bản tiếng Việt sang **Unicode Braille 6
+chấm**, có bộ chuyển ngược để đối chiếu và xuất tệp **BRF/Braille ASCII**.
+Logic chuyển đổi nằm trong package pure Dart độc lập.
 
----
+## Chức năng hiện có
 
-## Tính năng / Features
+- Nhập văn bản trực tiếp hoặc bằng giọng nói.
+- Đọc tệp TXT và DOCX; trên web tệp được xử lý từ bytes, không phụ thuộc
+  đường dẫn cục bộ.
+- Chuyển tiếng Việt sang Unicode Braille 6 chấm, gồm thanh điệu, chữ hoa,
+  chữ số và quy tắc `qu`/`gi`.
+- OCR ảnh bằng Google ML Kit trên Android và iOS.
+- Xuất `.brf` bằng North American Braille ASCII, không ghi giả Unicode UTF-8
+  với phần mở rộng BRF.
+- Xuất PDF bằng font Noto Sans Symbols 2 có glyph Braille Unicode.
+- Đối chiếu round-trip lossless cho hai va chạm không thể phân biệt chỉ bằng
+  một ô: dấu hỏi/thanh hỏi và gạch ngang/thanh ngã.
+- Lịch sử cục bộ, giao diện sáng/tối, cỡ chữ 80–200%, màn hình học và quiz.
+- Semantics, tooltip và điều hướng responsive cho mobile/desktop.
+- REST API Dart/Shelf có `/convert`, `/reverse`, `/batch`, validation và giới hạn
+  payload.
 
-- **Text → Braille**: Chuyển đổi 293 ký tự tiếng Việt có dấu sang Braille Unicode (8-dot)
-- **Braille → Text**: Reverse conversion để kiểm tra và đối chiếu
-- **OCR từ ảnh**: Nhận dạng văn bản từ hình ảnh (Google ML Kit)
-- **Xuất file BRF**: Export file BRF chuẩn quốc tế
-- **Lịch sử**: Lưu và quản lý lịch sử chuyển đổi (tối đa 50 mục)
-- **Chế độ tối/sáng**: Dark mode với Material Design 3
-- **Responsive**: Hỗ trợ mobile, tablet và desktop
-- **Accessibility**: Semantics widgets cho người khiếm thị
+## Giới hạn cần biết
 
-### Chi tiết kỹ thuật / Technical Details
+- Unicode chứa 256 mẫu Braille 8 chấm, nhưng bảng tiếng Việt mà dự án triển
+  khai chỉ dùng các mẫu **chấm 1–6**.
+- Dấu `?` dùng cùng ô với thanh hỏi; `-` dùng cùng ô với thanh ngã. Bộ chuyển
+  ngược chuẩn phải suy luận theo ngữ cảnh và không thể đảm bảo song ánh cho
+  mọi chuỗi. Chế độ lossless dùng một escape marker 8 chấm riêng, chỉ phục vụ
+  kiểm tra nội bộ và **không được xuất BRF**.
+- OCR chỉ hỗ trợ Android/iOS do giới hạn của Google ML Kit. Web và desktop chỉ
+  cho chọn TXT/DOCX.
+- Speech phụ thuộc dịch vụ nhận dạng có sẵn trên thiết bị/trình duyệt; Linux
+  hiện không được plugin hỗ trợ.
+- PDF đóng gói sẵn Noto Sans Symbols 2 theo giấy phép OFL nên có thể xuất
+  ngoại tuyến. Trên Windows, BRF và PDF dùng hộp **Save As** gốc.
+- Đây là phần mềm hỗ trợ chuyển đổi, chưa thay thế việc hiệu đính của chuyên
+  gia Braille cho tài liệu xuất bản.
 
-- **Thanh điệu**: sắc, huyền, hỏi, ngã, nặng — mỗi thanh là ô Braille riêng đặt trước nguyên âm
-- **Chữ số**: number indicator (⠼) + letter cells
-- **Capital indicator** (⠠) cho chữ viết hoa
-- **Unicode NFC/NFD**: xử lý multi-level (a → â → ấ) đúng chuẩn
-- **Qu/gi rule**: tone placed after u/i per Vietnamese Braille standard
-- **Collision resolution**: `?` → `⠈⠦`, `-` → `⠈⠤` (UEB-compliant)
+## Ma trận nền tảng
 
----
+| Tính năng | Android | iOS | Web | Windows | macOS | Linux |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| Chuyển đổi lõi | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| TXT/DOCX | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| OCR ảnh | ✓ | ✓ | — | — | — | — |
+| Nhập giọng nói | ✓ | ✓ | tùy trình duyệt | beta | ✓ | — |
+| Chia sẻ/xuất BRF | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 
-## Quick Start
+## Cài đặt
 
-### Prerequisites
+Yêu cầu khuyến nghị:
 
-- Flutter 3.29.x (stable channel)
-- Dart SDK ^3.11.5
-- Android Studio / Xcode (cho mobile) hoặc Chrome (cho web)
-
-### Cài đặt / Installation
+- Flutter **3.44.2** stable, kèm Dart 3.12.x.
+- Android SDK 35+; Android tối thiểu API 24 theo Flutter 3.44.
+- Với iOS: Xcode 15.3+, deployment target 15.5.
+- Python 3.11+ chỉ cần khi chạy CLI kiểm chứng.
 
 ```bash
-# Clone repository
 git clone https://github.com/ghitatruongle/vietnamese_braille.git
 cd vietnamese_braille/viet_braille_app
-
-# Install dependencies
 flutter pub get
-
-# Run the app
 flutter run
 ```
 
-### Chạy test / Run Tests
+## Kiểm tra chất lượng
 
 ```bash
-flutter test
+# Toàn bộ monorepo: đối chiếu TT15, analyze và test
+python tools/verify.py --all
+
+# Chỉ package lõi
+cd packages/viet_braille_core
+dart analyze
+dart run tool/verify_tt15.dart
+dart test
+
+# Chỉ ứng dụng
+cd ../../viet_braille_app
+flutter analyze
+flutter test --coverage
+flutter build windows --release
+flutter build web --release
+
+# Chỉ REST API
+cd ../api_server
+dart analyze
+dart test
+dart run bin/server.dart
 ```
 
-Hiện tại có **408+ tests** bao gồm unit tests (domain, data, core) và widget tests (presentation).
+`tool/verify_tt15.dart` đọc fixture độc lập tại
+`tools/data/tt15_rules.json` và so trực tiếp với package hiện hành. CI chạy
+trên Ubuntu và Windows, áp ngưỡng coverage, ưu tiên tạo bundle Windows x64,
+sau đó tạo thêm Web/Android release build.
 
----
+## BRF được tạo như thế nào?
 
-## Cách sử dụng / Usage
+Luồng xuất tệp:
 
-### Text → Braille
-
-1. Mở ứng dụng, chọn tab "Text → Braille"
-2. Nhập văn bản tiếng Việt (hoặc chọn file TXT/DOCX)
-3. Nhấn "Convert" để chuyển đổi
-4. Xem kết quả Braille Unicode
-5. Nhấn "Export" để lưu file BRF
-
-### Braille → Text
-
-1. Chọn tab "Braille → Text"
-2. Nhập hoặc dán chuỗi Braille Unicode
-3. Nhấn "Convert" để chuyển đổi ngược
-4. Xem văn bản tiếng Việt
-
-### OCR từ ảnh
-
-1. Chọn tab "OCR"
-2. Chụp ảnh hoặc chọn ảnh từ thiết bị
-3. Ứng dụng sẽ tự động nhận dạng văn bản
-4. Chuyển đổi sang Braille
-
-### Xuất file BRF
-
-1. Sau khi chuyển đổi, nhấn nút "Export"
-2. Chọn vị trí lưu file
-3. File BRF chuẩn quốc tế sẽ được tạo
-
----
-
-## Kiến trúc / Architecture
-
-Dự án sử dụng **Clean Architecture** với 4 lớp:
-
-```
-viet_braille_app/lib/
-├── core/                    # Core utilities
-│   ├── app_theme.dart       # Light/dark theme (Material 3)
-│   ├── braille_mapping.dart # Unicode ↔ Braille cell mapping + NFD/NFC
-│   ├── braille_dots.dart    # Shared dot bitmasks
-│   └── error_handler.dart   # Centralized error handling
-├── data/                    # Data layer
-│   ├── file_exporter.dart   # BRF file export + sharing
-│   ├── file_picker_service.dart # Device file picker (TXT, DOCX, images)
-│   ├── history_service.dart # SharedPreferences history (50 items)
-│   ├── ocr_processor.dart   # Google ML Kit text recognition
-│   └── text_extractor.dart  # TXT / DOCX text extraction
-├── domain/                  # Business logic
-│   ├── braille_converter.dart         # Text → Braille (with qu/gi rules)
-│   ├── braille_reverse_converter.dart # Braille → Text (with disambiguation)
-│   └── brf_formatter.dart             # BRF line wrap + formatting
-├── presentation/            # UI layer
-│   ├── providers/           # Riverpod StateNotifiers
-│   ├── screens/             # Home, History, Settings screens
-│   └── widgets/             # Reusable UI components
-└── main.dart                # Entry point + GoRouter + Theme
+```text
+Văn bản tiếng Việt
+  → Unicode Braille 6 chấm
+  → NABCC/Braille ASCII
+  → ngắt dòng, giữ bố cục
+  → tệp .brf chỉ chứa ASCII + CR/LF/FF
 ```
 
-### Công nghệ / Tech Stack
+Ví dụ, các ô `⠁⠃⠉` được ghi thành bytes ASCII `ABC`. Formatter từ chối
+print text, Unicode Braille 7/8 chấm và độ dài dòng không hợp lệ.
 
-| Layer | Technology |
-|-------|-----------|
-| **Framework** | Flutter (Material Design 3) |
-| **State management** | Riverpod (StateNotifier) |
-| **Routing** | GoRouter |
-| **OCR** | Google ML Kit Text Recognition |
-| **Storage** | SharedPreferences |
-| **Architecture** | Clean Architecture |
+## Kiến trúc
 
----
+```text
+packages/viet_braille_core/
+├── lib/
+│   ├── braille_mapping.dart
+│   ├── braille_converter.dart
+│   ├── braille_reverse_converter.dart
+│   ├── braille_ascii_codec.dart
+│   └── brf_formatter.dart
+├── test/
+└── tool/verify_tt15.dart
 
-## Chuẩn Braille / Braille Standard
+viet_braille_app/
+├── lib/core/            # theme, lỗi, capability theo nền tảng
+├── lib/data/            # file, OCR, speech, history, export
+├── lib/presentation/    # Riverpod UI
+├── lib/teaching/        # học và quiz Braille
+└── test/
 
-- **8-dot Braille Unicode** (U+2800 – U+28FF)
-- **Dấu thanh** là ô Braille riêng biệt đặt trước nguyên âm
-- **Chữ số**: number indicator (dots 3,4,5,6 — ⠼)
-- **Capital indicator**: dots 4,6 (⠠)
-- **Dấu câu**: tuân thủ UEB (Unified English Braille)
+api_server/
+├── bin/server.dart
+├── lib/handlers/
+└── test/
+```
 
----
+## Android release signing
 
-## Kiểm thử đối chiếu / Verification Scripts
+Không có fallback sang debug key. Sao chép
+`viet_braille_app/android/key.properties.example` thành `key.properties`,
+điền đường dẫn keystore và giữ cả hai ngoài Git. CI tạo artifact unsigned;
+bản đưa lên cửa hàng phải được ký bằng khóa release riêng.
 
-Các Python scripts ở thư mục gốc dùng để đối chiếu mapping giữa quy tắc, app code, và chuẩn UEB:
+## Nguồn quy chiếu
 
-| Script | Purpose |
-|--------|---------|
-| `compare_rules_vs_app.py` | So mapping quy tắc vs app code |
-| `deep_analysis.py` | Phát hiện collision, so UEB |
-| `ueb_comparison.py` | So sánh với Unified English Braille |
-| `verify_braille.py` | Verify tính đúng đắn mapping |
-| `extract_braille.py` | Trích xuất Braille data |
+- [Thông tư 15/2019/TT-BGDĐT – chuẩn quốc gia về chữ nổi Braille](https://moet.gov.vn/content/vanban/Lists/VBDT/Attachments/1421/17.06.19-Quy%20%C4%91%E1%BB%8Bnh%20chu%E1%BA%A9n%20qu%E1%BB%91c%20gia%20v%E1%BB%81%20ch%E1%BB%AF%20n%E1%BB%95i%20Braille%20cho%20NKT%20%28b%E1%BA%A3n%20PDF%29.pdf)
+- [Library of Congress – Braille Ready Format](https://www.loc.gov/preservation/digital/formats/fdd/fdd000551.shtml)
+- [NLS – North American ASCII Braille trong BRF](https://www.loc.gov/nls/who-we-are/guidelines-and-specifications/contract-specifications/delivery-of-braille-book-and-magazine-files-via-the-internet/)
 
----
+## Đóng góp và giấy phép
 
-## Contributing
-
-Chúng tôi chào đón đóng góp! Vui lòng đọc [CONTRIBUTING.md](viet_braille_app/CONTRIBUTING.md) trước khi gửi Pull Request.
-
-### Quy trình nhanh / Quick Workflow
-
-1. Fork repository
-2. Tạo branch: `git checkout -b feature/ten-tinh-nang`
-3. Thực hiện thay đổi
-4. Viết test cho code mới
-5. Chạy `flutter test` — tất phải xanh
-6. Chạy `dart analyze` — không warning
-7. Commit: `git commit -m "feat: mo ta ngan gon"`
-8. Push và tạo Pull Request
-
----
-
-## License
-
-Dự án được phát hành dưới giấy phép [MIT](LICENSE).
-
----
-
-## Acknowledgments
-
-- Vietnamese Braille standard: Quy tắc trình bày văn bản Braille tiếng Việt
-- UEB (Unified English Braille) for punctuation rules
-- Flutter community for excellent packages
+Xem [CONTRIBUTING.md](CONTRIBUTING.md), [CHANGELOG.md](CHANGELOG.md) và
+[LICENSE](LICENSE). Dự án phát hành theo giấy phép MIT.

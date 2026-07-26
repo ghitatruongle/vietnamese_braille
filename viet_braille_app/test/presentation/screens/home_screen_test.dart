@@ -38,7 +38,7 @@ void main() {
         const ProviderScope(child: MaterialApp(home: HomeScreen())),
       );
 
-      expect(find.text('Chọn file'), findsOneWidget);
+      expect(find.text('Chọn TXT, DOCX hoặc ảnh'), findsOneWidget);
     });
 
     testWidgets('renders paste button', (tester) async {
@@ -86,9 +86,10 @@ void main() {
       // Should show Braille Unicode section
       expect(find.text('Braille Unicode'), findsOneWidget);
       // Should show reverse text section
-      expect(find.text('Văn bản giải mã (Braille → Text)'), findsOneWidget);
+      expect(find.text('Văn bản đối chiếu lossless'), findsOneWidget);
       // Should show export button
       expect(find.text('Xuất file BRF'), findsOneWidget);
+      expect(find.text('Xuất PDF'), findsOneWidget);
     });
 
     testWidgets('Semantics labels present for convert button', (tester) async {

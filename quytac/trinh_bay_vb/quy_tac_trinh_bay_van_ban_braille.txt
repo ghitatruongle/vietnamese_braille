@@ -1,0 +1,217 @@
+QUY TAC TRINH BAY VAN BAN BRAILLE TIENG VIET
+Nguon: 12 anh trong thu muc E:\vietnamese_braille\quytac\trinh_bay_vb
+
+Ghi chu:
+- Cot "Latin text" ghi noi dung Latin/ky hieu pho thong va vi tri cham noi doc tu anh.
+- Cot "Braille" ghi ky tu Braille Unicode tuong ung.
+- Dau "-" trong chuoi vi tri cham noi bieu thi mot o trong Braille giua cac tu.
+
+I. BANG CHU CAI TIENG VIET
+
+| Latin text | Braille |
+|---|---|
+| a (1) | ⠁ |
+| ă (345) | ⠜ |
+| â (16) | ⠡ |
+| b (12) | ⠃ |
+| c (14) | ⠉ |
+| d (145) | ⠙ |
+| đ (2346) | ⠮ |
+| e (15) | ⠑ |
+| ê (126) | ⠣ |
+| g (1245) | ⠛ |
+| h (125) | ⠓ |
+| i (24) | ⠊ |
+| k (13) | ⠅ |
+| l (123) | ⠇ |
+| m (134) | ⠍ |
+| n (1345) | ⠝ |
+| o (135) | ⠕ |
+| ô (1456) | ⠹ |
+| ơ (246) | ⠪ |
+| p (1234) | ⠏ |
+| q (12345) | ⠟ |
+| r (1235) | ⠗ |
+| s (234) | ⠎ |
+| t (2345) | ⠞ |
+| u (136) | ⠥ |
+| ư (1256) | ⠳ |
+| v (1236) | ⠧ |
+| x (1346) | ⠭ |
+| y (13456) | ⠽ |
+
+II. BANG CHU CAI TIENG VIET MO RONG
+
+| Latin text | Braille |
+|---|---|
+| a (1) | ⠁ |
+| ă (345) | ⠜ |
+| â (16) | ⠡ |
+| b (12) | ⠃ |
+| c (14) | ⠉ |
+| d (145) | ⠙ |
+| đ (2346) | ⠮ |
+| e (15) | ⠑ |
+| ê (126) | ⠣ |
+| f (124) | ⠋ |
+| g (1245) | ⠛ |
+| h (125) | ⠓ |
+| i (24) | ⠊ |
+| j (245) | ⠚ |
+| k (13) | ⠅ |
+| l (123) | ⠇ |
+| m (134) | ⠍ |
+| n (1345) | ⠝ |
+| o (135) | ⠕ |
+| ô (1456) | ⠹ |
+| ơ (246) | ⠪ |
+| p (1234) | ⠏ |
+| q (12345) | ⠟ |
+| r (1235) | ⠗ |
+| s (234) | ⠎ |
+| t (2345) | ⠞ |
+| u (136) | ⠥ |
+| ư (1256) | ⠳ |
+| v (1236) | ⠧ |
+| w (2456) | ⠺ |
+| x (1346) | ⠭ |
+| y (13456) | ⠽ |
+| z (1356) | ⠵ |
+
+III. DAU THANH
+
+| Latin text | Braille |
+|---|---|
+| huyền (56) | ⠰ |
+| sắc (35) | ⠔ |
+| hỏi (26) | ⠢ |
+| ngã (36) | ⠤ |
+| nặng (6) | ⠠ |
+
+IV. CAC KY HIEU TRINH BAY VAN BAN
+
+| Latin text | Braille |
+|---|---|
+| 26. dấu báo tất cả các chữ cái trong từ, câu, đoạn đều viết hoa (46, 46) | ⠨⠨ |
+| 27. dấu báo tất cả các kí tự đầu của mỗi chữ trong cụm từ, đoạn, câu đều viết hoa (25, 46) | ⠒⠨ |
+| 28. dấu báo phông chữ đặc biệt (456) | ⠸ |
+| 29. dấu báo in đậm (45) | ⠘ |
+| 30. dấu báo kết thúc in đậm (45) | ⠘ |
+| 31. dấu báo in nghiêng (5) | ⠐ |
+| 32. dấu báo kết thúc in nghiêng (5) | ⠐ |
+| 33. dấu báo gạch chân một con chữ (46, 2) | ⠨⠂ |
+| 34. dấu báo gạch chân cả chữ (456, 2356) | ⠸⠶ |
+| 35. kết thúc gạch chân (456, 3) | ⠸⠄ |
+| 36. dấu báo vừa in đậm, nghiêng, gạch chân (46, 34) | ⠨⠌ |
+| 37. dấu báo kết thúc từ, câu, đoạn, các dạng phông chữ (156) | ⠱ |
+| 38. dấu canh giữa (25, 12) | ⠒⠃ |
+| 39. dấu báo viết tắt một từ (6) | ⠠ |
+| 40. dấu báo viết tắt một cụm từ, một đoạn (6, 6) | ⠠⠠ |
+| 41. dấu báo tiếng nước ngoài (4) | ⠈ |
+| 42. dấu báo địa chỉ Email / @ (4) | ⠈ |
+| 43. dấu và / & (12346) | ⠯ |
+| 44. báo chữ Hy Lạp (56) | ⠰ |
+| 45. báo hoa chữ Hy Lạp (456) | ⠸ |
+| 46. từ a đến z / a...z (1, 3, 3, 3, 1356) | ⠁⠄⠄⠄⠵ |
+| 47. từ A đến Z / A...Z (46, 1, 3, 3, 3, 46, 1356) | ⠨⠁⠄⠄⠄⠨⠵ |
+| 48. dấu mặc định (2356, 3, 3, 3, 2356) | ⠶⠄⠄⠄⠶ |
+| 49. dấu báo thơ (345) | ⠜ |
+| 50. dấu báo hết câu thơ (345) | ⠜ |
+| 51. dấu báo hết đoạn thơ (345, 345) | ⠜⠜ |
+| 52. dấu báo hết bài thơ (156) | ⠱ |
+
+V. QUY TAC VIET CHU
+
+- Một chữ cái được viết trong một ô Braille;
+- Các chữ cái trong một chữ được viết liền nhau;
+- Sau mỗi chữ để cách một ô Braille.
+
+VI. QUY TAC DAT DAU THANH
+
+- Một chữ chỉ có phần vần và dấu thanh thì kí hiệu dấu thanh được đặt trước phần vần.
+- Một chữ có phụ âm đầu, vần và dấu thanh thì kí hiệu dấu thanh đặt sau phụ âm đầu và trước phần vần.
+- Với trường hợp tiếng có phụ âm đầu là qu, ta viết qu trước, sau đó đến dấu thanh và cuối cùng là phần vần; với phần vần bắt đầu bằng chữ “u”, ta lược bỏ chữ “u”.
+- Với trường hợp tiếng có phụ âm đầu là gi: cần căn cứ vào các thành phần của chữ:
+  + Nếu gi kết hợp với phần vần không bắt đầu bằng chữ “i”, ta viết gi trước, sau đó đến dấu thanh và cuối cùng là phần vần.
+  + Nếu gi kết hợp với phần vần bắt đầu bằng chữ “i”, ta viết g trước, sau đó đến dấu thanh và cuối cùng là phần vần.
+
+| Latin text | Braille |
+|---|---|
+| oán (35, 135, 1, 1345) | ⠔⠕⠁⠝ |
+| chính (14, 125, 35, 24, 1345, 125) | ⠉⠓⠔⠊⠝⠓ |
+| vừng (1236, 56, 1256, 1345, 1245) | ⠧⠰⠳⠝⠛ |
+| quả (12345, 136, 26, 1) | ⠟⠥⠢⠁ |
+| quyết (12345, 136, 35, 13456, 126, 2345) | ⠟⠥⠔⠽⠣⠞ |
+| giỏi (1245, 24, 26, 135, 24) | ⠛⠊⠢⠕⠊ |
+| giảng giải (1245, 24, 26, 1, 1345, 1245, -, 1245, 24, 26, 1, 24) | ⠛⠊⠢⠁⠝⠛ ⠛⠊⠢⠁⠊ |
+| gìn (1245, 56, 24, 1345) | ⠛⠰⠊⠝ |
+| gì (1245, 56, 24) | ⠛⠰⠊ |
+
+VII. QUY TAC VIET HOA
+
+- Viết hoa chữ cái đầu của một chữ: đặt dấu báo viết hoa (chấm 46) ở liền trước chữ cái đầu cần viết hoa.
+- Viết hoa chữ có dấu thanh, không có phụ âm đầu: đặt dấu báo hoa (chấm 46) sau dấu thanh và trước phần vần.
+- Viết hoa tất cả các chữ cái trong một chữ: đặt dấu báo (chấm 456) trước chữ cần viết hoa tất cả các chữ cái.
+- Viết hoa chữ cái đầu của các chữ trong một từ, cụm từ, câu, đoạn: đặt dấu báo (chấm 25, 46) ở liền trước từ, cụm từ, câu, đoạn cần viết hoa tất cả các chữ cái đầu và đặt dấu báo kết thúc (chấm 156) ở liền sau con chữ cuối cùng.
+- Viết hoa tất cả các chữ cái trong một từ, cụm từ, câu, đoạn: đặt dấu báo (chấm 46, 46) ở liền trước từ, cụm từ, câu, đoạn cần viết hoa, và đặt dấu báo kết thúc (chấm 156) ở liền sau con chữ cuối cùng cần viết hoa.
+
+| Latin text | Braille |
+|---|---|
+| Loan (46, 123, 135, 1, 1345) | ⠨⠇⠕⠁⠝ |
+| sông Hồng (234, 1456, 1345, 1245, -, 46, 125, 56, 1456, 1345, 1245) | ⠎⠹⠝⠛ ⠨⠓⠰⠹⠝⠛ |
+| bác Ẩn (12, 35, 1, 14, -, 26, 46, 16, 1345) | ⠃⠔⠁⠉ ⠢⠨⠡⠝ |
+| UNESCO (456, 136, 1345, 15, 234, 14, 135) | ⠸⠥⠝⠑⠎⠉⠕ |
+| Việt Nam (25, 46, 1236, 6, 24, 126, 2345, -, 1345, 1, 134, 156) | ⠒⠨⠧⠠⠊⠣⠞ ⠝⠁⠍⠱ |
+| VIỆT NAM (46, 46, 1236, 6, 24, 126, 2345, -, 1345, 1, 134, 156) | ⠨⠨⠧⠠⠊⠣⠞ ⠝⠁⠍⠱ |
+
+VIII. QUY TAC VIET CAC DAU CAU
+
+- Khi viết các dấu câu trong văn học (dấu chấm, dấu phẩy, dấu hai chấm, dấu chấm phẩy, dấu hỏi, dấu chấm than, dấu chấm lửng), đặt kí hiệu dấu câu liền sau chữ cuối cùng cần ngắt câu hoặc chuyển ý, để cách 01 ô Braille rồi viết tiếp câu hoặc ý tiếp theo.
+- Trường hợp dấu chấm lửng ở đầu câu thì đặt kí hiệu dấu chấm lửng sát với chữ đầu tiên của câu.
+
+IX. QUY TAC VIET CAC DAU NGOAC
+
+- Khi viết các dấu ngoặc (ngoặc đơn, ngoặc kép, ngoặc vuông, ngoặc nhọn) cho một chữ, từ, câu hoặc đoạn, đặt dấu mở ngoặc liền trước kí tự đầu tiên và đặt dấu đóng ngoặc liền sau kí tự cuối cùng.
+
+X. QUY TAC VIET TAT
+
+- Khi viết tắt một từ, một cụm từ đặt dấu báo viết tắt một từ (chấm 6) hoặc dấu báo viết tắt cụm từ (chấm 6, 6) liền trước chữ đầu tiên của từ, cụm từ cần viết tắt, không cần báo kết thúc.
+
+| Latin text | Braille |
+|---|---|
+| Giáo dục hòa nhập - GDHN (6, 456, 1245, 145, 125, 1345) | ⠠⠸⠛⠙⠓⠝ |
+| học sinh phổ thông - HSPT (6, 6, 456, 125, 234, 1234, 2345) | ⠠⠠⠸⠓⠎⠏⠞ |
+
+XI. QUY TAC VIET TIENG NUOC NGOAI
+
+- Khi viết tiếng nước ngoài, đặt kí hiệu báo tiếng nước ngoài (chấm 4) liền trước chữ đầu tiên của từ, cụm từ, không cần báo kết thúc.
+
+| Latin text | Braille |
+|---|---|
+| hãng Microsoft (125, 36, 1, 1345, 1245, -, 4, 46, 134, 24, 14, 1235, 135, 234, 135, 124, 2345) | ⠓⠤⠁⠝⠛ ⠈⠨⠍⠊⠉⠗⠕⠎⠕⠋⠞ |
+
+XII. QUY TAC VIET CAC DAU GHI CHU
+
+- Khi viết câu hoặc đoạn có kí hiệu báo ghi chú hoặc trích đoạn, đặt dấu báo kí hiệu hoặc dấu báo trích đoạn liền sau kí tự cuối cùng của câu hoặc đoạn đó.
+- Khi viết phần giải thích của ghi chú, đặt dấu báo ghi chú (chấm 25, 23) liền trước kí tự đầu tiên và dấu báo kết thúc (chấm 23, 25) liền sau kí tự cuối cùng.
+
+| Latin text | Braille |
+|---|---|
+| dấu báo ghi chú (25, 23) | ⠒⠆ |
+| dấu báo kết thúc ghi chú (23, 25) | ⠆⠒ |
+
+XIII. QUY TAC TRINH BAY VAN BAN
+
+- Khi viết các câu, đoạn sử dụng các dấu gạch đầu dòng hoặc các kí hiệu đầu dòng khác có tính chất liệt kê các ý, đặt dấu báo gạch đầu dòng hoặc kí hiệu trước, tiếp đó bỏ cách 01 ô Braille và viết chữ đầu tiên, xuống dòng tiếp tục viết các câu hoặc ý tiếp theo như trình tự trên.
+- Khi viết từ, câu, đoạn được biểu thị dưới dạng in đậm, nghiêng, gạch chân, đặt dấu báo bắt đầu liền trước chữ đầu tiên và dấu báo kết thúc liền sau chữ cuối cùng.
+- Khi muốn viết tiêu đề hoặc đoạn (bao gồm cả đoạn có gạch đầu dòng hoặc kí hiệu đầu dòng), bỏ cách 02 ô Braille, sau đó viết kí tự đầu tiên.
+- Trường hợp tiêu đề dài hơn một dòng thì ở dòng tiếp theo viết tiếp luôn từ ô đầu tiên.
+- Trường hợp tiêu đề có nhiều nội dung thì các nội dung được viết liền, chỉ cách 01 ô Braille mà không xuống dòng.
+- Trường hợp đang viết một chữ nhưng không đủ dòng thì cần xuống dòng viết lại chữ đó.
+
+XIV. QUY TAC TRINH BAY THO
+
+- Khi viết tên bài thơ: đặt dấu báo thơ (chấm 345) liền trước tên bài thơ, và dấu báo kết thúc (chấm 345) liền sau kí tự cuối cùng của tên bài thơ.
+- Khi viết câu thơ: đặt dấu báo thơ (chấm 345) liền trước câu thơ, và dấu báo kết thúc câu thơ (chấm 345) liền sau kí tự cuối cùng của câu thơ, xuống dòng viết tiếp câu tiếp theo (trong trường hợp cần tiết kiệm giấy thì có thể để cách 02 ô Braille rồi viết tiếp).
+- Khi kết thúc khổ thơ, đoạn thơ: đặt dấu báo kết thúc đoạn (chấm 345, 345) liền sau kí tự cuối cùng của khổ thơ, đoạn thơ.
+- Khi kết thúc bài thơ: đặt dấu báo kết thúc bài (chấm 156) liền sau kí tự cuối cùng của bài thơ.

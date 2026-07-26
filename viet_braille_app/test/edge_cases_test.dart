@@ -1,8 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:viet_braille_app/core/braille_mapping.dart';
 import 'package:viet_braille_app/data/ocr_processor.dart';
-import 'package:viet_braille_app/domain/braille_converter.dart';
-import 'package:viet_braille_app/domain/braille_reverse_converter.dart';
+import 'package:viet_braille_core/viet_braille_core.dart';
 
 void main() {
   late BrailleMappingImpl mapping;

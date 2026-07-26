@@ -3,7 +3,8 @@
 /// Tập trung các hằng số dot (1-6) và hàm [_cell] để tránh trùng lặp
 /// giữa [BrailleMappingImpl] và [BrailleReverseConverterImpl].
 ///
-/// Ô Braille Unicode 8-dot nằm trong khoảng U+2800 – U+28FF.
+/// Unicode dành cả U+2800–U+28FF cho mẫu 8 chấm; mapping tiếng Việt của
+/// package chỉ sử dụng chấm 1–6 (U+2800–U+283F).
 class BrailleDots {
   BrailleDots._();
 
@@ -21,7 +22,7 @@ class BrailleDots {
   static String cell(int dots) => String.fromCharCode(0x2800 + dots);
 
   /// Parse một chuỗi dot numbers (VD: '345') thành ký tự Braille Unicode.
-  /// Hỗ trợ cho test helper và các trường hợp cần tạo cell từ dot notation.
+  /// Hỗ trợ test helper; cho phép 1–8 để có thể kiểm tra đầu vào ngoài 6 chấm.
   static String fromDotString(String dots) {
     int bitmask = 0;
     for (final ch in dots.split('')) {

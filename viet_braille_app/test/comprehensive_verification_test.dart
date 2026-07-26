@@ -1,7 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:viet_braille_app/core/braille_mapping.dart';
-import 'package:viet_braille_app/domain/braille_converter.dart';
-import 'package:viet_braille_app/domain/braille_reverse_converter.dart';
+import 'package:viet_braille_core/viet_braille_core.dart';
 import 'helpers/braille_test_helper.dart';
 
 /// KIỂM TRA TOÀN DIỆN: Mọi ký tự tiếng Việt được chuyển đổi chính xác.

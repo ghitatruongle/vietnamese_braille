@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../core/platform_capabilities.dart';
 import '../../data/speech_service.dart';
 import '../providers/conversion_provider.dart';
 
@@ -53,10 +54,10 @@ class _TextInputSectionState extends State<TextInputSection> {
                 label: 'Chuyển đổi văn bản đã nhập sang Braille',
                 button: true,
                 child: ElevatedButton.icon(
-                  onPressed: () {
+                  onPressed: () async {
                     final text = _controller.text.trim();
                     if (text.isNotEmpty) {
-                      widget.notifier.convertText(text);
+                      await widget.notifier.convertText(text);
                     }
                   },
                   icon: const Icon(Icons.translate),
@@ -89,33 +90,54 @@ class _TextInputSectionState extends State<TextInputSection> {
                 ),
               ),
             ),
-            const SizedBox(width: 8),
-            Semantics(
-              label: _isListening
-                  ? 'Dừng nhận dạng giọng nói'
-                  : 'Nhập liệu bằng giọng nói',
-              button: true,
-              child: IconButton(
-                onPressed: () async {
-                  if (_isListening) {
-                    await _speechService.stopListening();
-                    setState(() => _isListening = false);
-                  } else {
-                    setState(() => _isListening = true);
-                    await _speechService.startListening(
-                      onResult: (text) {
-                        setState(() {
-                          _controller.text += text;
-                        });
-                      },
-                    );
-                  }
-                },
-                icon: Icon(_isListening ? Icons.mic : Icons.mic_none),
-                color: _isListening ? Colors.red : null,
-                tooltip: _isListening ? 'Dừng' : 'Nhập bằng giọng nói',
+            if (PlatformCapabilities.supportsSpeech) ...[
+              const SizedBox(width: 8),
+              Semantics(
+                label: _isListening
+                    ? 'Dừng nhận dạng giọng nói'
+                    : 'Nhập liệu bằng giọng nói',
+                button: true,
+                child: IconButton(
+                  onPressed: () async {
+                    try {
+                      if (_isListening) {
+                        await _speechService.stopListening();
+                        if (mounted) setState(() => _isListening = false);
+                      } else {
+                        setState(() => _isListening = true);
+                        await _speechService.startListening(
+                          onResult: (text) {
+                            if (!mounted) return;
+                            setState(() {
+                              _controller.text += text;
+                            });
+                          },
+                        );
+                        if (mounted && !_speechService.isListening) {
+                          setState(() => _isListening = false);
+                        }
+                      }
+                    } catch (error) {
+                      if (!context.mounted) return;
+                      setState(() => _isListening = false);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            error.toString().replaceFirst(
+                              'Unsupported operation: ',
+                              '',
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  icon: Icon(_isListening ? Icons.mic : Icons.mic_none),
+                  color: _isListening ? Colors.red : null,
+                  tooltip: _isListening ? 'Dừng' : 'Nhập bằng giọng nói',
+                ),
               ),
-            ),
+            ],
           ],
         ),
       ],

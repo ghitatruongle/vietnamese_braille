@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/platform_capabilities.dart';
 import '../providers/conversion_provider.dart';
 import '../providers/theme_provider.dart';
 import '../widgets/app_drawer.dart';
@@ -81,12 +82,18 @@ class HomeScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 12),
         Semantics(
-          label: 'Chọn file văn bản hoặc ảnh để chuyển đổi sang Braille',
+          label: PlatformCapabilities.supportsOcr
+              ? 'Chọn file TXT, DOCX hoặc ảnh để chuyển đổi sang Braille'
+              : 'Chọn file TXT hoặc DOCX để chuyển đổi sang Braille',
           button: true,
           child: ElevatedButton.icon(
             onPressed: () => notifier.pickAndConvert(),
             icon: const Icon(Icons.file_open),
-            label: const Text('Chọn file'),
+            label: Text(
+              PlatformCapabilities.supportsOcr
+                  ? 'Chọn TXT, DOCX hoặc ảnh'
+                  : 'Chọn TXT hoặc DOCX',
+            ),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 12),
             ),
@@ -155,13 +162,13 @@ class HomeScreen extends ConsumerWidget {
             label: 'Văn bản giải mã từ Braille: ${state.reverseText}',
             readOnly: true,
             child: ReadOnlyField(
-              label: 'Văn bản giải mã (Braille → Text)',
+              label: 'Văn bản đối chiếu lossless',
               value: state.reverseText,
             ),
           ),
           const SizedBox(height: 16),
         ],
-        if (state.status == AppStatus.success)
+        if (state.brailleUnicode.isNotEmpty) ...[
           Semantics(
             label: 'Xuất file BRF để chia sẻ',
             button: true,
@@ -174,6 +181,20 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
           ),
+          const SizedBox(height: 8),
+          Semantics(
+            label: 'Xuất Braille Unicode thành PDF',
+            button: true,
+            child: OutlinedButton.icon(
+              onPressed: () => notifier.exportPdf(),
+              icon: const Icon(Icons.picture_as_pdf),
+              label: const Text('Xuất PDF'),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }

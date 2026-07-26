@@ -59,7 +59,7 @@ class SettingsScreen extends ConsumerWidget {
           const ListTile(
             leading: Icon(Icons.accessibility_new),
             title: Text('Chuẩn Braille'),
-            subtitle: Text('8-dot Braille Unicode (U+2800–U+28FF)'),
+            subtitle: Text('Braille tiếng Việt 6 chấm + BRF ASCII'),
           ),
         ],
       ),
@@ -81,7 +81,7 @@ class SettingsScreen extends ConsumerWidget {
           '- Chữ số với number indicator\n'
           '- Dấu câu\n'
           '- Ký hiệu toán học cơ bản\n'
-          '- Xuất file BRF chuẩn quốc tế',
+          '- Xuất BRF bằng North American Braille ASCII',
         ),
       ],
     );

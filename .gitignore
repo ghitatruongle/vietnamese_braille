@@ -18,32 +18,27 @@ __pycache__/
 *.log
 *.tmp
 
-# ─── Environment ─────────────────────────────────────────────────────
+# ─── Environment and signing secrets ─────────────────────────────────
 .env
 .env.local
+.env.*
+**/android/key.properties
+**/*.jks
+**/*.keystore
 
 # ─── AI / Editor config ─────────────────────────────────────────────
 .openclaude/
 
-# ─── Dart/Flutter build artifacts ───────────────────────────────────
-.dart_tool/
-build/
+# ─── Dart/Flutter build artifacts ────────────────────────────────────
+**/.dart_tool/
+**/.kotlin/
+**/build/
+**/coverage/
+.gradle-cache/
 pubspec.lock
+!viet_braille_app/pubspec.lock
+!api_server/pubspec.lock
+**/.flutter-plugins-dependencies
 
-# ─── Private / Not needed for app ───────────────────────────────────
-.git/
-.github/
+# ─── Local editor/assistant state ─────────────────────────────────────
 .openclaude/
-api_server/
-docs/
-quytac/
-tools/
-BUG_REPORT.md
-FIXES_COMPLETED.md
-PUBLISH_PLAN.md
-mkdocs.yml
-TEST_SUMMARY.txt
-CHANGELOG.md
-CONTRIBUTING.md
-LICENSE
-.gitmodules

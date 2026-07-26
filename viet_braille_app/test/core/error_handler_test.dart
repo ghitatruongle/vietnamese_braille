@@ -3,11 +3,11 @@ import 'package:viet_braille_app/core/error_handler.dart';
 
 void main() {
   group('AppErrorHandler', () {
-    test('UnsupportedError → readable message', () {
+    test('UnsupportedError → preserves actionable message', () {
       final result = AppErrorHandler.handleError(
         UnsupportedError('application/json'),
       );
-      expect(result, contains('Định dạng file không được hỗ trợ'));
+      expect(result, equals('application/json'));
     });
 
     test('FormatException → readable message', () {

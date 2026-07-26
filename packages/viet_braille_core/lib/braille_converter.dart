@@ -1,5 +1,20 @@
 import 'braille_mapping.dart';
 
+/// Chế độ xuất Braille.
+enum BrailleConversionMode {
+  /// Unicode Braille 6 chấm theo bảng ánh xạ tiếng Việt.
+  standard,
+
+  /// Chế độ chẩn đoán có thể chuyển ngược chính xác dấu `?` và `-`.
+  ///
+  /// Chế độ này dùng một ô 8 chấm làm escape marker nên không được dùng để
+  /// tạo BRF hoặc được quảng bá như một phần của chuẩn Braille tiếng Việt.
+  lossless,
+}
+
+/// Escape marker chỉ dùng trong [BrailleConversionMode.lossless].
+const String losslessBrailleEscape = '\u28ff';
+
 /// Kết quả chuyển đổi Braille, bao gồm cả cảnh báo ký tự không hợp lệ.
 class ConversionResult {
   const ConversionResult({
@@ -21,10 +36,16 @@ class ConversionResult {
 }
 
 abstract class BrailleConverter {
-  String convert(String text);
+  String convert(
+    String text, {
+    BrailleConversionMode mode = BrailleConversionMode.standard,
+  });
 
   /// Convert with full result including unmapped character warnings.
-  ConversionResult convertWithDetails(String text);
+  ConversionResult convertWithDetails(
+    String text, {
+    BrailleConversionMode mode = BrailleConversionMode.standard,
+  });
 }
 
 class BrailleConverterImpl implements BrailleConverter {
@@ -39,7 +60,10 @@ class BrailleConverterImpl implements BrailleConverter {
   BrailleConverterImpl(this._mapping);
 
   @override
-  String convert(String text) => convertWithDetails(text).brailleText;
+  String convert(
+    String text, {
+    BrailleConversionMode mode = BrailleConversionMode.standard,
+  }) => convertWithDetails(text, mode: mode).brailleText;
 
   /// Bộ tiền xử lý văn bản đầu vào theo quy chuẩn định dạng và khoảng trống của Thông tư 15.
   String _preprocessText(String text) {
@@ -57,7 +81,7 @@ class BrailleConverterImpl implements BrailleConverter {
     String prev = '';
     int iterations = 0;
     const maxIterations = 100; // Safeguard against infinite loops
-    
+
     while (text != prev && iterations < maxIterations) {
       iterations++;
       prev = text;
@@ -66,11 +90,8 @@ class BrailleConverterImpl implements BrailleConverter {
         (match) => '${match.group(1)}${match.group(2)}${match.group(3)}',
       );
     }
-    
-    if (iterations >= maxIterations) {
-      // This should never happen in practice, but log for debugging
-      print('WARNING: Operator space removal exceeded max iterations ($maxIterations)');
-    }
+
+    // maxIterations guard above already prevents infinite loops; no runtime warning needed.
 
     // 3. Thay thế dấu chấm lửng "..." thành ký tự "…" để ánh xạ ra "⠄⠄⠄" (3 ô chấm 3)
     text = text.replaceAll('...', '…');
@@ -78,7 +99,10 @@ class BrailleConverterImpl implements BrailleConverter {
   }
 
   @override
-  ConversionResult convertWithDetails(String text) {
+  ConversionResult convertWithDetails(
+    String text, {
+    BrailleConversionMode mode = BrailleConversionMode.standard,
+  }) {
     if (text.isEmpty) {
       return const ConversionResult(brailleText: '', unmappedCharacters: []);
     }
@@ -175,7 +199,7 @@ class BrailleConverterImpl implements BrailleConverter {
             break;
           }
           final sep = normalized.substring(words[j - 1].end, words[j].start);
-          if (sep.trim().isNotEmpty || sep.isEmpty) break;
+          if (sep.trim().isNotEmpty) break;
           j++;
         }
         if (j > idxWord + 1) {
@@ -233,6 +257,19 @@ class BrailleConverterImpl implements BrailleConverter {
         } else if (w.phraseMode == _PhraseMode.none && w.allCaps) {
           buffer.write(_mapping.allCapsWord); // Từ đơn viết hoa toàn bộ: ⠸
         }
+      }
+
+      // `?` và `-` dùng cùng ô với thanh hỏi/ngã trong bảng chuẩn. Chế độ
+      // lossless thêm escape marker riêng để reverse converter không phải đoán
+      // theo ngữ cảnh. Chuỗi này chỉ dùng cho đối chiếu nội bộ, không xuất BRF.
+      if (mode == BrailleConversionMode.lossless && (ch == '?' || ch == '-')) {
+        inNumber = false;
+        buffer
+          ..write(losslessBrailleEscape)
+          ..write(_mapping.mapChar(ch)!);
+        prevPrevCharLower = prevCharLower;
+        prevCharLower = ch;
+        continue;
       }
 
       // Handle double-quote: open vs close based on context
@@ -383,11 +420,12 @@ class BrailleConverterImpl implements BrailleConverter {
           // vowel from the same syllable, move tone before the first vowel.
           // But NOT if previous vowel is part of gi/qu cluster (giải, quả).
           if (_shouldReorderToneForInitialVowel(
-              currentChar: ch,
-              prevChar: prevCharLower,
-              prevPrevChar: prevPrevCharLower,
-              hasConsonantBefore: hasConsonantBefore,
-              isCapital: isCapital)) {
+            currentChar: ch,
+            prevChar: prevCharLower,
+            prevPrevChar: prevPrevCharLower,
+            hasConsonantBefore: hasConsonantBefore,
+            isCapital: isCapital,
+          )) {
             final decomposed = _decomposeTonedChar(ch);
             if (decomposed != null && buffer.isNotEmpty) {
               // Previous char was a vowel written to buffer; the tone from
@@ -486,19 +524,19 @@ class BrailleConverterImpl implements BrailleConverter {
   }) {
     // Không áp dụng nếu là chữ hoa hoặc có phụ âm đầu
     if (isCapital || hasConsonantBefore) return false;
-    
+
     // Current char phải là nguyên âm có dấu
     if (!_isTonedVowel(currentChar)) return false;
-    
+
     // Previous char phải là nguyên âm thường
     if (prevChar.isEmpty || !_isVowel(prevChar)) return false;
-    
+
     // Previous char không được là phụ âm
     if (_isConsonant(prevChar)) return false;
-    
+
     // Previous-previous char không được là phụ âm (tránh trường hợp gi/qu)
     if (prevPrevChar.isNotEmpty && _isConsonant(prevPrevChar)) return false;
-    
+
     return true;
   }
 

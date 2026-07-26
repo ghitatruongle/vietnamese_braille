@@ -1,15 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:viet_braille_app/core/braille_mapping.dart';
 import 'package:viet_braille_app/data/file_exporter.dart';
 import 'package:viet_braille_app/data/file_picker_service.dart';
 import 'package:viet_braille_app/data/history_service.dart';
 import 'package:viet_braille_app/data/ocr_processor.dart';
 import 'package:viet_braille_app/data/text_extractor.dart';
-import 'package:viet_braille_app/domain/braille_converter.dart';
-import 'package:viet_braille_app/domain/braille_reverse_converter.dart';
-import 'package:viet_braille_app/domain/brf_formatter.dart';
 import 'package:viet_braille_app/presentation/providers/conversion_provider.dart';
+import 'package:viet_braille_core/viet_braille_core.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -162,8 +159,8 @@ void main() {
       expect(notifier.state.errorMessage, isNull);
     });
 
-    test('convertText with valid input → success state', () {
-      notifier.convertText('xin chào');
+    test('convertText with valid input → success state', () async {
+      await notifier.convertText('xin chào');
       expect(notifier.state.status, equals(AppStatus.success));
       expect(notifier.state.originalText, equals('xin chào'));
       expect(notifier.state.brailleUnicode, isNotEmpty);
@@ -171,53 +168,74 @@ void main() {
       expect(notifier.state.errorMessage, isNull);
     });
 
-    test('convertText output ends with newline (BRF format)', () {
-      notifier.convertText('hello');
+    test('convertText output ends with newline (BRF format)', () async {
+      await notifier.convertText('hello');
       expect(notifier.state.brfContent.endsWith('\n'), isTrue);
     });
 
-    test('convertText with empty input → stays idle', () {
-      notifier.convertText('');
+    test('convertText with empty input → stays idle', () async {
+      await notifier.convertText('');
       expect(notifier.state.status, equals(AppStatus.idle));
       expect(notifier.state.originalText, equals(''));
     });
 
-    test('convertText with whitespace-only input → stays idle', () {
-      notifier.convertText('   ');
+    test('convertText with whitespace-only input → stays idle', () async {
+      await notifier.convertText('   ');
       expect(notifier.state.status, equals(AppStatus.idle));
     });
 
-    test('convertText with numbers → success', () {
-      notifier.convertText('123');
+    test('convertText with numbers → success', () async {
+      await notifier.convertText('123');
       expect(notifier.state.status, equals(AppStatus.success));
       expect(notifier.state.brailleUnicode, isNotEmpty);
     });
 
-    test('convertText with Vietnamese diacritics → success', () {
-      notifier.convertText('đội ngũ ưng ý');
+    test('convertText with Vietnamese diacritics → success', () async {
+      await notifier.convertText('đội ngũ ưng ý');
       expect(notifier.state.status, equals(AppStatus.success));
       expect(notifier.state.brailleUnicode, isNotEmpty);
     });
 
-    test('convertText clears previous error message', () {
+    test('convertText clears previous error message', () async {
       // First, set an error state
-      notifier.convertText('');
+      await notifier.convertText('');
       // Now convert valid text
-      notifier.convertText('hello');
+      await notifier.convertText('hello');
       expect(notifier.state.status, equals(AppStatus.success));
       expect(notifier.state.errorMessage, isNull);
     });
 
-    test('multiple convertText calls update state correctly', () {
-      notifier.convertText('first');
+    test('multiple convertText calls update state correctly', () async {
+      await notifier.convertText('first');
       final firstResult = notifier.state.brailleUnicode;
 
-      notifier.convertText('second');
+      await notifier.convertText('second');
       final secondResult = notifier.state.brailleUnicode;
 
       expect(firstResult, isNot(equals(secondResult)));
       expect(notifier.state.originalText, equals('second'));
       expect(notifier.state.status, equals(AppStatus.success));
+    });
+
+    test('history failure keeps result and exposes a warning', () async {
+      final mapping = BrailleMappingImpl();
+      final failingNotifier = ConversionNotifier(
+        filePickerService: FilePickerServiceImpl(),
+        textExtractor: TextExtractorImpl(),
+        ocrProcessor: OcrProcessorImpl(mapping),
+        brailleConverter: BrailleConverterImpl(mapping),
+        reverseConverter: BrailleReverseConverterImpl(mapping),
+        brfFormatter: BrfFormatterImpl(),
+        fileExporter: FileExporterImpl(),
+        historyService: _FailingHistoryService(),
+      );
+      addTearDown(failingNotifier.dispose);
+
+      await failingNotifier.convertText('xin chào');
+
+      expect(failingNotifier.state.status, AppStatus.success);
+      expect(failingNotifier.state.brailleUnicode, isNotEmpty);
+      expect(failingNotifier.state.warningMessage, contains('lưu vào lịch sử'));
     });
   });
 
@@ -226,10 +244,12 @@ void main() {
   // ══════════════════════════════════════════════════════════════════════
   group('ConversionNotifier — exportBrf()', () {
     late ConversionNotifier notifier;
+    late _RecordingFileExporter fileExporter;
 
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
       final mapping = BrailleMappingImpl();
+      fileExporter = _RecordingFileExporter();
       notifier = ConversionNotifier(
         filePickerService: FilePickerServiceImpl(),
         textExtractor: TextExtractorImpl(),
@@ -237,7 +257,7 @@ void main() {
         brailleConverter: BrailleConverterImpl(mapping),
         reverseConverter: BrailleReverseConverterImpl(mapping),
         brfFormatter: BrfFormatterImpl(),
-        fileExporter: FileExporterImpl(),
+        fileExporter: fileExporter,
         historyService: HistoryServiceImpl(),
       );
     });
@@ -252,17 +272,72 @@ void main() {
       expect(notifier.state.errorMessage, contains('Chưa có nội dung BRF'));
     });
 
-    test('exportBrf after conversion → attempts export', () async {
-      notifier.convertText('hello');
-      // exportBrf will try to save + share, which may fail in test env
-      // but the state should reflect the attempt
-      try {
-        await notifier.exportBrf();
-        // If share_plus works in test, should be success
-        expect(notifier.state.status, equals(AppStatus.success));
-      } catch (_) {
-        // Platform may not support sharing in test — that's OK
-      }
+    test('exportBrf after conversion → exports once', () async {
+      await notifier.convertText('hello');
+      await notifier.exportBrf();
+
+      expect(fileExporter.brfExports, 1);
+      expect(notifier.state.status, equals(AppStatus.success));
+    });
+
+    test('exportPdf without conversion → error state', () async {
+      await notifier.exportPdf();
+
+      expect(notifier.state.status, equals(AppStatus.error));
+      expect(notifier.state.errorMessage, contains('xuất PDF'));
+      expect(fileExporter.pdfExports, 0);
+    });
+
+    test('exportPdf after conversion → exports Unicode Braille once', () async {
+      await notifier.convertText('hello');
+      await notifier.exportPdf();
+
+      expect(fileExporter.pdfExports, 1);
+      expect(fileExporter.lastPdfContent, notifier.state.brailleUnicode);
+      expect(notifier.state.status, equals(AppStatus.success));
     });
   });
+}
+
+class _RecordingFileExporter implements FileExporterBase {
+  int brfExports = 0;
+  int pdfExports = 0;
+  String? lastPdfContent;
+
+  @override
+  Future<void> exportPdf(String brailleText, String fileName) async {
+    pdfExports++;
+    lastPdfContent = brailleText;
+  }
+
+  @override
+  Future<String> saveTemp(String content, [String baseName = 'output']) async =>
+      '$baseName.brf';
+
+  @override
+  Future<void> share(String filePath) async {}
+
+  @override
+  Future<void> shareBrf(String content, [String baseName = 'output']) async {
+    brfExports++;
+  }
+}
+
+class _FailingHistoryService implements HistoryServiceBase {
+  @override
+  Future<void> saveEntry(ConversionHistoryEntry entry) {
+    throw Exception('storage unavailable');
+  }
+
+  @override
+  Future<void> clearHistory() async {}
+
+  @override
+  Future<void> deleteEntry(int index) async {}
+
+  @override
+  Future<List<ConversionHistoryEntry>> loadHistory() async => [];
+
+  @override
+  Future<List<ConversionHistoryEntry>> searchHistory(String query) async => [];
 }

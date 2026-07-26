@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'dart:typed_data';
 import 'package:viet_braille_app/data/file_picker_service.dart';
 
 void main() {
@@ -17,6 +18,18 @@ void main() {
       const b = FilePickResult(path: '/a.txt', mimeType: 'text/plain');
       expect(a.path, equals(b.path));
       expect(a.mimeType, equals(b.mimeType));
+    });
+
+    test('supports in-memory bytes when web path is null', () {
+      final bytes = Uint8List.fromList([1, 2, 3]);
+      final result = FilePickResult(
+        bytes: bytes,
+        mimeType: 'text/plain',
+        name: 'test.txt',
+      );
+      expect(result.path, isNull);
+      expect(result.bytes, same(bytes));
+      expect(result.name, 'test.txt');
     });
   });
 

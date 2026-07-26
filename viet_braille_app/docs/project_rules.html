@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Viet Braille App - Project Rules</title>
+</head>
+<body>
+  <h1>Viet Braille App</h1>
+  <p>
+    <strong>Tài liệu lịch sử:</strong> cấu trúc file bên dưới có thể không còn
+    khớp implementation. Xem README và docs/architecture.md. Ứng dụng Flutter
+    chuyển đổi văn bản tiếng Việt sang Unicode Braille 6 chấm và BRF, hỗ trợ chọn tệp,
+    trích xuất nội dung từ nhiều định dạng, OCR ảnh và xuất kết quả để chia sẻ. Mục tiêu của tài liệu này
+    là thống nhất kiến trúc, interface và quy tắc phát triển để nhiều AI có thể làm việc song song mà không xung đột.
+  </p>
+
+  <h2>Kiến trúc thư mục</h2>
+  <pre>lib/
+├── core/
+│   └── braille_mapping.dart
+├── data/
+│   ├── text_extractor.dart
+│   ├── ocr_processor.dart
+│   ├── file_picker_service.dart
+│   └── file_exporter.dart
+├── domain/
+│   ├── braille_converter.dart
+│   └── brf_formatter.dart
+└── presentation/
+    ├── providers/
+    ├── screens/
+    └── widgets/</pre>
+
+  <h2>Module và trách nhiệm</h2>
+  <ul>
+    <li><strong>core</strong>: chứa quy tắc nền tảng, contract mapping ký tự tiếng Việt sang Braille Unicode.</li>
+    <li><strong>data</strong>: chịu trách nhiệm đọc tệp, OCR ảnh, chọn tệp và xuất/chia sẻ tệp BRF.</li>
+    <li><strong>domain</strong>: định nghĩa nghiệp vụ chuyển đổi tiếng Việt sang Braille và định dạng BRF.</li>
+    <li><strong>presentation</strong>: UI, state management, provider, screen và widget tái sử dụng.</li>
+  </ul>
+
+  <h2>Interface chi tiết</h2>
+
+  <h3>core/braille_mapping.dart</h3>
+  <p>Chịu trách nhiệm chuẩn hóa chuỗi đầu vào và ánh xạ từng ký tự sang mã Braille Unicode.</p>
+  <pre>abstract class BrailleMapping {
+  String? mapChar(String char);
+  String normalize(String text);
+}</pre>
+  <ul>
+    <li><strong>String? mapChar(String char)</strong>: trả về chuỗi Unicode Braille 6 chấm (U+2800–U+283F) tương ứng với một ký tự đã được chuẩn hóa; trả về null nếu không hỗ trợ.</li>
+    <li><strong>String normalize(String text)</strong>: chuẩn hóa Unicode NFC, chuyển chữ thường và áp dụng tiền xử lý tiếng Việt trước khi map.</li>
+  </ul>
+
+  <h3>data/text_extractor.dart</h3>
+  <p>Contract trích xuất văn bản từ tệp đầu vào theo MIME type.</p>
+  <pre>abstract class TextExtractor {
+  Future&lt;String&gt; extractText(String path, String mimeType);
+}</pre>
+  <ul>
+    <li>Các implementation hiện tại: TXT, DOCX.</li>
+    <li>Phải bắt lỗi async đầy đủ và trả lỗi có ý nghĩa cho tầng trên.</li>
+  </ul>
+
+  <h3>data/ocr_processor.dart</h3>
+  <p>Contract nhận dạng chữ từ ảnh khi người dùng chọn ảnh thay vì tài liệu văn bản.</p>
+  <pre>abstract class OcrProcessor {
+  Future&lt;String&gt; recognizeImage(String path);
+}</pre>
+
+  <h3>data/file_picker_service.dart</h3>
+  <p>Dịch vụ chọn tệp đa nền tảng. Kết quả phải mang đủ đường dẫn và MIME type để tầng data xử lý.</p>
+  <pre>class FilePickResult {
+  String path;
+  String mimeType;
+}
+
+class FilePickerService {
+  Future&lt;FilePickResult?&gt; pickFile();
+}</pre>
+  <ul>
+    <li><strong>pickFile()</strong>: trả về null khi người dùng hủy chọn tệp.</li>
+    <li>Windows dùng file picker bình thường; Android cần xử lý quyền theo package được chọn nếu có.</li>
+  </ul>
+
+  <h3>data/file_exporter.dart</h3>
+  <p>Dịch vụ ghi nội dung BRF tạm thời và chia sẻ ra ngoài ứng dụng.</p>
+  <pre>class FileExporter {
+  Future&lt;String&gt; saveTemp(String content);
+  Future&lt;void&gt; share(String path);
+}</pre>
+  <ul>
+    <li><strong>saveTemp(String content)</strong>: lưu tạm nội dung BRF, trả về đường dẫn tệp đã tạo.</li>
+    <li><strong>share(String path)</strong>: chia sẻ tệp theo đường dẫn được cung cấp.</li>
+  </ul>
+
+  <h3>domain/braille_converter.dart</h3>
+  <p>Contract nghiệp vụ chính để chuyển văn bản tiếng Việt sang biểu diễn Braille Unicode.</p>
+  <pre>abstract class BrailleConverter {
+  String convert(String text);
+}</pre>
+
+  <h3>domain/brf_formatter.dart</h3>
+  <p>Contract định dạng Braille Unicode thành nội dung BRF hợp lệ với giới hạn độ dài dòng.</p>
+  <pre>abstract class BrfFormatter {
+  String format(String braille, {int lineLength = 40});
+}</pre>
+  <ul>
+    <li>Mặc định mỗi dòng tối đa 40 ký tự, nhưng cho phép cấu hình.</li>
+    <li>Đầu ra BRF chứa North American Braille ASCII và các ký tự điều khiển bố cục.</li>
+  </ul>
+
+  <h3>presentation/providers/conversion_provider.dart</h3>
+  <p>Placeholder cho state management bằng Riverpod. AI phụ trách UI/state sẽ hiện thực sau.</p>
+
+  <h3>presentation/screens/home_screen.dart</h3>
+  <p>Placeholder cho màn hình chính của ứng dụng.</p>
+
+  <h3>presentation/widgets/</h3>
+  <p>Để trống ở giai đoạn khởi tạo. Các widget dùng chung sẽ được thêm dần trong các tác vụ sau.</p>
+
+  <h2>Package dependencies</h2>
+  <ul>
+    <li>file_picker: ^8.0.0</li>
+    <li>docx_to_text: ^1.0.0</li>
+    <li>google_mlkit_text_recognition: ^0.15.0</li>
+    <li>path_provider: ^2.1.1</li>
+    <li>share_plus: ^10.0.0</li>
+    <li>flutter_riverpod: ^2.4.9</li>
+  </ul>
+
+  <h2>Quy tắc bắt buộc</h2>
+  <ul>
+    <li>Luôn dùng UTF-8 cho mã nguồn, tài liệu và dữ liệu văn bản.</li>
+    <li>Toàn bộ code phải dùng null safety.</li>
+    <li>Mọi xử lý bất đồng bộ phải dùng async/await và bắt lỗi đầy đủ.</li>
+    <li>Text tiếng Việt phải được chuẩn hóa Unicode NFC và chuyển thành chữ thường trước khi mapping.</li>
+    <li>Logic normalize phải ưu tiên lowercase + NFC trước khi chuyển từng ký tự sang Braille.</li>
+    <li>Text từ file/OCR phải được trim trước khi chuyển đổi.</li>
+    <li>Unicode Braille hiển thị dùng các mẫu 6 chấm U+2800–U+283F; BRF dùng Braille ASCII.</li>
+    <li>Mỗi dòng trong BRF tối đa 40 ký tự, có thể cấu hình qua tham số lineLength.</li>
+    <li>Không đưa logic UI vào domain/data; giữ phân tách tầng rõ ràng.</li>
+    <li>Các interface trong tài liệu này là hợp đồng chung; AI khác không tự ý đổi chữ ký phương thức nếu chưa thống nhất.</li>
+  </ul>
+
+  <h2>Lưu ý nền tảng</h2>
+  <ul>
+    <li><strong>Android</strong>: nếu dùng OCR từ camera hoặc ảnh chụp trực tiếp, cần khai báo quyền CAMERA trong AndroidManifest. Không cần quyền INTERNET cho phạm vi hiện tại.</li>
+    <li><strong>Windows</strong>: dùng file picker bình thường, không cần cấu hình quyền đặc biệt cho chọn tệp cục bộ.</li>
+  </ul>
+
+  <h2>Phụ lục: Bảng mapping Braille tiếng Việt đầy đủ</h2>
+  <p>Mapping sử dụng Unicode Braille 6 chấm (U+2800–U+283F). Dấu thanh là ô Braille riêng biệt đặt TRƯỚC nguyên âm. Chữ số có tiền tố number-indicator. Định hướng mapping:</p>
+  <pre>
+a-&gt;a, b-&gt;b, c-&gt;c, d-&gt;d, e-&gt;e, f-&gt;f, g-&gt;g, h-&gt;h, i-&gt;i, j-&gt;j, k-&gt;k, l-&gt;l, m-&gt;m,
+n-&gt;n, o-&gt;o, p-&gt;p, q-&gt;q, r-&gt;r, s-&gt;s, t-&gt;t, u-&gt;u, v-&gt;v, w-&gt;w, x-&gt;x, y-&gt;y, z-&gt;z.
+á-&gt;/a, à-&gt;?a, ả-&gt;.a, ã-&gt;*a, ạ-&gt;&gt;a (tương tự e, i, o, u, y)
+ă-&gt;(a, ắ-&gt;/(a, ... (đầy đủ tổ hợp)
+â-&gt;^a, ấ-&gt;/^a, ...
+ê-&gt;^e, ...
+ô-&gt;^o, ...
+ơ-&gt;[o, ...
+ư-&gt;[u, ...
+đ-&gt;=d
+Các dấu câu giữ nguyên hoặc bỏ qua giai đoạn đầu.
+  </pre>
+</body>
+</html>
