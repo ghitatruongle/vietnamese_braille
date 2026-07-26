@@ -1,8 +1,12 @@
 import 'braille_dots.dart';
+import 'braille_converter.dart';
 import 'braille_mapping.dart';
 
 abstract class BrailleReverseConverter {
-  String convert(String brailleText);
+  String convert(
+    String brailleText, {
+    BrailleConversionMode mode = BrailleConversionMode.standard,
+  });
 }
 
 /// Kết quả xử lý một cell trong reverse converter.
@@ -153,7 +157,10 @@ class BrailleReverseConverterImpl implements BrailleReverseConverter {
   // ──────────────────── Main convert loop ──────────────────────────────────
 
   @override
-  String convert(String brailleText) {
+  String convert(
+    String brailleText, {
+    BrailleConversionMode mode = BrailleConversionMode.standard,
+  }) {
     final buffer = StringBuffer();
     int i = 0;
     bool inNumber = false;
@@ -161,6 +168,29 @@ class BrailleReverseConverterImpl implements BrailleReverseConverter {
 
     while (i < brailleText.length) {
       final cell = brailleText[i];
+
+      if (mode == BrailleConversionMode.lossless &&
+          cell == losslessBrailleEscape) {
+        if (i + 1 >= brailleText.length) {
+          throw const FormatException(
+            'Escape marker lossless không có ô Braille theo sau.',
+          );
+        }
+        final escapedCell = brailleText[i + 1];
+        final punctuation = _tonePunctuationFallback[escapedCell];
+        if (punctuation == null) {
+          throw FormatException(
+            'Ô sau escape marker không phải dấu câu lossless hợp lệ.',
+            brailleText,
+            i + 1,
+          );
+        }
+        buffer.write(punctuation);
+        capState = capState.copyWith(isWordStart: true, isAllCapsWord: false);
+        inNumber = false;
+        i += 2;
+        continue;
+      }
 
       // ── Whitespace → reset number mode & word boundary ──
       if (_isWhitespace(cell)) {
@@ -455,12 +485,27 @@ class BrailleReverseConverterImpl implements BrailleReverseConverter {
     final text = buffer.toString();
     final isQuContext =
         text.length >= 2 &&
-        text[text.length - 1] == 'u' &&
-        text[text.length - 2] == 'q';
+        text[text.length - 1].toLowerCase() == 'u' &&
+        text[text.length - 2].toLowerCase() == 'q';
     final isGiContext =
         text.length >= 2 &&
-        text[text.length - 1] == 'i' &&
-        text[text.length - 2] == 'g';
+        text[text.length - 1].toLowerCase() == 'i' &&
+        text[text.length - 2].toLowerCase() == 'g';
+
+    // Sau một nguyên âm đã giải mã, ô hỏi/ngã nằm giữa các từ/ký tự gần như
+    // chắc chắn là dấu câu. Quy tắc này xử lý đúng các chuỗi như `a?a`,
+    // `a-a`, `Có?Ai` và `Á-Âu`, thay vì gắn thanh vào nguyên âm kế tiếp.
+    final collidingPunctuation = _tonePunctuationFallback[cell];
+    if (collidingPunctuation != null &&
+        !isQuContext &&
+        !isGiContext &&
+        text.isNotEmpty &&
+        _isDecodedVowel(text[text.length - 1])) {
+      return (
+        _CellResult(handled: true, output: collidingPunctuation),
+        capState,
+      );
+    }
 
     // ── qu context: tone applies to next vowel ──
     if (isQuContext && i + 1 < brailleText.length) {
@@ -634,4 +679,14 @@ class BrailleReverseConverterImpl implements BrailleReverseConverter {
       ch == ' ' || ch == '\n' || ch == '\t' || ch == '\r';
 
   static bool _isLatinVowel(String ch) => 'aeiouy'.contains(ch);
+
+  static bool _isDecodedVowel(String ch) {
+    return 'aàáảãạăằắẳẵặâầấẩẫậ'
+            'eèéẻẽẹêềếểễệ'
+            'iìíỉĩị'
+            'oòóỏõọôồốổỗộơờớởỡợ'
+            'uùúủũụưừứửữự'
+            'yỳýỷỹỵ'
+        .contains(ch.toLowerCase());
+  }
 }

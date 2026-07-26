@@ -5,7 +5,10 @@ class AppErrorHandler {
   /// Chuyển đổi exception thành thông báo lỗi thân thiện.
   static String handleError(dynamic error) {
     if (error is UnsupportedError) {
-      return 'Định dạng file không được hỗ trợ.';
+      final message = error.message?.toString();
+      return message == null || message.isEmpty
+          ? 'Tính năng hoặc định dạng này không được hỗ trợ.'
+          : message;
     }
     if (error is FormatException) {
       return 'Định dạng dữ liệu không hợp lệ: ${error.message}';

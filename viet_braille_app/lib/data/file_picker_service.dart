@@ -1,10 +1,20 @@
+import 'package:flutter/foundation.dart';
 import 'package:file_picker/file_picker.dart';
 
-class FilePickResult {
-  const FilePickResult({required this.path, required this.mimeType});
+import '../core/platform_capabilities.dart';
 
-  final String path;
+class FilePickResult {
+  const FilePickResult({
+    this.path,
+    this.bytes,
+    required this.mimeType,
+    this.name = '',
+  }) : assert(path != null || bytes != null);
+
+  final String? path;
+  final Uint8List? bytes;
   final String mimeType;
+  final String name;
 }
 
 /// Interface cho dịch vụ chọn file.
@@ -19,7 +29,10 @@ class FilePickerServiceImpl implements FilePickerServiceBase {
       final result = await FilePicker.platform.pickFiles(
         allowMultiple: false,
         type: FileType.custom,
-        allowedExtensions: ['txt', 'docx', 'jpg', 'jpeg', 'png'],
+        allowedExtensions: PlatformCapabilities.supportsOcr
+            ? ['txt', 'docx', 'jpg', 'jpeg', 'png']
+            : ['txt', 'docx'],
+        withData: kIsWeb,
       );
 
       if (result == null || result.files.isEmpty) {
@@ -29,13 +42,18 @@ class FilePickerServiceImpl implements FilePickerServiceBase {
       final file = result.files.first;
       final path = file.path;
 
-      if (path == null) {
-        throw Exception('Không thể lấy đường dẫn file');
+      if (path == null && file.bytes == null) {
+        throw Exception('Không thể đọc dữ liệu file đã chọn');
       }
 
       final mimeType = _getMimeType(file.extension);
 
-      return FilePickResult(path: path, mimeType: mimeType);
+      return FilePickResult(
+        path: path,
+        bytes: file.bytes,
+        mimeType: mimeType,
+        name: file.name,
+      );
     } catch (e) {
       if (e is Exception) rethrow;
       throw Exception('Lỗi khi chọn file: $e');

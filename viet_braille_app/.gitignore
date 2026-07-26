@@ -6,7 +6,6 @@ build/
 # Dependencies
 .dart_tool/
 .pub/
-pubspec.lock
 
 # Logs
 *.log
@@ -34,3 +33,8 @@ pubspec.lock
 Thumbs.db
 .flutter-plugins-dependencies
 **/*.iml
+
+# Android release secrets
+android/key.properties
+android/*.jks
+android/*.keystore

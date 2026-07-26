@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../core/braille_mapping.dart';
+import 'package:viet_braille_core/viet_braille_core.dart';
 import 'braille_grid_widget.dart';
 
 /// Màn hình học chữ Braille tương tác.

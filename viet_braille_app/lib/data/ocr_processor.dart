@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
-import '../core/braille_mapping.dart';
+import 'package:viet_braille_core/viet_braille_core.dart';
 
 abstract class OcrProcessor {
   Future<String> recognizeImage(String path);
+  void dispose();
 }
 
 class OcrProcessorImpl implements OcrProcessor {
@@ -59,7 +60,20 @@ class OcrProcessorImpl implements OcrProcessor {
     );
   }
 
+  @override
   void dispose() {
     _textRecognizer.close();
   }
+}
+
+class UnsupportedOcrProcessor implements OcrProcessor {
+  const UnsupportedOcrProcessor();
+
+  @override
+  Future<String> recognizeImage(String path) {
+    throw UnsupportedError('OCR hiện chỉ được hỗ trợ trên Android và iOS.');
+  }
+
+  @override
+  void dispose() {}
 }

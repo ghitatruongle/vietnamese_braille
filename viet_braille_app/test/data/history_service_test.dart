@@ -52,6 +52,24 @@ void main() {
       expect(history.first.originalText, equals('second'));
     });
 
+    test('concurrent saves are serialized without losing entries', () async {
+      final now = DateTime.now();
+      await Future.wait([
+        for (var i = 0; i < 20; i++)
+          service.saveEntry(
+            ConversionHistoryEntry(
+              originalText: 'concurrent $i',
+              brailleText: 'b$i',
+              timestamp: now.add(Duration(microseconds: i)),
+            ),
+          ),
+      ]);
+
+      final history = await service.loadHistory();
+      expect(history, hasLength(20));
+      expect(history.map((entry) => entry.originalText).toSet(), hasLength(20));
+    });
+
     test('clearHistory removes all entries', () async {
       await service.saveEntry(
         ConversionHistoryEntry(

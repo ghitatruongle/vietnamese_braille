@@ -39,6 +39,7 @@ class HistoryServiceImpl implements HistoryServiceBase {
   static const _key = 'conversion_history';
   static const _maxEntries = 50;
   static const _maxAgeDays = 30;
+  Future<void> _mutationQueue = Future<void>.value();
 
   @override
   Future<List<ConversionHistoryEntry>> loadHistory() async {
@@ -52,7 +53,11 @@ class HistoryServiceImpl implements HistoryServiceBase {
   }
 
   @override
-  Future<void> saveEntry(ConversionHistoryEntry entry) async {
+  Future<void> saveEntry(ConversionHistoryEntry entry) {
+    return _enqueueMutation(() => _saveEntry(entry));
+  }
+
+  Future<void> _saveEntry(ConversionHistoryEntry entry) async {
     final history = await loadHistory();
     history.insert(0, entry);
 
@@ -73,13 +78,21 @@ class HistoryServiceImpl implements HistoryServiceBase {
   }
 
   @override
-  Future<void> clearHistory() async {
+  Future<void> clearHistory() {
+    return _enqueueMutation(_clearHistory);
+  }
+
+  Future<void> _clearHistory() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_key);
   }
 
   @override
-  Future<void> deleteEntry(int index) async {
+  Future<void> deleteEntry(int index) {
+    return _enqueueMutation(() => _deleteEntry(index));
+  }
+
+  Future<void> _deleteEntry(int index) async {
     final history = await loadHistory();
     if (index >= 0 && index < history.length) {
       history.removeAt(index);
@@ -103,5 +116,16 @@ class HistoryServiceImpl implements HistoryServiceBase {
               e.brailleText.toLowerCase().contains(lowerQuery),
         )
         .toList();
+  }
+
+  /// Tuần tự hóa mọi mutation để hai lần chuyển đổi đồng thời không cùng đọc
+  /// một snapshot cũ rồi ghi đè lịch sử của nhau.
+  Future<void> _enqueueMutation(Future<void> Function() mutation) {
+    final operation = _mutationQueue.then((_) => mutation());
+    _mutationQueue = operation.then<void>(
+      (_) {},
+      onError: (Object _, StackTrace _) {},
+    );
+    return operation;
   }
 }

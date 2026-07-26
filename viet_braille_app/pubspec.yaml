@@ -1,7 +1,7 @@
 name: viet_braille_app
-description: "Ứng dụng chuyển đổi văn bản tiếng Việt sang chữ Braille Unicode (8-dot, U+2800–U+28FF)."
+description: "Ứng dụng chuyển đổi văn bản tiếng Việt sang Braille Unicode 6 chấm và BRF."
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.0
 
 environment:
   sdk: ^3.11.5
@@ -33,3 +33,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/fonts/NotoSansSymbols2-Regular.ttf
+    - assets/fonts/OFL.txt

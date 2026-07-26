@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:viet_braille_app/data/text_extractor.dart';
 
@@ -50,6 +51,16 @@ void main() {
       await file.writeAsString(text, encoding: utf8);
       final result = await extractor.extractText(file.path, 'text/plain');
       expect(result, equals(text));
+    });
+
+    test('reads UTF-8 bytes when web has no local path', () async {
+      final bytes = Uint8List.fromList(utf8.encode('Tiếng Việt trên web'));
+      final result = await extractor.extractText(
+        null,
+        'text/plain',
+        bytes: bytes,
+      );
+      expect(result, equals('Tiếng Việt trên web'));
     });
 
     test('throws Exception for non-existent TXT file', () async {

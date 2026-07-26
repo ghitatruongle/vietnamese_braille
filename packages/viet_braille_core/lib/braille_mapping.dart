@@ -3,7 +3,7 @@ import 'braille_dots.dart';
 /// Bảng mapping Braille tiếng Việt.
 ///
 /// Ánh xạ từ ký tự Unicode (NFC, lowercase) sang chuỗi Braille Unicode
-/// theo chuẩn U+2800 - U+28FF (8-dot Braille).
+/// dùng các mẫu 6 chấm trong khoảng U+2800–U+283F.
 ///
 /// Dấu thanh là ô Braille riêng biệt đặt TRƯỚC nguyên âm.
 /// Chữ số có tiền tố number-indicator (⠼).

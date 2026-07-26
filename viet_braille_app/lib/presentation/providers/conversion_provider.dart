@@ -1,15 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/braille_mapping.dart';
+import 'package:viet_braille_core/viet_braille_core.dart';
 import '../../core/error_handler.dart';
+import '../../core/platform_capabilities.dart';
 import '../../data/file_exporter.dart';
 import '../../data/file_picker_service.dart';
 import '../../data/history_service.dart';
 import '../../data/ocr_processor.dart';
 import '../../data/text_extractor.dart';
-import '../../domain/braille_converter.dart';
-import '../../domain/braille_reverse_converter.dart';
-import '../../domain/brf_formatter.dart';
+import 'history_provider.dart';
 
 enum AppStatus { idle, loading, success, error }
 
@@ -81,7 +80,7 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
   final HistoryServiceBase historyService;
 
   /// Chuyển đổi text trực tiếp sang Braille.
-  void convertText(String text) {
+  Future<void> convertText(String text) async {
     if (text.trim().isEmpty) return;
 
     state = state.copyWith(
@@ -93,7 +92,14 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
     try {
       final conversionResult = brailleConverter.convertWithDetails(text);
       final brailleUnicode = conversionResult.brailleText;
-      final reverseText = reverseConverter.convert(brailleUnicode);
+      final losslessBraille = brailleConverter.convert(
+        text,
+        mode: BrailleConversionMode.lossless,
+      );
+      final reverseText = reverseConverter.convert(
+        losslessBraille,
+        mode: BrailleConversionMode.lossless,
+      );
       final brfContent = brfFormatter.format(brailleUnicode);
 
       state = state.copyWith(
@@ -107,14 +113,7 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
         clearWarningMessage: !conversionResult.hasWarnings,
       );
 
-      // Lưu vào lịch sử
-      historyService.saveEntry(
-        ConversionHistoryEntry(
-          originalText: text,
-          brailleText: brailleUnicode,
-          timestamp: DateTime.now(),
-        ),
-      );
+      await _saveHistory(originalText: text, brailleText: brailleUnicode);
     } catch (e) {
       state = state.copyWith(
         status: AppStatus.error,
@@ -138,9 +137,23 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
     );
 
     try {
-      final rawText = result.mimeType.startsWith('image/')
-          ? await ocrProcessor.recognizeImage(result.path)
-          : await textExtractor.extractText(result.path, result.mimeType);
+      final isImage = result.mimeType.startsWith('image/');
+      if (isImage && !PlatformCapabilities.supportsOcr) {
+        throw UnsupportedError(PlatformCapabilities.ocrUnsupportedMessage);
+      }
+      if (isImage && result.path == null) {
+        throw UnsupportedError(
+          'OCR cần đường dẫn ảnh cục bộ trên Android hoặc iOS.',
+        );
+      }
+
+      final rawText = isImage
+          ? await ocrProcessor.recognizeImage(result.path!)
+          : await textExtractor.extractText(
+              result.path,
+              result.mimeType,
+              bytes: result.bytes,
+            );
 
       final originalText = rawText.trim();
       if (originalText.isEmpty) {
@@ -155,7 +168,14 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
         originalText,
       );
       final brailleUnicode = conversionResult.brailleText;
-      final reverseText = reverseConverter.convert(brailleUnicode);
+      final losslessBraille = brailleConverter.convert(
+        originalText,
+        mode: BrailleConversionMode.lossless,
+      );
+      final reverseText = reverseConverter.convert(
+        losslessBraille,
+        mode: BrailleConversionMode.lossless,
+      );
       final brfContent = brfFormatter.format(brailleUnicode);
 
       state = state.copyWith(
@@ -169,13 +189,9 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
         clearWarningMessage: !conversionResult.hasWarnings,
       );
 
-      // Lưu vào lịch sử
-      historyService.saveEntry(
-        ConversionHistoryEntry(
-          originalText: originalText,
-          brailleText: brailleUnicode,
-          timestamp: DateTime.now(),
-        ),
+      await _saveHistory(
+        originalText: originalText,
+        brailleText: brailleUnicode,
       );
     } catch (e) {
       state = state.copyWith(
@@ -196,8 +212,7 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
     }
 
     try {
-      final path = await fileExporter.saveTemp(state.brfContent, 'output');
-      await fileExporter.share(path);
+      await fileExporter.shareBrf(state.brfContent, 'output');
 
       state = state.copyWith(
         status: AppStatus.success,
@@ -210,30 +225,99 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
       );
     }
   }
+
+  /// Xuất bản Braille Unicode thành PDF có font hỗ trợ chữ nổi.
+  Future<void> exportPdf() async {
+    if (state.brailleUnicode.isEmpty) {
+      state = state.copyWith(
+        status: AppStatus.error,
+        errorMessage: 'Chưa có nội dung Braille để xuất PDF.',
+      );
+      return;
+    }
+
+    try {
+      await fileExporter.exportPdf(
+        state.brailleUnicode,
+        'vietnamese-braille.pdf',
+      );
+
+      state = state.copyWith(
+        status: AppStatus.success,
+        clearErrorMessage: true,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        status: AppStatus.error,
+        errorMessage: AppErrorHandler.handleError(e),
+      );
+    }
+  }
+
+  Future<void> _saveHistory({
+    required String originalText,
+    required String brailleText,
+  }) async {
+    try {
+      await historyService.saveEntry(
+        ConversionHistoryEntry(
+          originalText: originalText,
+          brailleText: brailleText,
+          timestamp: DateTime.now(),
+        ),
+      );
+    } catch (_) {
+      const historyWarning =
+          'Đã chuyển đổi nhưng không thể lưu vào lịch sử trên thiết bị.';
+      final currentWarning = state.warningMessage;
+      state = state.copyWith(
+        warningMessage: currentWarning == null
+            ? historyWarning
+            : '$currentWarning $historyWarning',
+      );
+    }
+  }
 }
 
+// ── Service providers (có thể override trong test để inject mock/fake) ──
+final filePickerServiceProvider = Provider<FilePickerServiceBase>(
+  (ref) => FilePickerServiceImpl(),
+);
+final textExtractorProvider = Provider<TextExtractor>(
+  (ref) => TextExtractorImpl(),
+);
+final brailleMappingProvider = Provider<BrailleMapping>(
+  (ref) => BrailleMappingImpl(),
+);
+final ocrProcessorProvider = Provider<OcrProcessor>((ref) {
+  final OcrProcessor ocrProcessor = PlatformCapabilities.supportsOcr
+      ? OcrProcessorImpl(ref.watch(brailleMappingProvider))
+      : const UnsupportedOcrProcessor();
+  ref.onDispose(ocrProcessor.dispose);
+  return ocrProcessor;
+});
+final brailleConverterProvider = Provider<BrailleConverter>(
+  (ref) => BrailleConverterImpl(ref.watch(brailleMappingProvider)),
+);
+final reverseConverterProvider = Provider<BrailleReverseConverter>(
+  (ref) => BrailleReverseConverterImpl(ref.watch(brailleMappingProvider)),
+);
+final brfFormatterProvider = Provider<BrfFormatter>(
+  (ref) => BrfFormatterImpl(),
+);
+final fileExporterProvider = Provider<FileExporterBase>(
+  (ref) => FileExporterImpl(),
+);
 final conversionProvider =
     StateNotifierProvider<ConversionNotifier, ConversionState>((ref) {
-      final filePickerService = FilePickerServiceImpl();
-      final textExtractor = TextExtractorImpl();
-      final brailleMapping = BrailleMappingImpl();
-      final ocrProcessor = OcrProcessorImpl(brailleMapping);
-      final brailleConverter = BrailleConverterImpl(brailleMapping);
-      final reverseConverter = BrailleReverseConverterImpl(brailleMapping);
-      final brfFormatter = BrfFormatterImpl();
-      final fileExporter = FileExporterImpl();
-      final historyService = HistoryServiceImpl();
-
-      ref.onDispose(() => ocrProcessor.dispose());
-
       return ConversionNotifier(
-        filePickerService: filePickerService,
-        textExtractor: textExtractor,
-        ocrProcessor: ocrProcessor,
-        brailleConverter: brailleConverter,
-        reverseConverter: reverseConverter,
-        brfFormatter: brfFormatter,
-        fileExporter: fileExporter,
-        historyService: historyService,
+        filePickerService: ref.watch(filePickerServiceProvider),
+        textExtractor: ref.watch(textExtractorProvider),
+        ocrProcessor: ref.watch(ocrProcessorProvider),
+        brailleConverter: ref.watch(brailleConverterProvider),
+        reverseConverter: ref.watch(reverseConverterProvider),
+        brfFormatter: ref.watch(brfFormatterProvider),
+        fileExporter: ref.watch(fileExporterProvider),
+        historyService: ref.watch(historyServiceProvider),
       );
     });
