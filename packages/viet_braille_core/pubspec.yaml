@@ -1,6 +1,6 @@
 name: viet_braille_core
 description: "Core Vietnamese Braille conversion library - text to Braille Unicode and reverse."
-version: 1.0.0
+version: 1.0.1
 
 environment:
   sdk: ^3.11.5

@@ -125,19 +125,31 @@ class FileExporterImpl implements FileExporterBase {
       final brailleFont = pw.Font.ttf(fontData);
 
       pdf.addPage(
-        pw.Page(
+        pw.MultiPage(
           pageFormat: PdfPageFormat.a4,
-          build: (context) => pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Header(level: 0, child: pw.Text('Vietnamese Braille Export')),
-              pw.SizedBox(height: 20),
-              pw.Paragraph(
-                text: brailleText,
-                style: pw.TextStyle(fontSize: 24, font: brailleFont),
-              ),
-            ],
+          header: (context) => pw.Header(
+            level: 0,
+            child: pw.Text('Vietnamese Braille Export'),
           ),
+          footer: (context) => pw.Container(
+            alignment: pw.Alignment.centerRight,
+            margin: const pw.EdgeInsets.only(top: 10),
+            child: pw.Text(
+              'Trang ${context.pageNumber} / ${context.pagesCount}',
+              style: const pw.TextStyle(fontSize: 10),
+            ),
+          ),
+          build: (context) => [
+            pw.SizedBox(height: 10),
+            pw.Paragraph(
+              text: brailleText,
+              style: pw.TextStyle(
+                fontSize: 18,
+                font: brailleFont,
+                fontFallback: [pw.Font.helvetica()],
+              ),
+            ),
+          ],
         ),
       );
 

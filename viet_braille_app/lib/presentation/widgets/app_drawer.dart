@@ -15,14 +15,22 @@ class AppDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,
             ),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.accessibility_new, size: 36, color: Colors.white),
-                SizedBox(height: 4),
-                Text(
+                ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  child: Image.asset(
+                    'assets/icon/app_icon.png',
+                    height: 36,
+                    width: 36,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                const Text(
                   'Vietnamese Braille',
                   style: TextStyle(
                     color: Colors.white,
@@ -30,7 +38,7 @@ class AppDrawer extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
+                const Text(
                   'Chuyển đổi văn bản sang chữ Braille',
                   style: TextStyle(color: Colors.white70, fontSize: 12),
                 ),

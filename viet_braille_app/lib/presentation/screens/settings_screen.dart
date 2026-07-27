@@ -46,7 +46,7 @@ class SettingsScreen extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: const Text('Thông tin ứng dụng'),
-            subtitle: const Text('Vietnamese Braille v1.0.0'),
+            subtitle: const Text('Vietnamese Braille v1.0.1'),
             onTap: () => _showAbout(context),
           ),
           const Divider(),
@@ -70,7 +70,7 @@ class SettingsScreen extends ConsumerWidget {
     showAboutDialog(
       context: context,
       applicationName: 'Vietnamese Braille',
-      applicationVersion: '1.0.0',
+      applicationVersion: '1.0.1',
       applicationLegalese:
           'Ứng dụng chuyển đổi văn bản tiếng Việt sang chữ Braille Unicode.',
       children: [
