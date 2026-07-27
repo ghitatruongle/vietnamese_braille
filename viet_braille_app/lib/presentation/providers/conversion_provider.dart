@@ -201,6 +201,67 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
     }
   }
 
+  /// Chuyển đổi tệp từ đường dẫn tệp cục bộ (phục vụ Drag & Drop trên Desktop).
+  Future<void> convertFilePath(String filePath) async {
+    final lower = filePath.toLowerCase();
+    final mimeType = lower.endsWith('.docx')
+        ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        : 'text/plain';
+
+    state = state.copyWith(
+      status: AppStatus.loading,
+      clearErrorMessage: true,
+      clearWarningMessage: true,
+    );
+
+    try {
+      final rawText = await textExtractor.extractText(filePath, mimeType);
+      final originalText = rawText.trim();
+      if (originalText.isEmpty) {
+        state = state.copyWith(
+          status: AppStatus.error,
+          errorMessage: 'Tệp không chứa văn bản.',
+        );
+        return;
+      }
+
+      final conversionResult = brailleConverter.convertWithDetails(
+        originalText,
+      );
+      final brailleUnicode = conversionResult.brailleText;
+      final losslessBraille = brailleConverter.convert(
+        originalText,
+        mode: BrailleConversionMode.lossless,
+      );
+      final reverseText = reverseConverter.convert(
+        losslessBraille,
+        mode: BrailleConversionMode.lossless,
+      );
+      final brfContent = brfFormatter.format(brailleUnicode);
+
+      state = state.copyWith(
+        originalText: originalText,
+        brailleUnicode: brailleUnicode,
+        reverseText: reverseText,
+        brfContent: brfContent,
+        status: AppStatus.success,
+        clearErrorMessage: true,
+        warningMessage: conversionResult.warningMessage,
+        clearWarningMessage: !conversionResult.hasWarnings,
+      );
+
+      await _saveHistory(
+        originalText: originalText,
+        brailleText: brailleUnicode,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        status: AppStatus.error,
+        errorMessage: AppErrorHandler.handleError(e),
+      );
+    }
+  }
+
   /// Xuất file BRF và chia sẻ.
   Future<void> exportBrf() async {
     if (state.brfContent.isEmpty) {

@@ -1,7 +1,7 @@
 name: viet_braille_app
 description: "Ứng dụng chuyển đổi văn bản tiếng Việt sang Braille Unicode 6 chấm và BRF."
 publish_to: 'none'
-version: 1.0.0
+version: 1.0.1+1
 
 environment:
   sdk: ^3.11.5
@@ -12,6 +12,7 @@ dependencies:
   viet_braille_core:
     path: ../packages/viet_braille_core
   cupertino_icons: ^1.0.8
+  desktop_drop: ^0.4.4
   file_picker: ^8.0.0
   docx_to_text: ^1.0.0
   google_mlkit_text_recognition: ^0.15.0
@@ -36,3 +37,4 @@ flutter:
   assets:
     - assets/fonts/NotoSansSymbols2-Regular.ttf
     - assets/fonts/OFL.txt
+    - assets/icon/app_icon.png

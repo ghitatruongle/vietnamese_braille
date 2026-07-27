@@ -1,3 +1,4 @@
+import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,35 +21,60 @@ class HomeScreen extends ConsumerWidget {
     final notifier = ref.read(conversionProvider.notifier);
     final isDark = ref.watch(themeProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Chuyển đổi Braille'),
-        centerTitle: true,
-        actions: [
-          Semantics(
-            label: isDark
-                ? 'Chuyển sang chế độ sáng'
-                : 'Chuyển sang chế độ tối',
-            button: true,
-            child: IconButton(
-              onPressed: () => ref.read(themeProvider.notifier).toggle(),
-              icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
-              tooltip: isDark ? 'Chế độ sáng' : 'Chế độ tối',
-            ),
-          ),
-        ],
-      ),
-      drawer: const AppDrawer(),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          final isWide = constraints.maxWidth >= 600;
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: isWide
-                ? _buildWideLayout(context, ref, state, notifier)
-                : _buildNarrowLayout(context, ref, state, notifier),
-          );
+    final desktopShortcuts = <ShortcutActivator, VoidCallback>{
+      const SingleActivator(LogicalKeyboardKey.keyO, control: true):
+          () => notifier.pickAndConvert(),
+      const SingleActivator(LogicalKeyboardKey.keyO, meta: true):
+          () => notifier.pickAndConvert(),
+      const SingleActivator(LogicalKeyboardKey.keyS, control: true):
+          () => notifier.exportBrf(),
+      const SingleActivator(LogicalKeyboardKey.keyS, meta: true):
+          () => notifier.exportBrf(),
+      const SingleActivator(LogicalKeyboardKey.keyS, control: true, shift: true):
+          () => notifier.exportPdf(),
+      const SingleActivator(LogicalKeyboardKey.keyS, meta: true, shift: true):
+          () => notifier.exportPdf(),
+    };
+
+    return CallbackShortcuts(
+      bindings: desktopShortcuts,
+      child: DropTarget(
+        onDragDone: (details) {
+          if (details.files.isNotEmpty) {
+            notifier.convertFilePath(details.files.first.path);
+          }
         },
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Chuyển đổi Braille'),
+            centerTitle: true,
+            actions: [
+              Semantics(
+                label: isDark
+                    ? 'Chuyển sang chế độ sáng'
+                    : 'Chuyển sang chế độ tối',
+                button: true,
+                child: IconButton(
+                  onPressed: () => ref.read(themeProvider.notifier).toggle(),
+                  icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+                  tooltip: isDark ? 'Chế độ sáng' : 'Chế độ tối',
+                ),
+              ),
+            ],
+          ),
+          drawer: const AppDrawer(),
+          body: LayoutBuilder(
+            builder: (context, constraints) {
+              final isWide = constraints.maxWidth >= 600;
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: isWide
+                    ? _buildWideLayout(context, ref, state, notifier)
+                    : _buildNarrowLayout(context, ref, state, notifier),
+              );
+            },
+          ),
+        ),
       ),
     );
   }

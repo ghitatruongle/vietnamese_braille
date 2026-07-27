@@ -50,7 +50,7 @@ void main() {
     testWidgets('shows app info section', (tester) async {
       await tester.pumpWidget(buildSubject());
       expect(find.text('Thông tin ứng dụng'), findsOneWidget);
-      expect(find.text('Vietnamese Braille v1.0.0'), findsOneWidget);
+      expect(find.text('Vietnamese Braille v1.0.1'), findsOneWidget);
     });
 
     testWidgets('shows architecture info', (tester) async {
@@ -77,7 +77,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Vietnamese Braille'), findsOneWidget);
-      expect(find.text('1.0.0'), findsOneWidget);
+      expect(find.text('1.0.1'), findsOneWidget);
     });
   });
 }
