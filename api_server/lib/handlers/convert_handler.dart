@@ -4,121 +4,138 @@ import 'dart:typed_data';
 import 'package:shelf/shelf.dart';
 import 'package:viet_braille_core/viet_braille_core.dart';
 
-final _mapping = BrailleMappingImpl();
-final _converter = BrailleConverterImpl(_mapping);
-final _reverseConverter = BrailleReverseConverterImpl(_mapping);
-
 const _maxTextLength = 100000;
 const _maxBatchSize = 100;
 const _maxBatchTextLength = 500000;
 const maxRequestBodyBytes = 1024 * 1024;
 const _jsonHeaders = {'Content-Type': 'application/json; charset=utf-8'};
 
-Future<Response> convertHandler(Request request) async {
-  try {
-    final json = await _readJsonObject(request);
-    final text = json['text'];
+/// Nhận converter qua constructor thay vì singleton toàn cục, cho phép
+/// test và thay thế implementation độc lập giữa các handler instance.
+class BrailleHandlers {
+  BrailleHandlers({
+    required BrailleConverter converter,
+    required BrailleReverseConverter reverseConverter,
+  }) : _converter = converter,
+       _reverseConverter = reverseConverter;
 
-    if (text is! String || text.isEmpty) {
-      return _badRequest('Field "text" must be a non-empty string');
-    }
-    if (text.length > _maxTextLength) {
-      return _payloadTooLarge(
-        'Field "text" exceeds $_maxTextLength characters',
-      );
-    }
-
-    final result = _converter.convertWithDetails(text);
-    return _jsonResponse(200, {
-      'braille': result.brailleText,
-      'warnings': result.unmappedCharacters,
-    });
-  } on RequestBodyTooLarge catch (error) {
-    return _payloadTooLarge(error.message);
-  } on UnsupportedRequestMediaType catch (error) {
-    return _unsupportedMediaType(error.message);
-  } on FormatException catch (error) {
-    return _badRequest(error.message);
-  } catch (_) {
-    return _internalError();
-  }
-}
-
-Future<Response> reverseHandler(Request request) async {
-  try {
-    final json = await _readJsonObject(request);
-    final braille = json['braille'];
-
-    if (braille is! String || braille.isEmpty) {
-      return _badRequest('Field "braille" must be a non-empty string');
-    }
-    if (braille.length > _maxTextLength) {
-      return _payloadTooLarge(
-        'Field "braille" exceeds $_maxTextLength characters',
-      );
-    }
-
-    final text = _reverseConverter.convert(braille);
-    return _jsonResponse(200, {'text': text});
-  } on RequestBodyTooLarge catch (error) {
-    return _payloadTooLarge(error.message);
-  } on UnsupportedRequestMediaType catch (error) {
-    return _unsupportedMediaType(error.message);
-  } on FormatException catch (error) {
-    return _badRequest(error.message);
-  } catch (_) {
-    return _internalError();
-  }
-}
-
-Future<Response> batchHandler(Request request) async {
-  try {
-    final json = await _readJsonObject(request);
-    final rawTexts = json['texts'];
-
-    if (rawTexts is! List || rawTexts.isEmpty) {
-      return _badRequest('Field "texts" must be a non-empty array');
-    }
-    if (rawTexts.length > _maxBatchSize) {
-      return _payloadTooLarge('Field "texts" exceeds $_maxBatchSize items');
-    }
-    if (rawTexts.any((item) => item is! String || item.isEmpty)) {
-      return _badRequest('Every item in "texts" must be a non-empty string');
-    }
-    if (rawTexts.any((item) => (item as String).length > _maxTextLength)) {
-      return _payloadTooLarge(
-        'A "texts" item exceeds $_maxTextLength characters',
-      );
-    }
-    final texts = rawTexts.cast<String>();
-    final totalTextLength = texts.fold<int>(
-      0,
-      (total, text) => total + text.length,
+  factory BrailleHandlers.withDefaults() {
+    final mapping = BrailleMappingImpl();
+    return BrailleHandlers(
+      converter: BrailleConverterImpl(mapping),
+      reverseConverter: BrailleReverseConverterImpl(mapping),
     );
-    if (totalTextLength > _maxBatchTextLength) {
-      return _payloadTooLarge(
-        'Combined "texts" length exceeds $_maxBatchTextLength characters',
-      );
-    }
+  }
 
-    final results = texts.map((text) {
+  final BrailleConverter _converter;
+  final BrailleReverseConverter _reverseConverter;
+
+  Future<Response> convert(Request request) async {
+    try {
+      final json = await _readJsonObject(request);
+      final text = json['text'];
+
+      if (text is! String || text.isEmpty) {
+        return _badRequest('Field "text" must be a non-empty string');
+      }
+      if (text.length > _maxTextLength) {
+        return _payloadTooLarge(
+          'Field "text" exceeds $_maxTextLength characters',
+        );
+      }
+
       final result = _converter.convertWithDetails(text);
-      return {
-        'input': text,
+      return _jsonResponse(200, {
         'braille': result.brailleText,
         'warnings': result.unmappedCharacters,
-      };
-    }).toList();
+      });
+    } on RequestBodyTooLarge catch (error) {
+      return _payloadTooLarge(error.message);
+    } on UnsupportedRequestMediaType catch (error) {
+      return _unsupportedMediaType(error.message);
+    } on FormatException catch (error) {
+      return _badRequest(error.message);
+    } catch (_) {
+      return _internalError();
+    }
+  }
 
-    return _jsonResponse(200, {'results': results});
-  } on RequestBodyTooLarge catch (error) {
-    return _payloadTooLarge(error.message);
-  } on UnsupportedRequestMediaType catch (error) {
-    return _unsupportedMediaType(error.message);
-  } on FormatException catch (error) {
-    return _badRequest(error.message);
-  } catch (_) {
-    return _internalError();
+  Future<Response> reverse(Request request) async {
+    try {
+      final json = await _readJsonObject(request);
+      final braille = json['braille'];
+
+      if (braille is! String || braille.isEmpty) {
+        return _badRequest('Field "braille" must be a non-empty string');
+      }
+      if (braille.length > _maxTextLength) {
+        return _payloadTooLarge(
+          'Field "braille" exceeds $_maxTextLength characters',
+        );
+      }
+
+      final text = _reverseConverter.convert(braille);
+      return _jsonResponse(200, {'text': text});
+    } on RequestBodyTooLarge catch (error) {
+      return _payloadTooLarge(error.message);
+    } on UnsupportedRequestMediaType catch (error) {
+      return _unsupportedMediaType(error.message);
+    } on FormatException catch (error) {
+      return _badRequest(error.message);
+    } catch (_) {
+      return _internalError();
+    }
+  }
+
+  Future<Response> batch(Request request) async {
+    try {
+      final json = await _readJsonObject(request);
+      final rawTexts = json['texts'];
+
+      if (rawTexts is! List || rawTexts.isEmpty) {
+        return _badRequest('Field "texts" must be a non-empty array');
+      }
+      if (rawTexts.length > _maxBatchSize) {
+        return _payloadTooLarge('Field "texts" exceeds $_maxBatchSize items');
+      }
+      if (rawTexts.any((item) => item is! String || item.isEmpty)) {
+        return _badRequest('Every item in "texts" must be a non-empty string');
+      }
+      if (rawTexts.any((item) => (item as String).length > _maxTextLength)) {
+        return _payloadTooLarge(
+          'A "texts" item exceeds $_maxTextLength characters',
+        );
+      }
+      final texts = rawTexts.cast<String>();
+      final totalTextLength = texts.fold<int>(
+        0,
+        (total, text) => total + text.length,
+      );
+      if (totalTextLength > _maxBatchTextLength) {
+        return _payloadTooLarge(
+          'Combined "texts" length exceeds $_maxBatchTextLength characters',
+        );
+      }
+
+      final results = texts.map((text) {
+        final result = _converter.convertWithDetails(text);
+        return {
+          'input': text,
+          'braille': result.brailleText,
+          'warnings': result.unmappedCharacters,
+        };
+      }).toList();
+
+      return _jsonResponse(200, {'results': results});
+    } on RequestBodyTooLarge catch (error) {
+      return _payloadTooLarge(error.message);
+    } on UnsupportedRequestMediaType catch (error) {
+      return _unsupportedMediaType(error.message);
+    } on FormatException catch (error) {
+      return _badRequest(error.message);
+    } catch (_) {
+      return _internalError();
+    }
   }
 }
 

@@ -1,3 +1,8 @@
+/// Cấu hình API.
+///
+/// Đường deploy qua [ApiConfig.fromEnvironment] là secure-by-default:
+/// bắt buộc API key trừ khi đặt tường minh `ALLOW_ANONYMOUS=true`.
+/// Constructor trực tiếp giữ mặc định mở cho test và nhúng có chủ đích.
 class ApiConfig {
   const ApiConfig({
     this.allowedOrigins = const <String>{},
@@ -30,11 +35,13 @@ class ApiConfig {
     final seconds = int.tryParse(
       environment['RATE_LIMIT_WINDOW_SECONDS'] ?? '',
     );
-    final requireApiKey =
-        (environment['API_AUTH_REQUIRED'] ?? '').trim().toLowerCase() == 'true';
+    final allowAnonymous =
+        (environment['ALLOW_ANONYMOUS'] ?? '').trim().toLowerCase() == 'true';
+    final requireApiKey = !allowAnonymous;
     if (requireApiKey && apiKeys.isEmpty) {
       throw const FormatException(
-        'API_KEYS must not be empty when API_AUTH_REQUIRED=true',
+        'API_KEYS must not be empty; set ALLOW_ANONYMOUS=true to explicitly '
+        'run the API without authentication',
       );
     }
 

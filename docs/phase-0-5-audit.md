@@ -7,10 +7,10 @@ không thay thế review độc lập, biên bản người dùng hoặc chữ k
 | Phase | Yêu cầu nghiệm thu | Bằng chứng hiện tại | Trạng thái |
 |---|---|---|---|
 | 0 — Nền tảng | Format, docs, version/lockfile, analyze, test và CI đa nền tảng | `python tools/verify.py --all`; `.github/workflows/ci.yml` | Đạt kỹ thuật |
-| 1 — Lõi chuyển đổi | Quy tắc Việt, round-trip lossless, không rò state, hiệu năng 100.000 ký tự, coverage core ≥90% | Test core; `performance_test.dart`; LCOV 92,92% | Đạt kỹ thuật |
+| 1 — Lõi chuyển đổi | Quy tắc Việt, round-trip lossless, không rò state, hiệu năng 100.000 ký tự, coverage core ≥90% | Test core; `performance_test.dart`; LCOV 92,94% | Đạt kỹ thuật |
 | 2 — TT15 | PDF ghim SHA-256, fixture chấm/Unicode/ví dụ, so sánh implementation, review độc lập | `python tools/compliance_report.py`; 141 kiểm tra tự động | Tự động đạt; review độc lập còn thiếu |
-| 3 — Trợ năng | Nhãn/role/state, bàn phím, mục tiêu chạm, tương phản, chữ 200%, NVDA/TalkBack/VoiceOver và người dùng thật | 709 test app; LCOV 82,89%; `flutter test test/accessibility`; `docs/accessibility-testing.md` | Tự động đạt; bốn phiên thiết bị và nghiệm thu người dùng còn thiếu |
-| 4 — Bảo mật/phát hành | API auth/rate limit/CORS/giới hạn body, OpenAPI, privacy, OSV, build Windows/Web/Android, artifact ký/SBOM/provenance | 30 test API; LCOV 92,31%; `tools/check_openapi.py`; OSV; `.github/workflows/release.yml` | Build và workflow đạt; đường dẫn ký Android đã thử; khóa ký/artifact chính thức còn thiếu |
+| 3 — Trợ năng | Nhãn/role/state, bàn phím, mục tiêu chạm, tương phản, chữ 200%, NVDA/TalkBack/VoiceOver và người dùng thật | 709 test app; LCOV 84,33%; `flutter test test/accessibility`; `docs/accessibility-testing.md` | Tự động đạt; bốn phiên thiết bị và nghiệm thu người dùng còn thiếu |
+| 4 — Bảo mật/phát hành | API auth/rate limit/CORS/giới hạn body, OpenAPI, privacy, OSV, build Windows/Web/Android, artifact ký/SBOM/provenance | 31 test API; LCOV 90,94%; `tools/check_openapi.py`; OSV; `.github/workflows/release.yml` | Build và workflow đạt; đường dẫn ký Android đã thử; khóa ký/artifact chính thức còn thiếu |
 | 5 — Quản trị/kiểm toán | Security policy, threat model, CODEOWNERS, Dependabot, issue/PR template, ADR, release checklist và evidence gate | `python -m unittest discover -s tools/tests -v`; `tools/release_evidence.py` | Đạt kỹ thuật; hồ sơ external và phê duyệt release còn thiếu |
 
 ## Cổng tự động bắt buộc

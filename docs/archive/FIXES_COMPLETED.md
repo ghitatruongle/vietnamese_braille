@@ -1,5 +1,7 @@
 # Bug Fixes & Improvements - Completed ✅
 
+> **⚠️ TÀI LIỆU LƯU TRỮ (snapshot lịch sử 2026-06-30).** Con số "50/50 tests" chỉ đúng tại thời điểm đó. Số liệu hiện hành: xem `docs/phase-0-5-audit.md`.
+
 **Date:** 2026-06-30  
 **Status:** ALL TASKS COMPLETED  
 **Test Results:** 50/50 tests passed ✅

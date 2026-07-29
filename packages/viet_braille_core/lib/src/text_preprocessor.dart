@@ -1,3 +1,5 @@
+import 'vietnamese_letters.dart';
+
 /// Tiền xử lý văn bản thuần túy trước khi áp dụng quy tắc Braille.
 ///
 /// Lớp này không biết bảng ánh xạ Braille. Nó chỉ chuẩn hóa những quy ước
@@ -5,10 +7,12 @@
 final class BrailleTextPreprocessor {
   const BrailleTextPreprocessor();
 
+  // Lookahead chặn tách đơn vị đo khi nó là một phần của từ dài hơn
+  // (ví dụ không tách `g` trong `gam`). Danh sách chữ cái tiếng Việt lấy
+  // từ hằng số dùng chung thay vì liệt kê tay tại đây.
   static final RegExp _attachedMeasurementUnit = RegExp(
     r'(\d)(km|hm|dam|dm|cm|mm|kg|hg|dag|g|tấn|tạ|yến)'
-    r'(?=\b|[^a-zA-Z0-9àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩị'
-    r'òóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ])',
+    '(?=\\b|[^a-zA-Z0-9$kVietnameseTonedVowels$kVietnameseExtraLetters])',
     caseSensitive: false,
   );
 

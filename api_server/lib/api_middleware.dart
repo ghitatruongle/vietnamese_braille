@@ -164,19 +164,32 @@ Middleware apiKeyAuthMiddleware(Set<String> apiKeys) {
   };
 }
 
-class InMemoryRateLimiter {
+/// Chiến lược giới hạn tần suất theo client key.
+///
+/// [InMemoryRateLimiter] chỉ đếm trong tiến trình hiện tại nên không chia sẻ
+/// trạng thái khi scale ngang; deployment nhiều instance cần implementation
+/// dùng backend chung (ví dụ Redis) và inject qua `createApiHandler`.
+abstract interface class RateLimiter {
+  int get maxRequests;
+
+  RateLimitDecision check(String key);
+}
+
+class InMemoryRateLimiter implements RateLimiter {
   InMemoryRateLimiter({
     required this.maxRequests,
     required this.window,
     DateTime Function()? clock,
   }) : _clock = clock ?? DateTime.now;
 
+  @override
   final int maxRequests;
   final Duration window;
   final DateTime Function() _clock;
   final Map<String, _RateBucket> _buckets = {};
   var _checks = 0;
 
+  @override
   RateLimitDecision check(String key) {
     final now = _clock();
     final current = _buckets[key];
@@ -220,7 +233,7 @@ class RateLimitDecision {
 }
 
 Middleware rateLimitMiddleware(
-  InMemoryRateLimiter limiter, {
+  RateLimiter limiter, {
   bool trustProxy = false,
   String Function(Request request)? clientKey,
 }) {

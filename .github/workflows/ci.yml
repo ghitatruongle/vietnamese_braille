@@ -30,9 +30,9 @@ jobs:
         working-directory: packages/viet_braille_core
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
@@ -45,7 +45,7 @@ jobs:
         run: dart format --output=none --set-exit-if-changed lib test tool
 
       - name: Analyze
-        run: dart analyze
+        run: dart analyze --fatal-infos
 
       - name: Verify TT15 source integrity and exact fixture
         run: python ../../tools/compliance_report.py --json > tt15-compliance.json
@@ -56,7 +56,7 @@ jobs:
         run: python -m unittest discover -s tools/tests -v
 
       - name: Upload TT15 compliance evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: tt15-compliance-${{ matrix.os }}
           path: packages/viet_braille_core/tt15-compliance.json
@@ -76,7 +76,7 @@ jobs:
 
       - name: Upload core coverage
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: core-coverage
           path: packages/viet_braille_core/coverage/lcov.info
@@ -93,9 +93,9 @@ jobs:
         working-directory: viet_braille_app
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
@@ -108,7 +108,7 @@ jobs:
         run: dart format --output=none --set-exit-if-changed lib test
 
       - name: Analyze
-        run: flutter analyze
+        run: flutter analyze --no-pub --fatal-infos
 
       - name: Test with coverage
         run: flutter test --coverage --no-pub
@@ -119,7 +119,7 @@ jobs:
 
       - name: Upload app coverage
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: app-coverage
           path: viet_braille_app/coverage/lcov.info
@@ -136,9 +136,9 @@ jobs:
         working-directory: api_server
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
@@ -151,7 +151,7 @@ jobs:
         run: dart format --output=none --set-exit-if-changed bin lib test
 
       - name: Analyze
-        run: dart analyze
+        run: dart analyze --fatal-infos
 
       - name: Test handlers with VM coverage
         run: dart test --coverage=coverage
@@ -168,7 +168,7 @@ jobs:
 
       - name: Upload API coverage
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: api-coverage
           path: api_server/coverage/lcov.info
@@ -182,9 +182,9 @@ jobs:
         working-directory: viet_braille_app
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
@@ -196,7 +196,7 @@ jobs:
         run: flutter build windows --release --no-pub
 
       - name: Upload runnable Windows bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: braille-tieng-viet-windows-x64
           path: viet_braille_app/build/windows/x64/runner/Release
@@ -211,9 +211,9 @@ jobs:
         working-directory: viet_braille_app
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
@@ -227,16 +227,37 @@ jobs:
       - name: Build unsigned Android App Bundle
         run: flutter build appbundle --release --no-pub
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: release-builds
           path: |
             viet_braille_app/build/web
             viet_braille_app/build/app/outputs/bundle/release/*.aab
 
+  semgrep:
+    name: Semgrep SAST
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.11'
+
+      - name: Install Semgrep
+        run: pip install semgrep
+
+      - name: Scan Python tooling, workflows and secrets patterns
+        run: >-
+          semgrep scan
+          --config p/ci
+          --config p/python
+          --config p/github-actions
+          --error
+
   dependency-review:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/dependency-review-action@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # v4.9.0

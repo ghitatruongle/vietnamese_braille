@@ -43,8 +43,10 @@ class OpenApiContractTest(unittest.TestCase):
             expected_version="9.9.9",
         )
 
+        # Không hardcode version hiện hành để test sống qua các lần bump.
+        actual_version = self.payload["info"]["version"]
         self.assertIn(
-            "info.version is '1.1.0', expected '9.9.9'",
+            f"info.version is '{actual_version}', expected '9.9.9'",
             failures,
         )
 
