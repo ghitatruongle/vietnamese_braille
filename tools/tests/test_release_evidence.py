@@ -14,6 +14,12 @@ from tools.release_evidence import (
 
 
 def valid_payload() -> dict[str, object]:
+    # PDF TT15 không vendored trong repo (tài liệu nội bộ). Khi vắng mặt,
+    # validate_evidence bỏ qua đối chiếu file thật nên một hash hợp lệ bất kỳ
+    # đủ cho payload mẫu; có file thì dùng hash thật để test chặt hơn.
+    source_hash = (
+        file_sha256(TT15_SOURCE) if TT15_SOURCE.is_file() else "a" * 64
+    )
     sessions = []
     display_names = {
         ("windows", "nvda"): ("Windows", "NVDA"),
@@ -51,7 +57,7 @@ def valid_payload() -> dict[str, object]:
             "independent": True,
             "reviewer_id": "reviewer-1",
             "reviewed_at": "2026-07-27T12:00:00+07:00",
-            "source_sha256": file_sha256(TT15_SOURCE),
+            "source_sha256": source_hash,
             "fixture_sha256": file_sha256(TT15_FIXTURE),
             "attestation_reference": "https://example.test/tt15",
         },

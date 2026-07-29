@@ -14,6 +14,14 @@ Request _request(String body) => Request(
 Future<Map<String, dynamic>> _json(Response response) async =>
     jsonDecode(await response.readAsString()) as Map<String, dynamic>;
 
+final _handlers = BrailleHandlers.withDefaults();
+
+Future<Response> convertHandler(Request request) => _handlers.convert(request);
+
+Future<Response> reverseHandler(Request request) => _handlers.reverse(request);
+
+Future<Response> batchHandler(Request request) => _handlers.batch(request);
+
 void main() {
   group('convertHandler', () {
     test('converts Vietnamese text', () async {

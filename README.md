@@ -1,6 +1,7 @@
 # Vietnamese Braille
 
 [![CI](https://github.com/ghitatruongle/vietnamese_braille/actions/workflows/ci.yml/badge.svg)](https://github.com/ghitatruongle/vietnamese_braille/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fghitatruongle%2Fvietnamese_braille%2Fmain%2Fdocs%2Fcoverage-badge.json)](docs/metrics.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Ứng dụng Flutter chuyển đổi văn bản tiếng Việt sang **Unicode Braille 6
@@ -100,6 +101,26 @@ Ba ký hiệu định dạng chưa có trong API văn bản thuần được bá
 triển khai; review chuyên gia bên ngoài vẫn là cổng phát hành. CI chạy
 trên Ubuntu và Windows, áp ngưỡng coverage, ưu tiên tạo bundle Windows x64,
 sau đó tạo thêm Web/Android release build.
+
+Số liệu test/coverage hiện hành xem [docs/metrics.md](docs/metrics.md)
+(sinh tự động bằng `python tools/refresh_metrics.py --write`).
+
+## Trạng thái xác thực bên ngoài
+
+Các cổng dưới đây cần con người thật và **chưa hoàn tất** — dự án không
+tuyên bố "production-ready" khi chưa có đủ bằng chứng (cập nhật 2026-07-30):
+
+| Cổng | Trạng thái | Bằng chứng khi hoàn tất |
+|---|---|---|
+| Chuyên gia Braille thẩm định đầu ra theo TT15 | ⏳ Chưa có | `release_evidence/` + `docs/tt15-compliance.md` |
+| Phiên kiểm thử NVDA/TalkBack/VoiceOver có biên bản | ⏳ Chưa có | `docs/accessibility-testing.md` |
+| Nghiệm thu bởi người dùng khiếm thị | ⏳ Chưa có | Phiếu khảo sát trong `release_evidence/` |
+| Khóa ký chính thức (Android keystore, Authenticode) | ⏳ Chưa có | Artifact ký trong GitHub Release |
+| Release có tag chạy qua `release.yml` (SBOM, provenance) | ⏳ Chưa chạy lần nào | GitHub Release kèm attestation |
+
+Chi tiết từng phase: [docs/phase-0-5-audit.md](docs/phase-0-5-audit.md).
+Bộ kịch bản/biên bản để thực hiện các cổng này:
+[docs/external-validation/index.md](docs/external-validation/index.md).
 
 ## BRF được tạo như thế nào?
 

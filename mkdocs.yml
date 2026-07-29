@@ -30,10 +30,16 @@ nav:
   - Hướng dẫn sử dụng: user-guide.md
   - Đối chiếu Thông tư 15: tt15-compliance.md
   - Kiểm thử khả năng tiếp cận: accessibility-testing.md
+  - Xác thực bên ngoài:
+      - Tổng quan: external-validation/index.md
+      - Kịch bản trình đọc màn hình: external-validation/screen-reader-scripts.md
+      - Phiếu nghiệm thu người dùng: external-validation/user-validation-survey.md
+      - Gói đối chiếu chuyên gia: external-validation/expert-review-packet.md
   - Quyền riêng tư: privacy.md
   - Mô hình đe dọa: threat-model.md
   - Checklist phát hành: release-checklist.md
   - Ma trận Phase 0–5: phase-0-5-audit.md
+  - Số liệu chất lượng: metrics.md
   - Quyết định kiến trúc: adr/README.md
   - Kiến trúc: architecture.md
   - Đóng góp: contributing.md

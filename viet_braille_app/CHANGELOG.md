@@ -8,6 +8,15 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-07-30
+
+### Changed
+- Tách `conversion_provider.dart` thành state / notifier / providers; gộp
+  pipeline chuyển đổi trùng lặp thành `_applyConversion` dùng chung
+  (coverage app 82,89% → 84,33%). Đường import cũ giữ nguyên qua barrel.
+- Đồng bộ core `viet_braille_core` 1.2.0 (refactor reverse converter,
+  hằng số nguyên âm dùng chung — không đổi hành vi chuyển đổi).
+
 ## [1.1.0] - 2026-07-28
 
 ### Changed

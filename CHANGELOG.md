@@ -6,6 +6,47 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-07-30
+
+### Added
+- Bộ tài liệu xác thực bên ngoài `docs/external-validation/`: kịch bản 4 phiên
+  NVDA/TalkBack/VoiceOver kèm biên bản mẫu, phiếu nghiệm thu người dùng
+  khiếm thị (5 kịch bản bắt buộc), quy trình tổng quan cho release v1.2.0
+- `tools/expert_review_packet.py` sinh gói đối chiếu TT15 cho chuyên gia
+  Braille từ fixture đã ghim SHA-256 (bảng chữ cái, thanh điệu, ký hiệu,
+  15 ví dụ chính xác kèm cột xác nhận)
+- Template `release_evidence/v1.2.0.json` (trạng thái pending, gate từ chối
+  đúng thiết kế cho đến khi có bằng chứng thật)
+- Job Semgrep SAST trong CI (rule `p/ci`, `p/python`, `p/github-actions`)
+- Gate `check_release_workflow.py` từ chối mọi action không pin commit SHA
+- `tools/refresh_metrics.py` sinh `docs/metrics.md` và badge coverage gộp
+- API: interface `RateLimiter` cho phép inject backend chia sẻ khi scale ngang
+- API: `BrailleHandlers` nhận converter qua constructor (bỏ singleton toàn cục)
+- ADR-0003 về va chạm ô `?`/thanh hỏi và `-`/thanh ngã
+
+### Changed
+- Refactor core: tách `braille_reverse_converter.dart` (768 dòng) thành
+  `lib/src/reverse/` (types, cell handlers, tone decoder) qua `part`; thay
+  sentinel string `_ENTER_NUMBER_`/`_EXIT_NUMBER_` bằng enum `_NumberAction`
+- Thêm `lib/src/vietnamese_letters.dart`: hằng số nguyên âm/thanh dùng chung,
+  thay regex liệt kê tay trong preprocessor và predicate reverse
+- Refactor app: tách `conversion_provider.dart` (400 dòng) thành state /
+  notifier / providers; gộp pipeline chuyển đổi trùng lặp 3 method thành một
+  `_applyConversion` dùng chung (coverage app 82,89% → 84,33%)
+- **BREAKING (lịch sử git):** thư mục `quytac/` (tài liệu nội bộ) bị xóa
+  vĩnh viễn khỏi toàn bộ lịch sử bằng `git filter-branch`; commit hash đổi
+  toàn bộ, cần force-push và các clone cũ phải clone lại
+- Gate TT15: PDF nguồn không còn vendored — thiếu file báo cáo trung thực
+  `not_vendored` (gate dựa trên 141 phép kiểm fixture), hash sai vẫn fail;
+  `verify_tt15.dart` kiểm tham chiếu nguồn thay vì sự tồn tại của file
+- **BREAKING (API server):** xác thực là mặc định khi cấu hình từ biến môi
+  trường; biến `API_AUTH_REQUIRED` bị thay bằng `ALLOW_ANONYMOUS` — server
+  từ chối khởi động nếu `API_KEYS` rỗng mà không đặt `ALLOW_ANONYMOUS=true`
+- Toàn bộ GitHub Actions pin bằng commit SHA kèm comment version
+- CI nâng mức analyze lên `--fatal-infos` cho cả 3 module
+- Tài liệu lịch sử 2026-06-30 (BUG_REPORT, FIXES_COMPLETED, TEST_SUMMARY)
+  chuyển vào `docs/archive/` kèm banner snapshot
+
 ## [1.1.0] - 2026-07-28
 
 ### Added
