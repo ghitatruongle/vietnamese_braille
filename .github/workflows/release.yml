@@ -138,7 +138,7 @@ jobs:
         with:
           subject-path: dist/vietnamese-braille-windows-x64.zip
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: signed-windows-x64
           path: dist
@@ -230,7 +230,7 @@ jobs:
             dist/vietnamese-braille-android.aab
             dist/vietnamese-braille-web.tar.gz
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: signed-android-web
           path: dist
