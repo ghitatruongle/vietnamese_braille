@@ -12,7 +12,7 @@ dependencies:
   viet_braille_core:
     path: ../packages/viet_braille_core
   cupertino_icons: ^1.0.8
-  desktop_drop: ^0.4.4
+  desktop_drop: ^0.7.1
   file_picker: ^8.0.0
   docx_to_text: ^1.0.0
   google_mlkit_text_recognition: ^0.15.0
