@@ -1,4 +1,21 @@
 {
+  "metadata": {
+    "standard": "Thông tư 15/2019/TT-BGDĐT",
+    "title": "Quy định chuẩn quốc gia về chữ nổi Braille cho người khuyết tật",
+    "source_file": "quytac/501196e24bee7141a3d2d37f879d04a615_2019_TT_BGDDT.pdf",
+    "source_sha256": "4b0a4d75a0913a51b0ce2e42dac71f48effdd2e042ccc12bac5b89f13fdb4872",
+    "source_sections": [
+      "Phụ lục, Mục VI — Quy tắc viết dấu thanh",
+      "Phụ lục, Mục VII — Quy tắc viết hoa"
+    ],
+    "rendered_evidence": [
+      "quytac/trinh_bay_vb/7.png",
+      "quytac/trinh_bay_vb/8.png"
+    ],
+    "last_internal_review": "2026-07-27",
+    "review_status": "pending_external",
+    "review_note": "Đã đối chiếu nội bộ với bản PDF và ảnh render; chưa có biên bản xác nhận của chuyên gia Braille độc lập."
+  },
   "alphabet": {
     "a": {
       "dots": [
@@ -380,5 +397,117 @@
       "giếng",
       "gin"
     ]
-  }
+  },
+  "exact_examples": [
+    {
+      "id": "tone-oan",
+      "input": "oán",
+      "unicode": "⠔⠕⠁⠝",
+      "source": "Phụ lục, Mục VI; ảnh 7"
+    },
+    {
+      "id": "tone-chinh",
+      "input": "chính",
+      "unicode": "⠉⠓⠔⠊⠝⠓",
+      "source": "Phụ lục, Mục VI; ảnh 7"
+    },
+    {
+      "id": "tone-vung",
+      "input": "vừng",
+      "unicode": "⠧⠰⠳⠝⠛",
+      "source": "Phụ lục, Mục VI; ảnh 7"
+    },
+    {
+      "id": "qu-qua",
+      "input": "quả",
+      "unicode": "⠟⠥⠢⠁",
+      "source": "Phụ lục, Mục VI; ảnh 7"
+    },
+    {
+      "id": "qu-quyet",
+      "input": "quyết",
+      "unicode": "⠟⠥⠔⠽⠣⠞",
+      "source": "Phụ lục, Mục VI; ảnh 7"
+    },
+    {
+      "id": "gi-gioi",
+      "input": "giỏi",
+      "unicode": "⠛⠊⠢⠕⠊",
+      "source": "Phụ lục, Mục VI; ảnh 7"
+    },
+    {
+      "id": "gi-giang-giai",
+      "input": "giảng giải",
+      "unicode": "⠛⠊⠢⠁⠝⠛ ⠛⠊⠢⠁⠊",
+      "source": "Phụ lục, Mục VI; ảnh 7"
+    },
+    {
+      "id": "gi-gin",
+      "input": "gìn",
+      "unicode": "⠛⠰⠊⠝",
+      "source": "Phụ lục, Mục VI; ảnh 7"
+    },
+    {
+      "id": "gi-gi",
+      "input": "gì",
+      "unicode": "⠛⠰⠊",
+      "source": "Phụ lục, Mục VI; ảnh 7"
+    },
+    {
+      "id": "capital-loan",
+      "input": "Loan",
+      "unicode": "⠨⠇⠕⠁⠝",
+      "source": "Phụ lục, Mục VII; ảnh 7"
+    },
+    {
+      "id": "capital-song-hong",
+      "input": "sông Hồng",
+      "unicode": "⠎⠹⠝⠛ ⠨⠓⠰⠹⠝⠛",
+      "source": "Phụ lục, Mục VII; ảnh 7"
+    },
+    {
+      "id": "capital-bac-an",
+      "input": "bác Ẩn",
+      "unicode": "⠃⠔⠁⠉ ⠢⠨⠡⠝",
+      "source": "Phụ lục, Mục VII; ảnh 7"
+    },
+    {
+      "id": "capital-unesco",
+      "input": "UNESCO",
+      "unicode": "⠸⠥⠝⠑⠎⠉⠕",
+      "source": "Phụ lục, Mục VII; ảnh 8"
+    },
+    {
+      "id": "capital-viet-nam-title",
+      "input": "Việt Nam",
+      "unicode": "⠒⠨⠧⠠⠊⠣⠞ ⠝⠁⠍⠱",
+      "source": "Phụ lục, Mục VII; ảnh 8"
+    },
+    {
+      "id": "capital-viet-nam-upper",
+      "input": "VIỆT NAM",
+      "unicode": "⠨⠨⠧⠠⠊⠣⠞ ⠝⠁⠍⠱",
+      "source": "Phụ lục, Mục VII; ảnh 8"
+    }
+  ],
+  "unsupported_rules": [
+    {
+      "id": "format-bold",
+      "fixture_symbol": "bold",
+      "status": "not_implemented",
+      "reason": "API hiện nhận văn bản thuần, không mang thông tin định dạng đậm."
+    },
+    {
+      "id": "format-italic",
+      "fixture_symbol": "italic",
+      "status": "not_implemented",
+      "reason": "API hiện nhận văn bản thuần, không mang thông tin định dạng nghiêng."
+    },
+    {
+      "id": "format-underline",
+      "fixture_symbol": "underline",
+      "status": "not_implemented",
+      "reason": "API hiện nhận văn bản thuần, không mang thông tin gạch chân."
+    }
+  ]
 }

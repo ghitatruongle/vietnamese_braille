@@ -94,8 +94,10 @@ dart test
 dart run bin/server.dart
 ```
 
-`tool/verify_tt15.dart` đọc fixture độc lập tại
-`tools/data/tt15_rules.json` và so trực tiếp với package hiện hành. CI chạy
+`tools/compliance_report.py` kiểm tra SHA-256 của PDF nguồn, fixture tại
+`tools/data/tt15_rules.json` và 141 phép so sánh trực tiếp với package hiện hành.
+Ba ký hiệu định dạng chưa có trong API văn bản thuần được báo cáo rõ là chưa
+triển khai; review chuyên gia bên ngoài vẫn là cổng phát hành. CI chạy
 trên Ubuntu và Windows, áp ngưỡng coverage, ưu tiên tạo bundle Windows x64,
 sau đó tạo thêm Web/Android release build.
 
@@ -145,7 +147,8 @@ api_server/
 Không có fallback sang debug key. Sao chép
 `viet_braille_app/android/key.properties.example` thành `key.properties`,
 điền đường dẫn keystore và giữ cả hai ngoài Git. CI tạo artifact unsigned;
-bản đưa lên cửa hàng phải được ký bằng khóa release riêng.
+workflow `Signed release` bắt buộc khóa release cho Android và Authenticode cho
+Windows, đồng thời tạo checksum, SBOM và provenance.
 
 ## Nguồn quy chiếu
 
@@ -155,5 +158,7 @@ bản đưa lên cửa hàng phải được ký bằng khóa release riêng.
 
 ## Đóng góp và giấy phép
 
-Xem [CONTRIBUTING.md](CONTRIBUTING.md), [CHANGELOG.md](CHANGELOG.md) và
-[LICENSE](LICENSE). Dự án phát hành theo giấy phép MIT.
+Xem [CONTRIBUTING.md](CONTRIBUTING.md), [CHANGELOG.md](CHANGELOG.md),
+[PRIVACY.md](PRIVACY.md), [SECURITY.md](SECURITY.md),
+[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) và [LICENSE](LICENSE). Dự án phát hành
+theo giấy phép MIT.

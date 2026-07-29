@@ -127,10 +127,8 @@ class FileExporterImpl implements FileExporterBase {
       pdf.addPage(
         pw.MultiPage(
           pageFormat: PdfPageFormat.a4,
-          header: (context) => pw.Header(
-            level: 0,
-            child: pw.Text('Vietnamese Braille Export'),
-          ),
+          header: (context) =>
+              pw.Header(level: 0, child: pw.Text('Vietnamese Braille Export')),
           footer: (context) => pw.Container(
             alignment: pw.Alignment.centerRight,
             margin: const pw.EdgeInsets.only(top: 10),

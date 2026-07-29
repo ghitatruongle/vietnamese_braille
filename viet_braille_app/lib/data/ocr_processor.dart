@@ -11,18 +11,25 @@ abstract class OcrProcessor {
 
 class OcrProcessorImpl implements OcrProcessor {
   final BrailleMapping _mapping;
-  final TextRecognizer _textRecognizer;
+  final TextRecognizer? _textRecognizer;
+  final Future<String> Function(String path)? _recognizeText;
+  final void Function()? _onDispose;
   final int _maxRetries;
   final Duration _retryDelay;
 
   OcrProcessorImpl(
     this._mapping, {
     TextRecognizer? textRecognizer,
+    Future<String> Function(String path)? recognizeText,
+    void Function()? onDispose,
     int maxRetries = 3,
     Duration retryDelay = const Duration(seconds: 1),
-  }) : _textRecognizer =
-           textRecognizer ??
-           TextRecognizer(script: TextRecognitionScript.latin),
+  }) : _textRecognizer = recognizeText == null
+           ? textRecognizer ??
+                 TextRecognizer(script: TextRecognitionScript.latin)
+           : textRecognizer,
+       _recognizeText = recognizeText,
+       _onDispose = onDispose,
        _maxRetries = maxRetries,
        _retryDelay = retryDelay;
 
@@ -37,11 +44,15 @@ class OcrProcessorImpl implements OcrProcessor {
 
     for (int attempt = 0; attempt < _maxRetries; attempt++) {
       try {
-        final inputImage = InputImage.fromFilePath(path);
-        final recognizedText = await _textRecognizer.processImage(inputImage);
+        final injectedText = _recognizeText;
+        final text = injectedText != null
+            ? await injectedText(path)
+            : (await _textRecognizer!.processImage(
+                InputImage.fromFilePath(path),
+              )).text;
 
         // Chuẩn hóa NFC: ghép combining marks thành ký tự precomposed
-        return _mapping.composeNfc(recognizedText.text);
+        return _mapping.composeNfc(text);
       } catch (e) {
         lastException = Exception(
           'Lần thử ${attempt + 1}/$_maxRetries thất bại: $e',
@@ -62,7 +73,8 @@ class OcrProcessorImpl implements OcrProcessor {
 
   @override
   void dispose() {
-    _textRecognizer.close();
+    _onDispose?.call();
+    _textRecognizer?.close();
   }
 }
 

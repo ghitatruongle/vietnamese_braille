@@ -1,0 +1,30 @@
+name: Lỗi khả năng tiếp cận
+description: Báo lỗi bàn phím, trình đọc màn hình, tương phản hoặc cỡ chữ.
+title: "[A11y] "
+body:
+  - type: input
+    id: assistive
+    attributes:
+      label: Công nghệ hỗ trợ và phiên bản
+      placeholder: NVDA 2026.x, TalkBack, VoiceOver, chỉ bàn phím
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Thiết bị, hệ điều hành và phiên bản ứng dụng
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: Tác vụ và bước tái hiện
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Tác động
+      description: Tác vụ bị chặn hoàn toàn hay có cách khắc phục?
+    validations:
+      required: true

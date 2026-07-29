@@ -1,0 +1,30 @@
+name: Sai khác chuẩn Braille
+description: Báo một đầu vào có kết quả khác nguồn chuẩn.
+title: "[TT15] "
+body:
+  - type: input
+    id: input
+    attributes:
+      label: Đầu vào tối thiểu
+    validations:
+      required: true
+  - type: textarea
+    id: cells
+    attributes:
+      label: Kết quả hiện tại và các chấm/ô mong đợi
+      description: Ghi cả Unicode Braille và số chấm nếu có thể.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Nguồn, mục và số trang/ảnh
+      placeholder: Thông tư 15, Phụ lục, Mục VI, ảnh 7
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Giải thích cách đọc nguồn
+    validations:
+      required: true

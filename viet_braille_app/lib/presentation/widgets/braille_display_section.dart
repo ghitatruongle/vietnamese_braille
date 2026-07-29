@@ -50,7 +50,11 @@ class BrailleDisplaySection extends StatelessWidget {
             ),
             child: SelectableText(
               brailleText,
-              style: const TextStyle(fontSize: 28, height: 1.5),
+              style: const TextStyle(
+                fontFamily: 'NotoSansSymbols2',
+                fontSize: 28,
+                height: 1.5,
+              ),
             ),
           ),
         ],

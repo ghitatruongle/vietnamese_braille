@@ -46,7 +46,7 @@ class SettingsScreen extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: const Text('Thông tin ứng dụng'),
-            subtitle: const Text('Vietnamese Braille v1.0.1'),
+            subtitle: const Text('Vietnamese Braille v1.1.0'),
             onTap: () => _showAbout(context),
           ),
           const Divider(),
@@ -61,6 +61,15 @@ class SettingsScreen extends ConsumerWidget {
             title: Text('Chuẩn Braille'),
             subtitle: Text('Braille tiếng Việt 6 chấm + BRF ASCII'),
           ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.privacy_tip_outlined),
+            title: const Text('Quyền riêng tư'),
+            subtitle: const Text(
+              'Dữ liệu cục bộ, tệp, OCR và nhận dạng giọng nói',
+            ),
+            onTap: () => _showPrivacy(context),
+          ),
         ],
       ),
     );
@@ -70,7 +79,7 @@ class SettingsScreen extends ConsumerWidget {
     showAboutDialog(
       context: context,
       applicationName: 'Vietnamese Braille',
-      applicationVersion: '1.0.1',
+      applicationVersion: '1.1.0',
       applicationLegalese:
           'Ứng dụng chuyển đổi văn bản tiếng Việt sang chữ Braille Unicode.',
       children: [
@@ -84,6 +93,33 @@ class SettingsScreen extends ConsumerWidget {
           '- Xuất BRF bằng North American Braille ASCII',
         ),
       ],
+    );
+  }
+
+  void _showPrivacy(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Quyền riêng tư'),
+        content: const SingleChildScrollView(
+          child: Text(
+            'Chuyển đổi Braille chạy trên thiết bị và ứng dụng không tự động '
+            'tải nội dung lên máy chủ.\n\n'
+            'Lịch sử và cài đặt được lưu trên thiết bị; bạn có thể xóa lịch '
+            'sử trong màn hình Lịch sử. Ứng dụng chỉ đọc tệp bạn chủ động '
+            'chọn.\n\n'
+            'OCR dùng ML Kit trên thiết bị. Nhận dạng giọng nói dùng dịch vụ '
+            'của hệ điều hành và có thể gửi âm thanh đến nhà cung cấp nền '
+            'tảng tùy thiết bị và cài đặt của bạn.',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Đóng'),
+          ),
+        ],
+      ),
     );
   }
 }

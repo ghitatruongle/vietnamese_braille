@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:viet_braille_core/viet_braille_core.dart';
+import 'braille_semantics.dart';
 
 /// Màn hình quiz Braille — chọn đáp án đúng.
 class QuizScreen extends StatefulWidget {
@@ -68,53 +70,146 @@ class _QuizScreenState extends State<QuizScreen> {
     });
   }
 
+  void _selectOption(int index) {
+    if (_answered || index < 0 || index >= _options.length) return;
+    _checkAnswer(_options[index]);
+  }
+
+  void _nextQuestion() {
+    if (!_answered) return;
+    setState(_generateQuestion);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final shortcuts = <ShortcutActivator, VoidCallback>{
+      const SingleActivator(LogicalKeyboardKey.digit1): () => _selectOption(0),
+      const SingleActivator(LogicalKeyboardKey.digit2): () => _selectOption(1),
+      const SingleActivator(LogicalKeyboardKey.digit3): () => _selectOption(2),
+      const SingleActivator(LogicalKeyboardKey.digit4): () => _selectOption(3),
+      const SingleActivator(LogicalKeyboardKey.keyN): _nextQuestion,
+    };
+
     return Scaffold(
       appBar: AppBar(title: const Text('Quiz Braille'), centerTitle: true),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Text(
-              'Điểm: $_score / $_total',
-              style: const TextStyle(fontSize: 20),
-            ),
-            const SizedBox(height: 32),
-            Text(
-              'Chuyển đổi chữ "$_currentQuestion" sang Braille:',
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 24),
-            ..._options.map(
-              (option) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _answered ? null : () => _checkAnswer(option),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _answered
-                          ? (option == _currentAnswer
-                                ? Colors.green
-                                : (option == _selectedAnswer
-                                      ? Colors.red
-                                      : null))
-                          : null,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
-                    child: Text(option, style: const TextStyle(fontSize: 24)),
+      body: CallbackShortcuts(
+        bindings: shortcuts,
+        child: Focus(
+          autofocus: true,
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              Semantics(
+                liveRegion: true,
+                label: 'Điểm số: $_score trên $_total câu',
+                child: ExcludeSemantics(
+                  child: Text(
+                    'Điểm: $_score / $_total',
+                    style: const TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
-            if (_answered)
-              ElevatedButton(
-                onPressed: () => setState(() => _generateQuestion()),
-                child: const Text('Câu tiếp theo'),
+              const SizedBox(height: 32),
+              Semantics(
+                header: true,
+                child: Text(
+                  'Chuyển đổi chữ "$_currentQuestion" sang Braille:',
+                  style: const TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center,
+                ),
               ),
-          ],
+              const SizedBox(height: 8),
+              const Text(
+                'Dùng phím 1 đến 4 để chọn đáp án.',
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              ..._options.indexed.map((entry) {
+                final (index, option) = entry;
+                final optionNumber = index + 1;
+                final isCorrect = option == _currentAnswer;
+                final isSelected = option == _selectedAnswer;
+                final status = !_answered
+                    ? ''
+                    : isCorrect
+                    ? ', đáp án đúng'
+                    : isSelected
+                    ? ', đã chọn, chưa đúng'
+                    : ', không được chọn';
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Semantics(
+                      label:
+                          'Đáp án $optionNumber: ${describeBraille(option)}$status',
+                      button: true,
+                      enabled: !_answered,
+                      selected: isSelected,
+                      onTap: _answered ? null : () => _checkAnswer(option),
+                      child: ExcludeSemantics(
+                        child: ElevatedButton(
+                          onPressed: _answered
+                              ? null
+                              : () => _checkAnswer(option),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: _answered
+                                ? (isCorrect
+                                      ? Colors.green
+                                      : (isSelected ? Colors.red : null))
+                                : null,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                          ),
+                          child: Text(
+                            '$optionNumber. $option',
+                            style: const TextStyle(
+                              fontFamily: 'NotoSansSymbols2',
+                              fontSize: 24,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }),
+              const SizedBox(height: 24),
+              if (_answered) ...[
+                Semantics(
+                  liveRegion: true,
+                  label: _selectedAnswer == _currentAnswer
+                      ? 'Chính xác'
+                      : 'Chưa đúng. Đáp án đúng là ${describeBraille(_currentAnswer)}',
+                  child: ExcludeSemantics(
+                    child: Text(
+                      _selectedAnswer == _currentAnswer
+                          ? 'Chính xác!'
+                          : 'Chưa đúng. Đáp án đúng: $_currentAnswer',
+                      style: const TextStyle(
+                        fontFamily: 'NotoSansSymbols2',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Semantics(
+                  button: true,
+                  label: 'Câu tiếp theo, phím N',
+                  onTap: _nextQuestion,
+                  child: ExcludeSemantics(
+                    child: ElevatedButton(
+                      onPressed: _nextQuestion,
+                      child: const Text('Câu tiếp theo'),
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
         ),
       ),
     );

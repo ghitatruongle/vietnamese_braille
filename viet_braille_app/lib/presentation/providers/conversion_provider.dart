@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/services.dart';
 
 import 'package:viet_braille_core/viet_braille_core.dart';
 import '../../core/error_handler.dart';
@@ -68,6 +69,7 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
     required this.brfFormatter,
     required this.fileExporter,
     required this.historyService,
+    this.onConversionSuccess,
   }) : super(const ConversionState());
 
   final FilePickerServiceBase filePickerService;
@@ -78,6 +80,7 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
   final BrfFormatter brfFormatter;
   final FileExporterBase fileExporter;
   final HistoryServiceBase historyService;
+  final Future<void> Function()? onConversionSuccess;
 
   /// Chuyển đổi text trực tiếp sang Braille.
   Future<void> convertText(String text) async {
@@ -114,6 +117,7 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
       );
 
       await _saveHistory(originalText: text, brailleText: brailleUnicode);
+      await _provideSuccessFeedback();
     } catch (e) {
       state = state.copyWith(
         status: AppStatus.error,
@@ -193,6 +197,7 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
         originalText: originalText,
         brailleText: brailleUnicode,
       );
+      await _provideSuccessFeedback();
     } catch (e) {
       state = state.copyWith(
         status: AppStatus.error,
@@ -254,6 +259,7 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
         originalText: originalText,
         brailleText: brailleUnicode,
       );
+      await _provideSuccessFeedback();
     } catch (e) {
       state = state.copyWith(
         status: AppStatus.error,
@@ -338,6 +344,15 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
       );
     }
   }
+
+  Future<void> _provideSuccessFeedback() async {
+    try {
+      await onConversionSuccess?.call();
+    } catch (_) {
+      // Haptic feedback is optional and must never turn a valid conversion
+      // into an error on unsupported devices.
+    }
+  }
 }
 
 // ── Service providers (có thể override trong test để inject mock/fake) ──
@@ -380,5 +395,6 @@ final conversionProvider =
         brfFormatter: ref.watch(brfFormatterProvider),
         fileExporter: ref.watch(fileExporterProvider),
         historyService: ref.watch(historyServiceProvider),
+        onConversionSuccess: HapticFeedback.lightImpact,
       );
     });

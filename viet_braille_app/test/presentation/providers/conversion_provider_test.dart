@@ -131,9 +131,11 @@ void main() {
   // ══════════════════════════════════════════════════════════════════════
   group('ConversionNotifier — convertText()', () {
     late ConversionNotifier notifier;
+    late int feedbackCalls;
 
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
+      feedbackCalls = 0;
       final mapping = BrailleMappingImpl();
       notifier = ConversionNotifier(
         filePickerService: FilePickerServiceImpl(),
@@ -144,6 +146,9 @@ void main() {
         brfFormatter: BrfFormatterImpl(),
         fileExporter: FileExporterImpl(),
         historyService: HistoryServiceImpl(),
+        onConversionSuccess: () async {
+          feedbackCalls++;
+        },
       );
     });
 
@@ -166,6 +171,7 @@ void main() {
       expect(notifier.state.brailleUnicode, isNotEmpty);
       expect(notifier.state.brfContent, isNotEmpty);
       expect(notifier.state.errorMessage, isNull);
+      expect(feedbackCalls, 1);
     });
 
     test('convertText output ends with newline (BRF format)', () async {
@@ -177,6 +183,7 @@ void main() {
       await notifier.convertText('');
       expect(notifier.state.status, equals(AppStatus.idle));
       expect(notifier.state.originalText, equals(''));
+      expect(feedbackCalls, 0);
     });
 
     test('convertText with whitespace-only input → stays idle', () async {
@@ -236,6 +243,27 @@ void main() {
       expect(failingNotifier.state.status, AppStatus.success);
       expect(failingNotifier.state.brailleUnicode, isNotEmpty);
       expect(failingNotifier.state.warningMessage, contains('lưu vào lịch sử'));
+    });
+
+    test('feedback failure does not turn conversion into an error', () async {
+      final mapping = BrailleMappingImpl();
+      final feedbackFailingNotifier = ConversionNotifier(
+        filePickerService: FilePickerServiceImpl(),
+        textExtractor: TextExtractorImpl(),
+        ocrProcessor: OcrProcessorImpl(mapping),
+        brailleConverter: BrailleConverterImpl(mapping),
+        reverseConverter: BrailleReverseConverterImpl(mapping),
+        brfFormatter: BrfFormatterImpl(),
+        fileExporter: FileExporterImpl(),
+        historyService: HistoryServiceImpl(),
+        onConversionSuccess: () => throw UnsupportedError('no haptics'),
+      );
+      addTearDown(feedbackFailingNotifier.dispose);
+
+      await feedbackFailingNotifier.convertText('xin chào');
+
+      expect(feedbackFailingNotifier.state.status, AppStatus.success);
+      expect(feedbackFailingNotifier.state.errorMessage, isNull);
     });
   });
 

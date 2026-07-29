@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Báo cáo lỗ hổng riêng tư
+    url: https://github.com/ghitatruongle/vietnamese-braille/security/advisories/new
+    about: Không đăng công khai lỗ hổng hoặc dữ liệu nhạy cảm.

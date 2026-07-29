@@ -88,16 +88,16 @@ void main() {
       expect(converter.convert('HELLO'), equals(expected));
     });
 
-    test('"Việt" = capital + v + i + tone + ệ + t', () {
+    test('"Việt" = capital + v + tone + i + ê + t', () {
       final capitalCell = String.fromCharCode(0x2800 + 40);
-      final expected = '$capitalCell$cellV$cellI$toneNang$cellEE$cellT';
+      final expected = '$capitalCell$cellV$toneNang$cellI$cellEE$cellT';
       expect(converter.convert('Việt'), equals(expected));
     });
 
     test('lowercase "việt" has no capital indicator', () {
       expect(
         converter.convert('việt'),
-        equals('$cellV$cellI$toneNang$cellEE$cellT'),
+        equals('$cellV$toneNang$cellI$cellEE$cellT'),
       );
     });
 
@@ -253,17 +253,17 @@ void main() {
 
     test('"Việt Nam" → correct conversion', () {
       final result = converter.convert('việt nam');
-      // v-i-ệ-t- -n-a-m
-      final expected = '$cellV$cellI$toneNang$cellEE$cellT $cellN$cellA$cellM';
+      // v-tone-i-ê-t- -n-a-m
+      final expected = '$cellV$toneNang$cellI$cellEE$cellT $cellN$cellA$cellM';
       expect(result, equals(expected));
     });
 
     test('"Xin chào Việt Nam!" → full sentence', () {
       final result = converter.convert('xin chào việt nam!');
-      // x-i-n- -c-h-à-o- -v-i-ệ-t- -n-a-m-!
+      // x-i-n- -c-h-tone-a-o- -v-tone-i-ê-t- -n-a-m-!
       final expected =
           '$cellX$cellI$cellN $cellC$cellH$toneHuyen$cellA$cellO '
-          '$cellV$cellI$toneNang$cellEE$cellT '
+          '$cellV$toneNang$cellI$cellEE$cellT '
           '$cellN$cellA$cellM$exclaim';
       expect(result, equals(expected));
     });
@@ -280,10 +280,10 @@ void main() {
 
     test('"tôi yêu Việt Nam" → sentence with ơ, ê, ư', () {
       final result = converter.convert('tôi yêu việt nam');
-      // t-ô-i- -y-ê-u- -v-i-ệ-t- -n-a-m
+      // t-ô-i- -y-ê-u- -v-tone-i-ê-t- -n-a-m
       final expected =
           '$cellT$cellOO$cellI $cellY$cellEE$cellU '
-          '$cellV$cellI$toneNang$cellEE$cellT '
+          '$cellV$toneNang$cellI$cellEE$cellT '
           '$cellN$cellA$cellM';
       expect(result, equals(expected));
     });

@@ -33,6 +33,7 @@ class _BrailleGridWidgetState extends State<BrailleGridWidget> {
 
   void _clear() {
     setState(() => dots = List.filled(6, false));
+    widget.onCharacterDecoded('');
   }
 
   @override
@@ -43,60 +44,60 @@ class _BrailleGridWidgetState extends State<BrailleGridWidget> {
         // Row 1: dots 1, 4
         Row(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildDot(0, 'Dot 1'),
-            const SizedBox(width: 20),
-            _buildDot(3, 'Dot 4'),
-          ],
+          children: [_buildDot(0), const SizedBox(width: 20), _buildDot(3)],
         ),
         const SizedBox(height: 8),
         // Row 2: dots 2, 5
         Row(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildDot(1, 'Dot 2'),
-            const SizedBox(width: 20),
-            _buildDot(4, 'Dot 5'),
-          ],
+          children: [_buildDot(1), const SizedBox(width: 20), _buildDot(4)],
         ),
         const SizedBox(height: 8),
         // Row 3: dots 3, 6
         Row(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildDot(2, 'Dot 3'),
-            const SizedBox(width: 20),
-            _buildDot(5, 'Dot 6'),
-          ],
+          children: [_buildDot(2), const SizedBox(width: 20), _buildDot(5)],
         ),
         const SizedBox(height: 16),
-        ElevatedButton(onPressed: _clear, child: const Text('Xóa')),
+        Semantics(
+          button: true,
+          label: 'Xóa toàn bộ chấm Braille',
+          onTap: _clear,
+          child: ExcludeSemantics(
+            child: ElevatedButton(onPressed: _clear, child: const Text('Xóa')),
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildDot(int index, String label) {
-    return Semantics(
-      label: '$label - ${dots[index] ? "bật" : "tắt"}',
-      button: true,
-      child: GestureDetector(
+  Widget _buildDot(int index) {
+    final dotNumber = index + 1;
+    final isOn = dots[index];
+    return SizedBox(
+      width: 48,
+      height: 48,
+      child: Semantics(
+        label: 'Chấm $dotNumber, ${isOn ? "đang bật" : "đang tắt"}',
+        button: true,
+        toggled: isOn,
         onTap: () => _toggleDot(index),
-        child: Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: dots[index]
-                ? Theme.of(context).primaryColor
-                : Colors.grey[300],
-            border: Border.all(width: 2),
-          ),
-          child: Center(
-            child: Text(
-              '${index + 1}',
-              style: TextStyle(
-                color: dots[index] ? Colors.white : Colors.black,
-                fontWeight: FontWeight.bold,
+        child: ExcludeSemantics(
+          child: Material(
+            color: isOn ? Theme.of(context).primaryColor : Colors.grey[300],
+            shape: const CircleBorder(side: BorderSide(width: 2)),
+            child: InkWell(
+              canRequestFocus: true,
+              customBorder: const CircleBorder(),
+              onTap: () => _toggleDot(index),
+              child: Center(
+                child: Text(
+                  '$dotNumber',
+                  style: TextStyle(
+                    color: isOn ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ),

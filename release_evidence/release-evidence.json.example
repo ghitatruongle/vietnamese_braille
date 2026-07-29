@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "release": {
+    "tag": "v1.1.0",
+    "version": "1.1.0",
+    "commit": "REPLACE_WITH_FULL_40_CHARACTER_GIT_SHA"
+  },
+  "tt15_external_review": {
+    "result": "pending",
+    "blocking_issues": 0,
+    "independent": true,
+    "reviewer_id": "REPLACE_WITH_PSEUDONYMOUS_REVIEWER_ID",
+    "reviewed_at": "REPLACE_WITH_ISO_8601_TIMESTAMP_AND_TIMEZONE",
+    "source_sha256": "4b0a4d75a0913a51b0ce2e42dac71f48effdd2e042ccc12bac5b89f13fdb4872",
+    "fixture_sha256": "2cf66071ec582889fb272c0d22aa08419f38f23d2a61340b0ff8cce1fb68d9ad",
+    "attestation_reference": "REPLACE_WITH_REVIEW_RECORD_URL_OR_DOCUMENT_ID"
+  },
+  "accessibility": {
+    "result": "pending",
+    "blocking_issues": 0,
+    "sessions": [
+      {
+        "platform": "Windows",
+        "assistive_technology": "NVDA",
+        "os_version": "REPLACE",
+        "technology_version": "REPLACE",
+        "tester_id": "REPLACE",
+        "tested_at": "REPLACE_WITH_ISO_8601_TIMESTAMP_AND_TIMEZONE",
+        "attestation_reference": "REPLACE",
+        "result": "pending",
+        "blocking_issues": 0,
+        "scenarios": ["convert", "copy", "learn", "quiz", "export"]
+      },
+      {
+        "platform": "Web",
+        "assistive_technology": "NVDA",
+        "os_version": "REPLACE",
+        "technology_version": "REPLACE",
+        "tester_id": "REPLACE",
+        "tested_at": "REPLACE_WITH_ISO_8601_TIMESTAMP_AND_TIMEZONE",
+        "attestation_reference": "REPLACE",
+        "result": "pending",
+        "blocking_issues": 0,
+        "scenarios": [
+          "keyboard_navigation",
+          "headings",
+          "error_announcements"
+        ]
+      },
+      {
+        "platform": "Android",
+        "assistive_technology": "TalkBack",
+        "os_version": "REPLACE",
+        "technology_version": "REPLACE",
+        "tester_id": "REPLACE",
+        "tested_at": "REPLACE_WITH_ISO_8601_TIMESTAMP_AND_TIMEZONE",
+        "attestation_reference": "REPLACE",
+        "result": "pending",
+        "blocking_issues": 0,
+        "scenarios": ["convert", "ocr", "learn", "quiz", "share"]
+      },
+      {
+        "platform": "iOS",
+        "assistive_technology": "VoiceOver",
+        "os_version": "REPLACE",
+        "technology_version": "REPLACE",
+        "tester_id": "REPLACE",
+        "tested_at": "REPLACE_WITH_ISO_8601_TIMESTAMP_AND_TIMEZONE",
+        "attestation_reference": "REPLACE",
+        "result": "pending",
+        "blocking_issues": 0,
+        "scenarios": ["convert", "ocr", "learn", "quiz", "share"]
+      }
+    ]
+  },
+  "user_validation": {
+    "result": "pending",
+    "blocking_issues": 0,
+    "participant_count": 0,
+    "includes_blind_or_low_vision_participant": false,
+    "coordinator_id": "REPLACE",
+    "tested_at": "REPLACE_WITH_ISO_8601_TIMESTAMP_AND_TIMEZONE",
+    "attestation_reference": "REPLACE",
+    "scenarios": [
+      "convert_and_read",
+      "file_and_brf",
+      "learn_with_screen_reader",
+      "five_question_quiz",
+      "font_scale_200"
+    ]
+  },
+  "release_approval": {
+    "result": "pending",
+    "blocking_issues": 0,
+    "approver_id": "REPLACE",
+    "approved_at": "REPLACE_WITH_ISO_8601_TIMESTAMP_AND_TIMEZONE",
+    "attestation_reference": "REPLACE"
+  }
+}

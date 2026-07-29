@@ -1,4 +1,6 @@
 import 'braille_mapping.dart';
+import 'src/capitalization_analysis.dart';
+import 'src/text_preprocessor.dart';
 
 /// Chế độ xuất Braille.
 enum BrailleConversionMode {
@@ -50,6 +52,10 @@ abstract class BrailleConverter {
 
 class BrailleConverterImpl implements BrailleConverter {
   final BrailleMapping _mapping;
+  static const BrailleTextPreprocessor _preprocessor =
+      BrailleTextPreprocessor();
+  static const CapitalizationAnalyzer _capitalizationAnalyzer =
+      CapitalizationAnalyzer();
 
   /// Precomputed tone decomposition table for qu/gi rule.
   /// Maps each NFC toned character → (tone Braille cell, base vowel Braille cell).
@@ -65,39 +71,6 @@ class BrailleConverterImpl implements BrailleConverter {
     BrailleConversionMode mode = BrailleConversionMode.standard,
   }) => convertWithDetails(text, mode: mode).brailleText;
 
-  /// Bộ tiền xử lý văn bản đầu vào theo quy chuẩn định dạng và khoảng trống của Thông tư 15.
-  String _preprocessText(String text) {
-    // 1. Chèn khoảng trắng trước các đơn vị đo khi viết liền sau số
-    final unitRegex = RegExp(
-      r'(\d)(km|hm|dam|dm|cm|mm|kg|hg|dag|g|tấn|tạ|yến)(?=\b|[^a-zA-Z0-9àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĩỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỸĐ])',
-    );
-    text = text.replaceAllMapped(
-      unitRegex,
-      (match) => '${match.group(1)} ${match.group(2)}',
-    );
-
-    // 2. Xóa khoảng trắng xung quanh các ký hiệu phép toán và quan hệ khi đi kèm số
-    final opRegex = RegExp(r'(\d)\s*([\+\-\*\/x\:=\<\>≈≤≥])\s*(\d)');
-    String prev = '';
-    int iterations = 0;
-    const maxIterations = 100; // Safeguard against infinite loops
-
-    while (text != prev && iterations < maxIterations) {
-      iterations++;
-      prev = text;
-      text = text.replaceAllMapped(
-        opRegex,
-        (match) => '${match.group(1)}${match.group(2)}${match.group(3)}',
-      );
-    }
-
-    // maxIterations guard above already prevents infinite loops; no runtime warning needed.
-
-    // 3. Thay thế dấu chấm lửng "..." thành ký tự "…" để ánh xạ ra "⠄⠄⠄" (3 ô chấm 3)
-    text = text.replaceAll('...', '…');
-    return text;
-  }
-
   @override
   ConversionResult convertWithDetails(
     String text, {
@@ -108,153 +81,59 @@ class BrailleConverterImpl implements BrailleConverter {
     }
 
     // Tiền xử lý văn bản (đơn vị đo, phép toán, chấm lửng)
-    text = _preprocessText(text);
+    text = _preprocessor.preprocess(text);
 
     // Normalize + theo dõi chữ hoa (xử lý đúng cả NFD input).
     final result = _mapping.normalizeWithCapitals(text);
     final normalized = result.text;
     final capitalFlags = result.capitals;
 
-    // Phân tích các từ để xử lý quy tắc viết hoa cụm từ/chữ và số La Mã
-    final wordRegex = RegExp(
-      r'[a-zàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]+',
+    final capitalization = _capitalizationAnalyzer.analyze(
+      normalized,
+      capitalFlags,
     );
-    final words = <_WordInfo>[];
-    for (final match in wordRegex.allMatches(normalized)) {
-      final start = match.start;
-      final end = match.end;
-      final wordText = normalized.substring(start, end);
-
-      bool allCaps = (end - start > 1);
-      bool initCaps = false;
-      if (end > start) {
-        initCaps = capitalFlags[start];
-        for (int j = start; j < end; j++) {
-          if (!capitalFlags[j]) {
-            allCaps = false;
-          }
-          if (j > start && capitalFlags[j]) {
-            initCaps = false;
-          }
-        }
-      } else {
-        allCaps = false;
-      }
-
-      // Số La Mã viết hoa trong text gốc
-      final isRoman = allCaps && RegExp(r'^[ivxlcdm]+$').hasMatch(wordText);
-
-      words.add(
-        _WordInfo(
-          start: start,
-          end: end,
-          text: wordText,
-          allCaps: allCaps,
-          initCaps: initCaps,
-          isRoman: isRoman,
-        ),
-      );
-    }
-
-    // Nhóm các từ viết hoa thành cụm từ (All-caps phrases và Init-caps phrases)
-    int idxWord = 0;
-    while (idxWord < words.length) {
-      if (words[idxWord].isRoman) {
-        idxWord++;
-        continue;
-      }
-      if (words[idxWord].allCaps) {
-        int j = idxWord + 1;
-        while (j < words.length) {
-          if (words[j].isRoman || !words[j].allCaps) break;
-          final sep = normalized.substring(words[j - 1].end, words[j].start);
-          if (sep.trim().isNotEmpty) {
-            break; // chỉ cho phép ngăn cách bằng khoảng trắng
-          }
-          j++;
-        }
-        if (j > idxWord + 1) {
-          for (int k = idxWord; k < j; k++) {
-            words[k].phraseMode = _PhraseMode.allCaps;
-            words[k].isPhraseStart = (k == idxWord);
-            words[k].isPhraseEnd = (k == j - 1);
-          }
-          idxWord = j;
-          continue;
-        }
-      }
-      idxWord++;
-    }
-
-    idxWord = 0;
-    while (idxWord < words.length) {
-      if (words[idxWord].phraseMode != _PhraseMode.none) {
-        idxWord++;
-        continue;
-      }
-      if (words[idxWord].initCaps) {
-        int j = idxWord + 1;
-        while (j < words.length) {
-          if (words[j].phraseMode != _PhraseMode.none || !words[j].initCaps) {
-            break;
-          }
-          final sep = normalized.substring(words[j - 1].end, words[j].start);
-          if (sep.trim().isNotEmpty) break;
-          j++;
-        }
-        if (j > idxWord + 1) {
-          for (int k = idxWord; k < j; k++) {
-            words[k].phraseMode = _PhraseMode.initCaps;
-            words[k].isPhraseStart = (k == idxWord);
-            words[k].isPhraseEnd = (k == j - 1);
-          }
-          idxWord = j;
-          continue;
-        }
-      }
-      idxWord++;
-    }
-
-    // Xóa cờ viết hoa của các ký tự nằm trong các từ đã được xử lý viết hoa theo cụm/từ/La Mã
-    // để tránh in ra capital indicator ở từng chữ cái lẻ.
-    for (final w in words) {
-      if (w.isRoman || w.allCaps || w.phraseMode != _PhraseMode.none) {
-        for (int j = w.start; j < w.end; j++) {
-          capitalFlags[j] = false;
-        }
-      }
-    }
 
     final buffer = StringBuffer();
     final unmapped = <String>[];
     bool inNumber = false;
     bool inQuContext =
         false; // true after q+u, persists across intermediate chars
+    bool inGiContext = false;
+    int? rhymeStartInBuffer;
+    bool hasVowelInSyllable = false;
     String prevCharLower = '';
-    String prevPrevCharLower = '';
+
+    void writePhraseEndIfNeeded(int sourceEnd) {
+      final wordAtEnd = capitalization.wordsByEnd[sourceEnd];
+      if (wordAtEnd != null &&
+          wordAtEnd.phraseMode != PhraseCapitalizationMode.none &&
+          wordAtEnd.isPhraseEnd) {
+        buffer.write(_mapping.endFormat);
+      }
+    }
 
     for (int i = 0; i < normalized.length; i++) {
       final ch = normalized[i];
 
       // Ghi capital indicator cho các trường hợp viết hoa cụm/từ đặc biệt
-      final wordStartIdx = words.indexWhere((w) => w.start == i);
-      if (wordStartIdx >= 0) {
-        final w = words[wordStartIdx];
-        if (w.isRoman) {
+      final wordAtStart = capitalization.wordsByStart[i];
+      if (wordAtStart != null) {
+        final w = wordAtStart;
+        if (w.isRomanNumeral) {
           buffer.write(
             _mapping.capitalIndicator,
           ); // Số La Mã: 1 dấu báo hoa ở đầu
-        } else if (w.phraseMode == _PhraseMode.allCaps) {
+        } else if (w.phraseMode == PhraseCapitalizationMode.allCaps) {
           if (w.isPhraseStart) {
             buffer.write(_mapping.allCapsPhrase); // Cụm viết hoa toàn bộ: ⠨⠨
           }
-        } else if (w.phraseMode == _PhraseMode.initCaps) {
+        } else if (w.phraseMode == PhraseCapitalizationMode.initialCaps) {
           if (w.isPhraseStart) {
             buffer.write(
               _mapping.initCapsPhrase,
             ); // Cụm viết hoa chữ cái đầu: ⠒⠨
           }
-        } else if (w.phraseMode == _PhraseMode.none && w.allCaps) {
+        } else if (w.phraseMode == PhraseCapitalizationMode.none && w.allCaps) {
           buffer.write(_mapping.allCapsWord); // Từ đơn viết hoa toàn bộ: ⠸
         }
       }
@@ -267,8 +146,11 @@ class BrailleConverterImpl implements BrailleConverter {
         buffer
           ..write(losslessBrailleEscape)
           ..write(_mapping.mapChar(ch)!);
-        prevPrevCharLower = prevCharLower;
         prevCharLower = ch;
+        rhymeStartInBuffer = null;
+        hasVowelInSyllable = false;
+        inQuContext = false;
+        inGiContext = false;
         continue;
       }
 
@@ -286,8 +168,11 @@ class BrailleConverterImpl implements BrailleConverter {
         } else {
           buffer.write(_mapping.dquoteClose); // close quote
         }
-        prevPrevCharLower = prevCharLower;
         prevCharLower = '"';
+        rhymeStartInBuffer = null;
+        hasVowelInSyllable = false;
+        inQuContext = false;
+        inGiContext = false;
         continue;
       }
 
@@ -322,7 +207,6 @@ class BrailleConverterImpl implements BrailleConverter {
           i + 1 < normalized.length &&
           _isDigit(normalized[i + 1])) {
         buffer.write(_mapping.mapChar("'")!); // chấm hàng nghìn -> ⠄ (dot 3)
-        prevPrevCharLower = prevCharLower;
         prevCharLower = '.';
         continue;
       }
@@ -331,7 +215,6 @@ class BrailleConverterImpl implements BrailleConverter {
           i + 1 < normalized.length &&
           _isDigit(normalized[i + 1])) {
         buffer.write(_mapping.mapChar(',')!); // phẩy thập phân -> ⠂ (dot 2)
-        prevPrevCharLower = prevCharLower;
         prevCharLower = ',';
         continue;
       }
@@ -339,6 +222,10 @@ class BrailleConverterImpl implements BrailleConverter {
       final mapped = _mapping.mapChar(ch);
       if (mapped != null) {
         if (_isDigit(ch)) {
+          rhymeStartInBuffer = null;
+          hasVowelInSyllable = false;
+          inQuContext = false;
+          inGiContext = false;
           if (!inNumber) {
             buffer.write(_mapping.numberIndicator);
             inNumber = true;
@@ -350,6 +237,17 @@ class BrailleConverterImpl implements BrailleConverter {
           buffer.write(mapped);
         } else {
           inNumber = false;
+          final isVowel = _isVowel(ch) || _isTonedVowel(ch);
+          if (!isVowel) {
+            rhymeStartInBuffer = null;
+            hasVowelInSyllable = false;
+          } else if (!hasVowelInSyllable) {
+            // Lưu vị trí trước cả capital indicator của nguyên âm đầu. Khi
+            // dấu thanh nằm trên nguyên âm sau trong vần (Việt, tuyến, oán),
+            // tone được chèn tại đây: sau phụ âm đầu và trước toàn bộ phần vần.
+            rhymeStartInBuffer = buffer.length;
+            hasVowelInSyllable = true;
+          }
 
           // ── Xử lý capital indicator theo chuẩn Braille Việt Nam ──
           // Quy tắc (theo ảnh 7 / file txt mục VII):
@@ -365,25 +263,33 @@ class BrailleConverterImpl implements BrailleConverter {
           if (!inQuContext && ch == 'u' && prevCharLower == 'q') {
             inQuContext = true;
           }
+          if (!inGiContext && ch == 'i' && prevCharLower == 'g') {
+            inGiContext = true;
+          }
           if (inQuContext && !_isVowel(ch) && !_isTonedVowel(ch)) {
             // Clear qu context when we hit a consonant or non-vowel
             inQuContext = false;
+          }
+          if (inGiContext && !_isVowel(ch) && !_isTonedVowel(ch)) {
+            inGiContext = false;
           }
 
           // Check qu/gi rule: after q+u or g+i, tone goes AFTER u/i
           // (per Vietnamese Braille standard - Sao Mai Center)
           final isQuMatch = inQuContext && _isTonedVowel(ch);
           final isGiMatch = prevCharLower == 'g' && _isTonedI(ch);
-          if (isQuMatch || isGiMatch) {
+          final isGiRhymeMatch =
+              inGiContext && prevCharLower != 'g' && _isTonedVowel(ch);
+          if (isQuMatch || isGiMatch || isGiRhymeMatch) {
             final decomposed = _decomposeTonedChar(ch);
             if (decomposed != null) {
               // qu/gi luôn có phụ âm đầu (q/g) → capital trước phụ âm đầu
               if (isCapital) {
                 buffer.write(_mapping.capitalIndicator);
               }
-              if (isGiMatch) {
+              if (isGiMatch || isGiRhymeMatch) {
                 // Rule (Section VI): gi + vowel starting with 'i' → g + [tone + i]
-                // "g trước, sau đó đến dấu thanh, cuối cùng là phần vần"
+                // hoặc gi + vần khác → gi + tone + phần vần.
                 buffer.write(decomposed.tone + decomposed.baseMapped);
               } else {
                 // qu: q + u + [tone + nextVowel(s)] — tone before all
@@ -407,38 +313,29 @@ class BrailleConverterImpl implements BrailleConverter {
                 }
               }
               inQuContext = false; // tone placed, reset qu context
-              prevPrevCharLower = prevCharLower;
+              inGiContext = false;
               prevCharLower = ch;
+              writePhraseEndIfNeeded(i + 1);
               continue;
             }
           }
 
-          // ── Initial vowel with tone (no consonant) ──
-          // Rule (Section VI): "Một chữ chỉ có phần vần và dấu thanh
-          // thì kí hiệu dấu thanh được đặt trước phần vần."
-          // If current char is a toned vowel and previous char is a plain
-          // vowel from the same syllable, move tone before the first vowel.
-          // But NOT if previous vowel is part of gi/qu cluster (giải, quả).
-          if (_shouldReorderToneForInitialVowel(
-            currentChar: ch,
-            prevChar: prevCharLower,
-            prevPrevChar: prevPrevCharLower,
-            hasConsonantBefore: hasConsonantBefore,
-            isCapital: isCapital,
-          )) {
+          // Dấu thanh nằm trên nguyên âm sau nhưng phải đứng trước toàn bộ
+          // phần vần: oán, Việt, tuyến...
+          if (_isTonedVowel(ch) &&
+              rhymeStartInBuffer != null &&
+              buffer.length > rhymeStartInBuffer) {
             final decomposed = _decomposeTonedChar(ch);
-            if (decomposed != null && buffer.isNotEmpty) {
-              // Previous char was a vowel written to buffer; the tone from
-              // current char should go before it.
-              // Rewrite: ... + tone + prevVowel + baseMapped + rest
-              // Instead of: ... + prevVowel + tone + baseMapped
+            if (decomposed != null) {
               final text = buffer.toString();
-              final prevCell = text[text.length - 1]; // last Braille cell
+              final insertionIndex = rhymeStartInBuffer;
               buffer.clear();
-              buffer.write(text.substring(0, text.length - 1));
-              buffer.write(decomposed.tone + prevCell + decomposed.baseMapped);
-              prevPrevCharLower = prevCharLower;
+              buffer.write(text.substring(0, insertionIndex));
+              buffer.write(decomposed.tone);
+              buffer.write(text.substring(insertionIndex));
+              buffer.write(decomposed.baseMapped);
               prevCharLower = ch;
+              writePhraseEndIfNeeded(i + 1);
               continue;
             }
           }
@@ -452,8 +349,8 @@ class BrailleConverterImpl implements BrailleConverter {
               buffer.write(decomposed.tone);
               buffer.write(_mapping.capitalIndicator);
               buffer.write(decomposed.baseMapped);
-              prevPrevCharLower = prevCharLower;
               prevCharLower = ch;
+              writePhraseEndIfNeeded(i + 1);
               continue;
             }
           }
@@ -464,16 +361,15 @@ class BrailleConverterImpl implements BrailleConverter {
           }
 
           buffer.write(mapped);
+          if ((ch == 'u' && prevCharLower == 'q') ||
+              (ch == 'i' && prevCharLower == 'g')) {
+            // `u`/`i` thuộc phụ âm đầu qu/gi; dấu thanh đặt sau ô này.
+            rhymeStartInBuffer = buffer.length;
+          }
         }
 
         // Ghi ký tự kết thúc định dạng `⠱` cho cụm từ viết hoa
-        final wordEndIdx = words.indexWhere((w) => w.end == i + 1);
-        if (wordEndIdx >= 0) {
-          final w = words[wordEndIdx];
-          if (w.phraseMode != _PhraseMode.none && w.isPhraseEnd) {
-            buffer.write(_mapping.endFormat); // Ghi dấu kết thúc: ⠱
-          }
-        }
+        writePhraseEndIfNeeded(i + 1);
       } else {
         // Track unmapped characters (skip whitespace as it's always valid)
         if (ch.trim().isNotEmpty) {
@@ -481,7 +377,6 @@ class BrailleConverterImpl implements BrailleConverter {
         }
       }
 
-      prevPrevCharLower = prevCharLower;
       prevCharLower = ch.toLowerCase();
     }
 
@@ -511,33 +406,6 @@ class BrailleConverterImpl implements BrailleConverter {
   /// Kiểm tra ký tự có phải nguyên âm tiếng Việt (không dấu).
   static bool _isVowel(String ch) {
     return 'aeiouyăâêôơư'.contains(ch);
-  }
-
-  /// Helper: Kiểm tra xem có nên reorder tone cho initial vowel không
-  /// (nguyên âm đầu có dấu, không có phụ âm)
-  bool _shouldReorderToneForInitialVowel({
-    required String currentChar,
-    required String prevChar,
-    required String prevPrevChar,
-    required bool hasConsonantBefore,
-    required bool isCapital,
-  }) {
-    // Không áp dụng nếu là chữ hoa hoặc có phụ âm đầu
-    if (isCapital || hasConsonantBefore) return false;
-
-    // Current char phải là nguyên âm có dấu
-    if (!_isTonedVowel(currentChar)) return false;
-
-    // Previous char phải là nguyên âm thường
-    if (prevChar.isEmpty || !_isVowel(prevChar)) return false;
-
-    // Previous char không được là phụ âm
-    if (_isConsonant(prevChar)) return false;
-
-    // Previous-previous char không được là phụ âm (tránh trường hợp gi/qu)
-    if (prevPrevChar.isNotEmpty && _isConsonant(prevPrevChar)) return false;
-
-    return true;
   }
 
   /// Decompose a toned vowel into its tone cell and base vowel mapping.
@@ -679,27 +547,4 @@ class BrailleConverterImpl implements BrailleConverter {
     }
     return map;
   }
-}
-
-enum _PhraseMode { none, allCaps, initCaps }
-
-class _WordInfo {
-  final int start;
-  final int end;
-  final String text;
-  final bool allCaps;
-  final bool initCaps;
-  final bool isRoman;
-  _PhraseMode phraseMode = _PhraseMode.none;
-  bool isPhraseStart = false;
-  bool isPhraseEnd = false;
-
-  _WordInfo({
-    required this.start,
-    required this.end,
-    required this.text,
-    required this.allCaps,
-    required this.initCaps,
-    required this.isRoman,
-  });
 }

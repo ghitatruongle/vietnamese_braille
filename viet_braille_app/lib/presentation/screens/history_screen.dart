@@ -154,8 +154,10 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                                 _searchQuery.isNotEmpty
                                     ? 'Không tìm thấy kết quả'
                                     : 'Chưa có lịch sử chuyển đổi',
-                                style: const TextStyle(
-                                  color: Colors.grey,
+                                style: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
                                   fontSize: 16,
                                 ),
                               ),

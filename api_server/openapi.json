@@ -1,0 +1,289 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Vietnamese Braille API",
+    "version": "1.1.0",
+    "description": "API chuyển đổi văn bản tiếng Việt và Braille Unicode."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Môi trường phát triển cục bộ"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Kiểm tra trạng thái dịch vụ",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Dịch vụ hoạt động",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["status"],
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "const": "ok"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/convert": {
+      "post": {
+        "summary": "Chuyển văn bản tiếng Việt sang Braille",
+        "security": [
+          {"ApiKey": []},
+          {"BearerAuth": []}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ConvertRequest"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Kết quả chuyển đổi",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/ConvertResponse"}
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "401": {"$ref": "#/components/responses/Unauthorized"},
+          "413": {"$ref": "#/components/responses/PayloadTooLarge"},
+          "415": {"$ref": "#/components/responses/UnsupportedMediaType"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/reverse": {
+      "post": {
+        "summary": "Chuyển Braille Unicode về văn bản",
+        "security": [
+          {"ApiKey": []},
+          {"BearerAuth": []}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ReverseRequest"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Văn bản được giải mã",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/ReverseResponse"}
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "401": {"$ref": "#/components/responses/Unauthorized"},
+          "413": {"$ref": "#/components/responses/PayloadTooLarge"},
+          "415": {"$ref": "#/components/responses/UnsupportedMediaType"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/batch": {
+      "post": {
+        "summary": "Chuyển một lô văn bản sang Braille",
+        "security": [
+          {"ApiKey": []},
+          {"BearerAuth": []}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/BatchRequest"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Danh sách kết quả theo đúng thứ tự đầu vào",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/BatchResponse"}
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "401": {"$ref": "#/components/responses/Unauthorized"},
+          "413": {"$ref": "#/components/responses/PayloadTooLarge"},
+          "415": {"$ref": "#/components/responses/UnsupportedMediaType"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
+      },
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "ConvertRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["text"],
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100000
+          }
+        }
+      },
+      "ConvertResponse": {
+        "type": "object",
+        "required": ["braille", "warnings"],
+        "properties": {
+          "braille": {"type": "string"},
+          "warnings": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      },
+      "ReverseRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["braille"],
+        "properties": {
+          "braille": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100000
+          }
+        }
+      },
+      "ReverseResponse": {
+        "type": "object",
+        "required": ["text"],
+        "properties": {
+          "text": {"type": "string"}
+        }
+      },
+      "BatchRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["texts"],
+        "properties": {
+          "texts": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100000
+            },
+            "description": "Tổng độ dài mọi phần tử không vượt quá 500000 ký tự."
+          }
+        }
+      },
+      "BatchItem": {
+        "allOf": [
+          {"$ref": "#/components/schemas/ConvertResponse"},
+          {
+            "type": "object",
+            "required": ["input"],
+            "properties": {
+              "input": {"type": "string"}
+            }
+          }
+        ]
+      },
+      "BatchResponse": {
+        "type": "object",
+        "required": ["results"],
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/BatchItem"}
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {"type": "string"},
+          "code": {"type": "string"}
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "JSON hoặc schema không hợp lệ",
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/Error"}
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "API key thiếu hoặc không hợp lệ",
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/Error"}
+          }
+        }
+      },
+      "PayloadTooLarge": {
+        "description": "Body hoặc nội dung vượt giới hạn",
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/Error"}
+          }
+        }
+      },
+      "UnsupportedMediaType": {
+        "description": "Content-Type không phải application/json",
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/Error"}
+          }
+        }
+      },
+      "RateLimited": {
+        "description": "Vượt giới hạn yêu cầu",
+        "headers": {
+          "Retry-After": {
+            "schema": {"type": "integer", "minimum": 1}
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/Error"}
+          }
+        }
+      }
+    }
+  }
+}
