@@ -38,7 +38,11 @@ __pycache__/
 pubspec.lock
 !viet_braille_app/pubspec.lock
 !api_server/pubspec.lock
+!packages/viet_braille_core/pubspec.lock
 **/.flutter-plugins-dependencies
+
+# ─── Generated documentation ──────────────────────────────────────────────
+site/
 
 # ─── Local editor/assistant state ─────────────────────────────────────
 .openclaude/

@@ -14,9 +14,15 @@ và xuất BRF/Braille ASCII.
 ## Tài liệu
 
 - [Hướng dẫn sử dụng](user-guide.md)
+- [Đối chiếu Thông tư 15](tt15-compliance.md)
+- [Kiểm thử khả năng tiếp cận](accessibility-testing.md)
+- [Quyền riêng tư](privacy.md)
+- [Mô hình đe dọa](threat-model.md)
+- [Checklist phát hành](release-checklist.md)
+- [Quyết định kiến trúc](adr/README.md)
 - [Kiến trúc](architecture.md)
-- [Đóng góp](../CONTRIBUTING.md)
-- [Changelog](../CHANGELOG.md)
+- [Đóng góp](contributing.md)
+- [Changelog](changelog.md)
 
-Xem [README chính](../README.md) để biết ma trận nền tảng, giới hạn và nguồn
-quy chiếu.
+Xem [README chính trên GitHub](https://github.com/ghitatruongle/vietnamese_braille/blob/main/README.md)
+để biết ma trận nền tảng, giới hạn và nguồn quy chiếu.

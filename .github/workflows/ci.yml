@@ -39,7 +39,7 @@ jobs:
           cache: true
 
       - name: Resolve dependencies
-        run: dart pub get
+        run: dart pub get --enforce-lockfile
 
       - name: Check formatting
         run: dart format --output=none --set-exit-if-changed lib test tool
@@ -47,8 +47,19 @@ jobs:
       - name: Analyze
         run: dart analyze
 
-      - name: Verify independent TT15 fixture
-        run: dart run tool/verify_tt15.dart
+      - name: Verify TT15 source integrity and exact fixture
+        run: python ../../tools/compliance_report.py --json > tt15-compliance.json
+
+      - name: Test repository evidence tools
+        if: runner.os == 'Linux'
+        working-directory: ${{ github.workspace }}
+        run: python -m unittest discover -s tools/tests -v
+
+      - name: Upload TT15 compliance evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: tt15-compliance-${{ matrix.os }}
+          path: packages/viet_braille_core/tt15-compliance.json
 
       - name: Test with VM coverage
         run: dart test --coverage=coverage
@@ -61,7 +72,7 @@ jobs:
 
       - name: Enforce core coverage
         if: runner.os == 'Linux'
-        run: python ../../tools/check_lcov.py --file coverage/lcov.info --minimum 75
+        run: python ../../tools/check_lcov.py --file coverage/lcov.info --minimum 90
 
       - name: Upload core coverage
         if: runner.os == 'Linux'
@@ -91,7 +102,7 @@ jobs:
           cache: true
 
       - name: Resolve locked dependencies
-        run: flutter pub get
+        run: flutter pub get --enforce-lockfile
 
       - name: Check formatting
         run: dart format --output=none --set-exit-if-changed lib test
@@ -104,7 +115,7 @@ jobs:
 
       - name: Enforce app coverage
         if: runner.os == 'Linux'
-        run: python ../tools/check_lcov.py --file coverage/lcov.info --minimum 70
+        run: python ../tools/check_lcov.py --file coverage/lcov.info --minimum 80
 
       - name: Upload app coverage
         if: runner.os == 'Linux'
@@ -134,7 +145,7 @@ jobs:
           cache: true
 
       - name: Resolve locked dependencies
-        run: dart pub get
+        run: dart pub get --enforce-lockfile
 
       - name: Check formatting
         run: dart format --output=none --set-exit-if-changed bin lib test
@@ -153,7 +164,7 @@ jobs:
 
       - name: Enforce API coverage
         if: runner.os == 'Linux'
-        run: python ../tools/check_lcov.py --file coverage/lcov.info --minimum 85
+        run: python ../tools/check_lcov.py --file coverage/lcov.info --minimum 90
 
       - name: Upload API coverage
         if: runner.os == 'Linux'
@@ -179,7 +190,7 @@ jobs:
           channel: stable
           cache: true
 
-      - run: flutter pub get
+      - run: flutter pub get --enforce-lockfile
 
       - name: Build Windows x64 release
         run: flutter build windows --release --no-pub
@@ -208,7 +219,7 @@ jobs:
           channel: stable
           cache: true
 
-      - run: flutter pub get
+      - run: flutter pub get --enforce-lockfile
 
       - name: Build web release
         run: flutter build web --release --no-pub

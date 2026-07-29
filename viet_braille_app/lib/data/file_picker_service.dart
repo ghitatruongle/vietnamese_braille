@@ -22,11 +22,36 @@ abstract class FilePickerServiceBase {
   Future<FilePickResult?> pickFile();
 }
 
+typedef PickFiles =
+    Future<FilePickerResult?> Function({
+      required bool allowMultiple,
+      required FileType type,
+      required List<String> allowedExtensions,
+      required bool withData,
+    });
+
 class FilePickerServiceImpl implements FilePickerServiceBase {
+  FilePickerServiceImpl({PickFiles? pickFiles})
+    : _pickFiles = pickFiles ?? _defaultPickFiles;
+
+  final PickFiles _pickFiles;
+
+  static Future<FilePickerResult?> _defaultPickFiles({
+    required bool allowMultiple,
+    required FileType type,
+    required List<String> allowedExtensions,
+    required bool withData,
+  }) => FilePicker.platform.pickFiles(
+    allowMultiple: allowMultiple,
+    type: type,
+    allowedExtensions: allowedExtensions,
+    withData: withData,
+  );
+
   @override
   Future<FilePickResult?> pickFile() async {
     try {
-      final result = await FilePicker.platform.pickFiles(
+      final result = await _pickFiles(
         allowMultiple: false,
         type: FileType.custom,
         allowedExtensions: PlatformCapabilities.supportsOcr

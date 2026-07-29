@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:viet_braille_core/viet_braille_core.dart';
 import 'braille_grid_widget.dart';
+import 'braille_semantics.dart';
 
 /// Màn hình học chữ Braille tương tác.
 class LearningScreen extends StatefulWidget {
@@ -35,9 +36,18 @@ class _LearningScreenState extends State<LearningScreen> {
             ),
             const SizedBox(height: 24),
             if (_currentChar.isNotEmpty) ...[
-              Text(
-                'Ký tự Braille: $_currentChar',
-                style: const TextStyle(fontSize: 32),
+              Semantics(
+                liveRegion: true,
+                label: 'Ký tự đã tạo: ${describeBrailleCell(_currentChar)}',
+                child: ExcludeSemantics(
+                  child: Text(
+                    'Ký tự Braille: $_currentChar',
+                    style: const TextStyle(
+                      fontFamily: 'NotoSansSymbols2',
+                      fontSize: 32,
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 8),
               Text(
@@ -69,7 +79,17 @@ class _LearningScreenState extends State<LearningScreen> {
       runSpacing: 8,
       children: letters.split('').map((letter) {
         final braille = mapping.mapChar(letter) ?? '?';
-        return Chip(label: Text('$letter $braille'));
+        return Semantics(
+          label: 'Chữ $letter, ${describeBraille(braille)}',
+          child: ExcludeSemantics(
+            child: Chip(
+              label: Text(
+                '$letter $braille',
+                style: const TextStyle(fontFamily: 'NotoSansSymbols2'),
+              ),
+            ),
+          ),
+        );
       }).toList(),
     );
   }

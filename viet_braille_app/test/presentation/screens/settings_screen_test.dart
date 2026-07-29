@@ -50,7 +50,7 @@ void main() {
     testWidgets('shows app info section', (tester) async {
       await tester.pumpWidget(buildSubject());
       expect(find.text('Thông tin ứng dụng'), findsOneWidget);
-      expect(find.text('Vietnamese Braille v1.0.1'), findsOneWidget);
+      expect(find.text('Vietnamese Braille v1.1.0'), findsOneWidget);
     });
 
     testWidgets('shows architecture info', (tester) async {
@@ -71,13 +71,24 @@ void main() {
       );
     });
 
+    testWidgets('privacy disclosure is visible from settings', (tester) async {
+      await tester.pumpWidget(buildSubject());
+
+      expect(find.text('Quyền riêng tư'), findsOneWidget);
+      await tester.tap(find.text('Quyền riêng tư'));
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('không tự động tải nội dung'), findsOneWidget);
+      expect(find.textContaining('dịch vụ của hệ điều hành'), findsOneWidget);
+    });
+
     testWidgets('tapping app info opens about dialog', (tester) async {
       await tester.pumpWidget(buildSubject());
       await tester.tap(find.text('Thông tin ứng dụng'));
       await tester.pumpAndSettle();
 
       expect(find.text('Vietnamese Braille'), findsOneWidget);
-      expect(find.text('1.0.1'), findsOneWidget);
+      expect(find.text('1.1.0'), findsOneWidget);
     });
   });
 }

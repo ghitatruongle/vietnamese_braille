@@ -66,6 +66,14 @@ flutter test --coverage
 flutter test test/domain/braille_converter_test.dart
 ```
 
+Thay đổi mapping hoặc quy tắc phải kèm ví dụ chính xác trong
+`tools/data/tt15_rules.json`, vị trí nguồn và golden test. Không đổi
+`review_status` thành `externally_reviewed` nếu chưa có biên bản của người review
+độc lập.
+
+Thay đổi UI phải kiểm tra bàn phím, semantics, tương phản và cỡ chữ 200%. Không
+đưa dữ liệu cá nhân từ phiên kiểm thử người dùng vào issue, fixture hoặc log.
+
 ## Kiến trúc dự án
 
 ```
@@ -147,6 +155,10 @@ test: thêm integration tests cho full pipeline
 - [Design Spec](docs/superpowers/specs/2026-06-26-viet-braille-roadmap-design.md)
 - [Implementation Plan](docs/superpowers/plans/2026-06-26-viet-braille-roadmap.md)
 - [User Guide](docs/user-guide.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Security Policy](SECURITY.md)
+- [Privacy Policy](PRIVACY.md)
+- [Release Checklist](docs/release-checklist.md)
 
 ## License
 

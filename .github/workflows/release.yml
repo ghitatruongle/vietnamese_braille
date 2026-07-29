@@ -1,0 +1,281 @@
+name: Signed release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FLUTTER_VERSION: 3.44.2
+
+jobs:
+  quality:
+    name: Full quality gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Resolve dependencies
+        run: |
+          (cd packages/viet_braille_core && dart pub get --enforce-lockfile)
+          (cd api_server && dart pub get --enforce-lockfile)
+          (cd viet_braille_app && flutter pub get --enforce-lockfile)
+
+      - name: Verify version matches tag
+        if: github.ref_type == 'tag'
+        run: python tools/check_versions.py --tag "${GITHUB_REF_NAME}"
+
+      - name: Test repository evidence tools
+        run: python -m unittest discover -s tools/tests -v
+
+      - name: Require external release evidence
+        if: github.ref_type == 'tag'
+        run: |
+          python tools/release_evidence.py \
+            --file "release_evidence/${GITHUB_REF_NAME}.json" \
+            --tag "${GITHUB_REF_NAME}" \
+            --commit "${GITHUB_SHA}"
+
+      - name: Verify monorepo
+        run: python tools/verify.py --all
+
+  windows:
+    name: Signed Windows x64
+    needs: quality
+    runs-on: windows-latest
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    env:
+      WINDOWS_PFX_BASE64: ${{ secrets.WINDOWS_PFX_BASE64 }}
+      WINDOWS_PFX_PASSWORD: ${{ secrets.WINDOWS_PFX_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Require Windows signing secrets
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:WINDOWS_PFX_BASE64) -or
+              [string]::IsNullOrWhiteSpace($env:WINDOWS_PFX_PASSWORD)) {
+            throw "WINDOWS_PFX_BASE64 and WINDOWS_PFX_PASSWORD are required."
+          }
+
+      - name: Build Windows release
+        working-directory: viet_braille_app
+        run: |
+          flutter pub get --enforce-lockfile
+          flutter build windows --release --no-pub
+
+      - name: Sign and verify Windows binaries
+        shell: pwsh
+        run: |
+          $certificate = Join-Path $env:RUNNER_TEMP "release.pfx"
+          [IO.File]::WriteAllBytes(
+            $certificate,
+            [Convert]::FromBase64String($env:WINDOWS_PFX_BASE64)
+          )
+          $signTool = Get-ChildItem `
+            "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\signtool.exe" |
+            Sort-Object FullName -Descending |
+            Select-Object -First 1
+          if ($null -eq $signTool) { throw "signtool.exe was not found." }
+          $binaries = Get-ChildItem `
+            "viet_braille_app\build\windows\x64\runner\Release" `
+            -Recurse -File |
+            Where-Object { $_.Extension -in ".exe", ".dll" }
+          foreach ($binary in $binaries) {
+            & $signTool.FullName sign /fd SHA256 /td SHA256 `
+              /tr "http://timestamp.digicert.com" `
+              /f $certificate /p $env:WINDOWS_PFX_PASSWORD $binary.FullName
+            if ($LASTEXITCODE -ne 0) { throw "Signing failed: $($binary.Name)" }
+            $signature = Get-AuthenticodeSignature $binary.FullName
+            if ($signature.Status -ne "Valid") {
+              throw "Invalid signature: $($binary.Name): $($signature.Status)"
+            }
+          }
+
+      - name: Package Windows artifact and checksum
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path dist -Force | Out-Null
+          Compress-Archive `
+            -Path "viet_braille_app\build\windows\x64\runner\Release\*" `
+            -DestinationPath "dist\vietnamese-braille-windows-x64.zip"
+          $hash = (
+            Get-FileHash "dist\vietnamese-braille-windows-x64.zip" -Algorithm SHA256
+          ).Hash.ToLowerInvariant()
+          "$hash *vietnamese-braille-windows-x64.zip" |
+            Set-Content "dist\vietnamese-braille-windows-x64.zip.sha256" -Encoding utf8
+
+      - name: Generate Windows SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          path: viet_braille_app/build/windows/x64/runner/Release
+          format: spdx-json
+          output-file: dist/windows-x64.spdx.json
+          upload-artifact: false
+          upload-release-assets: false
+
+      - name: Attest Windows artifact
+        uses: actions/attest@v4
+        with:
+          subject-path: dist/vietnamese-braille-windows-x64.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signed-windows-x64
+          path: dist
+          if-no-files-found: error
+
+  android-web:
+    name: Signed Android and Web
+    needs: quality
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    env:
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+      ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Require Android signing secrets
+        shell: bash
+        run: |
+          test -n "${ANDROID_KEYSTORE_BASE64}" \
+            && test -n "${ANDROID_STORE_PASSWORD}" \
+            && test -n "${ANDROID_KEY_ALIAS}" \
+            && test -n "${ANDROID_KEY_PASSWORD}" \
+            || { echo "Android release signing secrets are required."; exit 1; }
+
+      - name: Configure Android release signing
+        shell: bash
+        run: |
+          printf '%s' "${ANDROID_KEYSTORE_BASE64}" \
+            | base64 --decode > viet_braille_app/android/release.jks
+          {
+            printf 'storeFile=../release.jks\n'
+            printf 'storePassword=%s\n' "${ANDROID_STORE_PASSWORD}"
+            printf 'keyAlias=%s\n' "${ANDROID_KEY_ALIAS}"
+            printf 'keyPassword=%s\n' "${ANDROID_KEY_PASSWORD}"
+          } > viet_braille_app/android/key.properties
+
+      - name: Build Android and Web releases
+        working-directory: viet_braille_app
+        run: |
+          flutter pub get --enforce-lockfile
+          flutter build appbundle --release --no-pub
+          flutter build web --release --no-pub
+
+      - name: Verify Android signature
+        run: |
+          jarsigner -verify -strict -certs \
+            viet_braille_app/build/app/outputs/bundle/release/app-release.aab
+
+      - name: Package artifacts and checksums
+        run: |
+          mkdir -p dist
+          cp viet_braille_app/build/app/outputs/bundle/release/app-release.aab \
+            dist/vietnamese-braille-android.aab
+          tar -C viet_braille_app/build/web -czf \
+            dist/vietnamese-braille-web.tar.gz .
+          (
+            cd dist
+            sha256sum vietnamese-braille-android.aab \
+              > vietnamese-braille-android.aab.sha256
+            sha256sum vietnamese-braille-web.tar.gz \
+              > vietnamese-braille-web.tar.gz.sha256
+          )
+
+      - name: Generate application SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          path: .
+          format: spdx-json
+          output-file: dist/application.spdx.json
+          upload-artifact: false
+          upload-release-assets: false
+
+      - name: Attest Android and Web artifacts
+        uses: actions/attest@v4
+        with:
+          subject-path: |
+            dist/vietnamese-braille-android.aab
+            dist/vietnamese-braille-web.tar.gz
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signed-android-web
+          path: dist
+          if-no-files-found: error
+
+  publish:
+    name: Publish GitHub Release
+    if: github.ref_type == 'tag'
+    needs: [windows, android-web]
+    runs-on: ubuntu-latest
+    environment: production-release
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: signed-*
+          path: dist
+          merge-multiple: true
+
+      - name: Create combined checksum manifest
+        run: |
+          (
+            cd dist
+            sha256sum vietnamese-braille-windows-x64.zip \
+              vietnamese-braille-android.aab \
+              vietnamese-braille-web.tar.gz \
+              *.spdx.json > SHA256SUMS
+            sha256sum --check SHA256SUMS
+          )
+
+      - name: Attest release checksum manifest
+        uses: actions/attest@v4
+        with:
+          subject-path: dist/SHA256SUMS
+
+      - name: Publish immutable tag assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" dist/* \
+            --verify-tag \
+            --generate-notes \
+            --title "${GITHUB_REF_NAME}"

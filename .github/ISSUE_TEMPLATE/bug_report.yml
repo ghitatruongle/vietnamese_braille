@@ -1,0 +1,43 @@
+name: Báo lỗi phần mềm
+description: Báo lỗi có thể tái hiện trong ứng dụng, core hoặc API.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: Không đưa dữ liệu cá nhân, token hoặc nội dung nhạy cảm vào issue.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Thành phần
+      options:
+        - Ứng dụng Flutter
+        - Core chuyển đổi
+        - REST API
+        - Tài liệu/CI
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Phiên bản hoặc commit
+      placeholder: v1.0.1 hoặc SHA
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Bước tái hiện tối thiểu
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Kết quả mong đợi và kết quả thực tế
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Hệ điều hành, trình duyệt hoặc thiết bị
+    validations:
+      required: true

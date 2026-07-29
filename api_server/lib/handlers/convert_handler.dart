@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:shelf/shelf.dart';
 import 'package:viet_braille_core/viet_braille_core.dart';
@@ -9,6 +10,8 @@ final _reverseConverter = BrailleReverseConverterImpl(_mapping);
 
 const _maxTextLength = 100000;
 const _maxBatchSize = 100;
+const _maxBatchTextLength = 500000;
+const maxRequestBodyBytes = 1024 * 1024;
 const _jsonHeaders = {'Content-Type': 'application/json; charset=utf-8'};
 
 Future<Response> convertHandler(Request request) async {
@@ -30,6 +33,10 @@ Future<Response> convertHandler(Request request) async {
       'braille': result.brailleText,
       'warnings': result.unmappedCharacters,
     });
+  } on RequestBodyTooLarge catch (error) {
+    return _payloadTooLarge(error.message);
+  } on UnsupportedRequestMediaType catch (error) {
+    return _unsupportedMediaType(error.message);
   } on FormatException catch (error) {
     return _badRequest(error.message);
   } catch (_) {
@@ -53,6 +60,10 @@ Future<Response> reverseHandler(Request request) async {
 
     final text = _reverseConverter.convert(braille);
     return _jsonResponse(200, {'text': text});
+  } on RequestBodyTooLarge catch (error) {
+    return _payloadTooLarge(error.message);
+  } on UnsupportedRequestMediaType catch (error) {
+    return _unsupportedMediaType(error.message);
   } on FormatException catch (error) {
     return _badRequest(error.message);
   } catch (_) {
@@ -80,6 +91,15 @@ Future<Response> batchHandler(Request request) async {
       );
     }
     final texts = rawTexts.cast<String>();
+    final totalTextLength = texts.fold<int>(
+      0,
+      (total, text) => total + text.length,
+    );
+    if (totalTextLength > _maxBatchTextLength) {
+      return _payloadTooLarge(
+        'Combined "texts" length exceeds $_maxBatchTextLength characters',
+      );
+    }
 
     final results = texts.map((text) {
       final result = _converter.convertWithDetails(text);
@@ -91,6 +111,10 @@ Future<Response> batchHandler(Request request) async {
     }).toList();
 
     return _jsonResponse(200, {'results': results});
+  } on RequestBodyTooLarge catch (error) {
+    return _payloadTooLarge(error.message);
+  } on UnsupportedRequestMediaType catch (error) {
+    return _unsupportedMediaType(error.message);
   } on FormatException catch (error) {
     return _badRequest(error.message);
   } catch (_) {
@@ -99,7 +123,33 @@ Future<Response> batchHandler(Request request) async {
 }
 
 Future<Map<String, dynamic>> _readJsonObject(Request request) async {
-  final body = await request.readAsString();
+  final contentType = request.headers['content-type'];
+  final mediaType = contentType?.split(';').first.trim().toLowerCase();
+  if (mediaType != 'application/json') {
+    throw const UnsupportedRequestMediaType(
+      'Content-Type must be application/json',
+    );
+  }
+
+  final declaredLength = int.tryParse(request.headers['content-length'] ?? '');
+  if (declaredLength != null && declaredLength > maxRequestBodyBytes) {
+    throw const RequestBodyTooLarge('Request body exceeds 1048576 bytes');
+  }
+
+  final bytes = BytesBuilder(copy: false);
+  var receivedBytes = 0;
+  await for (final chunk in request.read()) {
+    receivedBytes += chunk.length;
+    if (receivedBytes > maxRequestBodyBytes) {
+      throw const RequestBodyTooLarge('Request body exceeds 1048576 bytes');
+    }
+    bytes.add(chunk);
+  }
+
+  final body = utf8.decode(bytes.takeBytes());
+  if (body.trim().isEmpty) {
+    throw const FormatException('JSON body must not be empty');
+  }
   final value = jsonDecode(body);
   if (value is! Map<String, dynamic>) {
     throw const FormatException('JSON body must be an object');
@@ -113,7 +163,22 @@ Response _jsonResponse(int statusCode, Object body) =>
 Response _badRequest(String message) => _jsonResponse(400, {'error': message});
 
 Response _payloadTooLarge(String message) =>
-    _jsonResponse(413, {'error': message});
+    _jsonResponse(413, {'error': message, 'code': 'payload_too_large'});
+
+Response _unsupportedMediaType(String message) =>
+    _jsonResponse(415, {'error': message, 'code': 'unsupported_media_type'});
 
 Response _internalError() =>
     _jsonResponse(500, {'error': 'Internal server error'});
+
+class RequestBodyTooLarge implements Exception {
+  const RequestBodyTooLarge(this.message);
+
+  final String message;
+}
+
+class UnsupportedRequestMediaType implements Exception {
+  const UnsupportedRequestMediaType(this.message);
+
+  final String message;
+}

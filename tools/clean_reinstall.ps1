@@ -29,14 +29,14 @@ $s1 = $ws.CreateShortcut($desktop)
 $s1.TargetPath = $target
 $s1.WorkingDirectory = [System.IO.Path]::GetDirectoryName($target)
 $s1.IconLocation = "$iconPath,0"
-$s1.Description = "Vietnamese Braille Converter App v1.0.1"
+$s1.Description = "Vietnamese Braille Converter App v1.1.0"
 $s1.Save()
 
 $s2 = $ws.CreateShortcut($startMenu)
 $s2.TargetPath = $target
 $s2.WorkingDirectory = [System.IO.Path]::GetDirectoryName($target)
 $s2.IconLocation = "$iconPath,0"
-$s2.Description = "Vietnamese Braille Converter App v1.0.1"
+$s2.Description = "Vietnamese Braille Converter App v1.1.0"
 $s2.Save()
 
 # 5. Khởi động lại Windows Explorer

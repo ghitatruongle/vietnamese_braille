@@ -1,153 +1,55 @@
-# 🚀 Kế hoạch hoàn thiện dự án Vietnamese Braille để xuất bản
+# Cổng chất lượng và kế hoạch phát hành
 
-**Ngày tạo:** 2026-07-03  
-**Trạng thái hiện tại:** Gần sẵn sàng — cần hoàn thiện một số mục còn lại
+Tài liệu này mô tả bằng chứng cần có trước khi gọi một phiên bản là sẵn sàng
+phát hành. Nó không tự xác nhận rằng các cổng đã đạt.
 
----
+## Cổng bắt buộc
 
-## ✅ Đã hoàn thành
+| Cổng | Lệnh hoặc bằng chứng |
+|---|---|
+| Định dạng, tài liệu, TT15, analyze và test | `python tools/verify.py --all` |
+| Coverage | Core ≥ 90%, app ≥ 80%, API ≥ 90% |
+| Build | Windows, Web và Android release build thành công từ cùng commit |
+| Chuẩn Braille | Fixture độc lập, so sánh chính xác và có người thứ hai review |
+| Accessibility | Báo cáo TalkBack/NVDA/VoiceOver và kiểm thử bàn phím |
+| Bảo mật | Không còn lỗ hổng Critical/High; API có giới hạn body và rate limit |
+| Quyền riêng tư | Privacy policy mô tả OCR, speech và lịch sử cục bộ |
+| Artifact | Bản ký chính thức, SHA-256, SBOM và release notes |
 
-| # | Công việc | Trạng thái |
-|---|-----------|-----------|
-| 1 | Thay `<owner>` → `ghiatruongle` trong tất cả file | ✅ Done |
-| 2 | Dọn dẹp git status (commit tất cả thay đổi) | ✅ Done |
-| 3 | Thêm `.gitignore` cho `.dart_tool/`, `build/`, `pubspec.lock` | ✅ Done |
-| 4 | Thiết lập `viet_braille_app` làm git submodule | ✅ Done |
-| 5 | Code quality: `dart analyze` — 0 issues | ✅ Done |
-| 6 | Tests: 662/662 passed | ✅ Done |
-| 7 | Fix bugs: infinite loop, phrase grouping, tone reordering | ✅ Done |
-| 8 | Documentation: README, CONTRIBUTING, CHANGELOG, user-guide | ✅ Done |
-| 9 | CI/CD: GitHub Actions (format + analyze + test + coverage) | ✅ Done |
-| 10 | No hardcoded secrets/API keys | ✅ Done |
+## Trạng thái
 
----
+Trạng thái được xác định từ CI và artifact của chính commit phát hành. Không
+chép thủ công số lượng test hoặc dùng các từ như “hoàn hảo”, “tuân thủ toàn
+diện” hay “production-ready” khi chưa có đủ bằng chứng ở bảng trên.
 
-## 📋 Các việc còn lại để xuất bản
+| Hạng mục | Trạng thái hiện tại |
+|---|---|
+| Format/docs/analyze/test cục bộ | Đạt ngày 27/07/2026 bằng `python tools/verify.py --all` |
+| Coverage cục bộ | Đạt: core 92,92%; app 82,89%; API 92,31% |
+| Build release cục bộ | Đạt: Windows x64, Web và Android AAB |
+| Lỗ hổng dependency đã biết | OSV-Scanner 2.4.0: không phát hiện vấn đề trong 3 lockfile |
+| TT15 fixture + SHA-256 + exact output | Đạt tự động; external review còn chờ |
+| Accessibility tự động | Đạt cho màn hình chính, kết quả, lịch sử, cài đặt, học và quiz; gồm tương phản, mục tiêu chạm và chữ 200% |
+| NVDA/TalkBack/VoiceOver và người dùng thật | Chưa thực hiện |
+| API hardening/privacy/governance | Đạt cổng cục bộ; cần CI trên commit |
+| Artifact ký/SBOM/provenance | Workflow đã có; đường dẫn ký Android đã được thử bằng khóa dùng một lần; chưa có khóa và artifact chính thức |
 
-### 🔴 Ưu tiên cao — PHẢI làm
+Tag phát hành còn bị chặn bởi `tools/release_evidence.py` nếu thiếu hồ sơ JSON
+đúng commit. Mẫu và quy tắc lưu bằng chứng nằm tại
+[`release_evidence/README.md`](release_evidence/README.md).
+Ma trận nghiệm thu từng Phase được duy trì tại
+[`docs/phase-0-5-audit.md`](docs/phase-0-5-audit.md).
 
-#### 1. Push code lên GitHub
-```bash
-# Push outer repo
-cd E:/vietnamese_braille
-git push origin master
+## Quy trình phát hành
 
-# Push submodule
-cd E:/vietnamese_braille/viet_braille_app
-git push origin main
-```
+1. Cập nhật `CHANGELOG.md` và version của các package.
+2. Chạy toàn bộ cổng chất lượng trên working tree sạch.
+3. Tạo build từ commit dự kiến gắn tag.
+4. Ký artifact bằng khóa do người phát hành quản lý.
+5. Tạo SBOM và SHA-256 cho từng artifact.
+6. Smoke test chính các artifact đã ký.
+7. Tạo annotated Git tag trùng với version.
+8. Tạo GitHub Release và đính kèm artifact, checksum, SBOM.
+9. Kiểm tra lại trang tài liệu và link tải sau phát hành.
 
-#### 2. Tạo GitHub Release cho v1.0.0
-- Tag version: `v1.0.0`
-- Title: `Vietnamese Braille v1.0.0`
-- Description: Copy từ CHANGELOG.md
-- Attach APK (nếu build được)
-
-#### 3. Bật GitHub Pages cho docs
-- Vào repo Settings → Pages
-- Source: Deploy from branch `master` / `docs/` folder
-- Hoặc dùng GitHub Actions workflow `docs.yml` đã có
-
-#### 4. Chạy `flutter test --coverage` và upload Codecov
-```bash
-cd viet_braille_app
-flutter test --coverage
-# Codecov sẽ tự động upload qua CI workflow
-```
-
----
-
-### 🟡 Ưu tiên trung bình — NÊN làm
-
-#### 5. Thêm LICENSE cho `viet_braille_app/`
-```bash
-cp LICENSE viet_braille_app/LICENSE
-```
-
-#### 6. Thêm README cho `packages/viet_braille_core/`
-- Mô tả package: Vietnamese Braille core conversion library
-- Usage examples
-- API documentation
-
-#### 7. Chuyển `flutter_lints` → `lints` hoặc `very_good_analysis`
-```yaml
-# pubspec.yaml
-dev_dependencies:
-  lints: ^4.0.0  # hoặc very_good_analysis
-```
-
-#### 8. Xóa `print()` trong production code
-- `packages/viet_braille_core/lib/braille_converter.dart:70` — dùng `logging` package hoặc xóa
-
-#### 9. Thêm test cho `SpeechService`
-- File: `test/data/speech_service_test.dart`
-- Test: initialize, startListening, stopListening
-
-#### 10. Thêm widget test cho `teaching/` screens
-- `test/presentation/screens/learning_screen_test.dart`
-- `test/presentation/screens/quiz_screen_test.dart`
-
----
-
-### 🟢 Ưu tiên thấp — CÓ THỂ làm sau
-
-#### 11. Build APK cho Android
-```bash
-cd viet_braille_app
-flutter build apk --release
-# File: build/app/outputs/flutter-apk/app-release.apk
-```
-
-#### 12. Build cho Web
-```bash
-flutter build web --release
-# Deploy lên GitHub Pages
-```
-
-#### 13. Publish `viet_braille_core` lên pub.dev
-```bash
-cd packages/viet_braille_core
-dart pub publish --dry-run  # Kiểm tra trước
-dart pub publish            # Publish thật
-```
-
-#### 14. Thêm `analysis_options.yaml` cho `viet_braille_core`
-```yaml
-include: package:lints/recommended.yaml
-```
-
-#### 15. Viết blog post / demo video
-- Giới thiệu dự án
-- Cách sử dụng
-- Technical details
-
----
-
-## 📊 Tổng kết
-
-| Tiêu chí | Trạng thái |
-|----------|-----------|
-| Code quality | ✅ Hoàn hảo (0 issues) |
-| Tests | ✅ 662/662 passed |
-| Documentation | ✅ Đầy đủ |
-| CI/CD | ✅ GitHub Actions |
-| Git structure | ✅ Submodule setup |
-| Owner info | ✅ ghitatruongle |
-| Secrets | ✅ Không có |
-
-**Kết luận:** Dự án **đã sẵn sàng để xuất bản** sau khi push code lên GitHub và tạo release.
-
----
-
-## 🎯 Thứ tự thực hiện
-
-1. **Push code** → `git push origin master`
-2. **Tạo Release** → GitHub → Releases → New Release
-3. **Bật GitHub Pages** → Settings → Pages
-4. **Thêm LICENSE** cho app
-5. **Build APK** (nếu cần)
-6. **Thông báo / chia sẻ**
-
----
-
-*Plan created: 2026-07-03*
+Không commit khóa ký, mật khẩu, token hoặc tệp `key.properties`.

@@ -17,6 +17,14 @@ void main() {
       print('HÀ NỘI -> $result');
     });
 
+    test('Bug #2 - Toned final vowel keeps phrase end marker', () {
+      expect(
+        converter.convert('HÀ QUÝ'),
+        '\u2828\u2828\u2813\u2830\u2801 '
+        '\u281f\u2825\u2814\u283d\u2831',
+      );
+    });
+
     test('Bug #2 - All caps phrase with spaces (THÔNG TƯ SỐ 15)', () {
       final result = converter.convert('THÔNG TƯ SỐ 15');
       expect(result, isNotEmpty);
@@ -31,14 +39,24 @@ void main() {
 
     test('Bug #7 - Operator space removal doesn\'t cause infinite loop', () {
       final result = converter.convert('2  +  3  *  4');
-      expect(result, isNotEmpty);
-      print('2  +  3  *  4 -> $result');
+      expect(result, '⠼⠃⠐⠖⠼⠉⠦⠼⠙');
     });
 
     test('Bug #7 - Multiple nested operators', () {
       final result = converter.convert('1 + 2 + 3 + 4 + 5 + 6 + 7 + 8');
-      expect(result, isNotEmpty);
-      print('1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 -> $result');
+      expect(
+        result,
+        '⠼⠁⠐⠖⠼⠃⠐⠖⠼⠉⠐⠖⠼⠙⠐⠖'
+        '⠼⠑⠐⠖⠼⠋⠐⠖⠼⠛⠐⠖⠼⠓',
+      );
+    });
+
+    test('Bug #7 - Textual operators keep intentional spaces', () {
+      expect(converter.convert('a + b'), '⠁ ⠐⠖ ⠃');
+    });
+
+    test('Bug #7 - Numeric comparison chain removes every space', () {
+      expect(converter.convert('1 < 2 > 0'), '⠼⠁⠐⠪⠼⠃⠐⠕⠼⠚');
     });
   });
 

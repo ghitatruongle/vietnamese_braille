@@ -37,6 +37,53 @@ void main() {
       expect(array.statusCode, 400);
     });
 
+    test('requires application/json media type', () async {
+      final response = await convertHandler(
+        Request(
+          'POST',
+          Uri.parse('http://localhost/'),
+          body: jsonEncode({'text': 'xin'}),
+          headers: {'Content-Type': 'text/plain'},
+        ),
+      );
+
+      expect(response.statusCode, 415);
+      expect((await _json(response))['code'], 'unsupported_media_type');
+    });
+
+    test('rejects declared oversized body before reading stream', () async {
+      final response = await convertHandler(
+        Request(
+          'POST',
+          Uri.parse('http://localhost/'),
+          body: Stream<List<int>>.error(StateError('must not be read')),
+          headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': '${maxRequestBodyBytes + 1}',
+          },
+        ),
+      );
+
+      expect(response.statusCode, 413);
+      expect((await _json(response))['code'], 'payload_too_large');
+    });
+
+    test('stops a chunked body after the byte limit', () async {
+      final response = await convertHandler(
+        Request(
+          'POST',
+          Uri.parse('http://localhost/'),
+          body: Stream<List<int>>.fromIterable([
+            List<int>.filled(maxRequestBodyBytes, 0x20),
+            const [0x20],
+          ]),
+          headers: {'Content-Type': 'application/json'},
+        ),
+      );
+
+      expect(response.statusCode, 413);
+    });
+
     test('rejects missing, empty and non-string text', () async {
       for (final body in [
         <String, Object?>{},
@@ -139,6 +186,19 @@ void main() {
 
       expect(tooMany.statusCode, 413);
       expect(tooLong.statusCode, 413);
+    });
+
+    test('rejects excessive combined batch text', () async {
+      final response = await batchHandler(
+        _request(
+          jsonEncode({
+            'texts': List.generate(6, (_) => List.filled(100000, 'a').join()),
+          }),
+        ),
+      );
+
+      expect(response.statusCode, 413);
+      expect((await _json(response))['code'], 'payload_too_large');
     });
   });
 }

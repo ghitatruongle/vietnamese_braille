@@ -22,18 +22,26 @@ class HomeScreen extends ConsumerWidget {
     final isDark = ref.watch(themeProvider);
 
     final desktopShortcuts = <ShortcutActivator, VoidCallback>{
-      const SingleActivator(LogicalKeyboardKey.keyO, control: true):
-          () => notifier.pickAndConvert(),
-      const SingleActivator(LogicalKeyboardKey.keyO, meta: true):
-          () => notifier.pickAndConvert(),
-      const SingleActivator(LogicalKeyboardKey.keyS, control: true):
-          () => notifier.exportBrf(),
-      const SingleActivator(LogicalKeyboardKey.keyS, meta: true):
-          () => notifier.exportBrf(),
-      const SingleActivator(LogicalKeyboardKey.keyS, control: true, shift: true):
-          () => notifier.exportPdf(),
-      const SingleActivator(LogicalKeyboardKey.keyS, meta: true, shift: true):
-          () => notifier.exportPdf(),
+      const SingleActivator(LogicalKeyboardKey.keyO, control: true): () =>
+          notifier.pickAndConvert(),
+      const SingleActivator(LogicalKeyboardKey.keyO, meta: true): () =>
+          notifier.pickAndConvert(),
+      const SingleActivator(LogicalKeyboardKey.keyS, control: true): () =>
+          notifier.exportBrf(),
+      const SingleActivator(LogicalKeyboardKey.keyS, meta: true): () =>
+          notifier.exportBrf(),
+      const SingleActivator(
+        LogicalKeyboardKey.keyS,
+        control: true,
+        shift: true,
+      ): () =>
+          notifier.exportPdf(),
+      const SingleActivator(
+        LogicalKeyboardKey.keyS,
+        meta: true,
+        shift: true,
+      ): () =>
+          notifier.exportPdf(),
     };
 
     return CallbackShortcuts(
@@ -90,20 +98,25 @@ class HomeScreen extends ConsumerWidget {
   }
 
   /// Input section shared by both layouts.
-  Widget _buildInputSection(ConversionNotifier notifier) {
+  Widget _buildInputSection(BuildContext context, ConversionNotifier notifier) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextInputSection(notifier: notifier),
         const SizedBox(height: 12),
-        const Row(
+        Row(
           children: [
-            Expanded(child: Divider()),
+            const Expanded(child: Divider()),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text('HOẶC', style: TextStyle(color: Colors.grey)),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'HOẶC',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ),
             ),
-            Expanded(child: Divider()),
+            const Expanded(child: Divider()),
           ],
         ),
         const SizedBox(height: 12),
@@ -227,27 +240,32 @@ class HomeScreen extends ConsumerWidget {
 
   /// Empty state shown when no conversion has been done.
   Widget _buildEmptyState() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.translate, size: 64, color: Colors.grey.shade400),
-            const SizedBox(height: 16),
-            Text(
-              'Nhập văn bản để bắt đầu chuyển đổi',
-              style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
+    return Builder(
+      builder: (context) {
+        final secondaryColor = Theme.of(context).colorScheme.onSurfaceVariant;
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.translate, size: 64, color: secondaryColor),
+                const SizedBox(height: 16),
+                Text(
+                  'Nhập văn bản để bắt đầu chuyển đổi',
+                  style: TextStyle(color: secondaryColor, fontSize: 16),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Hỗ trợ chữ tiếng Việt, số, dấu câu và ký hiệu toán học',
+                  style: TextStyle(color: secondaryColor, fontSize: 13),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Hỗ trợ chữ tiếng Việt, số, dấu câu và ký hiệu toán học',
-              style: TextStyle(color: Colors.grey.shade500, fontSize: 13),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -263,7 +281,7 @@ class HomeScreen extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildInputSection(notifier),
+        _buildInputSection(context, notifier),
         const SizedBox(height: 16),
         if (hasOutput)
           _buildOutputSection(context, state, notifier)
@@ -285,7 +303,7 @@ class HomeScreen extends ConsumerWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(child: _buildInputSection(notifier)),
+        Expanded(child: _buildInputSection(context, notifier)),
         const SizedBox(width: 24),
         Expanded(
           child: hasOutput

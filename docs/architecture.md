@@ -64,5 +64,5 @@ nội bộ cho client.
 - Fixture TT15 không được sinh từ implementation.
 - Flutter unit/widget/integration tests cho data và presentation.
 - Handler tests cho ba endpoint API và các nhánh validation.
-- CI chạy Windows/Linux; coverage gate hiện là core 75%, app 70%, API 85%, kèm
+- CI chạy Windows/Linux; coverage gate hiện là core 90%, app 80%, API 90%, kèm
   Web/Android release builds.

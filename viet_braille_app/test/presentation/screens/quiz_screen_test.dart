@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:viet_braille_app/teaching/quiz_screen.dart';
 
@@ -28,6 +29,36 @@ void main() {
 
       expect(find.textContaining('/ 1'), findsOneWidget);
       expect(find.text('Câu tiếp theo'), findsOneWidget);
+      expect(
+        find.textContaining(RegExp(r'Chính xác|Chưa đúng')),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('đáp án có mô tả chấm Braille cho trình đọc màn hình', (
+      tester,
+    ) async {
+      final semantics = tester.ensureSemantics();
+      await tester.pumpWidget(const MaterialApp(home: QuizScreen()));
+
+      expect(
+        find.bySemanticsLabel(RegExp(r'Đáp án 1: ô Braille có chấm')),
+        findsOneWidget,
+      );
+      semantics.dispose();
+    });
+
+    testWidgets('phím số chọn đáp án và phím N chuyển câu', (tester) async {
+      await tester.pumpWidget(const MaterialApp(home: QuizScreen()));
+
+      await tester.sendKeyEvent(LogicalKeyboardKey.digit1);
+      await tester.pump();
+      expect(find.textContaining('/ 1'), findsOneWidget);
+
+      await tester.sendKeyEvent(LogicalKeyboardKey.keyN);
+      await tester.pump();
+      expect(find.text('Điểm: 0 / 0'), findsNothing);
+      expect(find.byType(ElevatedButton), findsNWidgets(4));
     });
   });
 }

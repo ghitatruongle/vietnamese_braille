@@ -1,7 +1,7 @@
 name: viet_braille_api
 description: "REST API for Vietnamese Braille conversion"
 publish_to: 'none'
-version: 1.0.1
+version: 1.1.0
 
 environment:
   sdk: ^3.11.5

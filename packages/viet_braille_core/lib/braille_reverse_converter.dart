@@ -602,30 +602,27 @@ class BrailleReverseConverterImpl implements BrailleReverseConverter {
       return (const _CellResult(handled: true, delta: 1), capState);
     }
 
-    // ── Normal: look for next vowel (skip capital indicators) ──
+    // ── Normal: đọc toàn bộ phần vần sau tone ──
+    //
+    // TT15 đặt tone trước toàn bộ phần vần, không nhất thiết ngay trước
+    // nguyên âm mang thanh trong chính tả Latin. Ví dụ:
+    //   Việt  = v + nặng + i + ê + t
+    //   đường = đ + huyền + ư + ơ + n + g
+    // Vì vậy reverse phải chọn đúng nguyên âm trong cụm thay vì gắn tone vào
+    // ô nguyên âm đầu tiên.
     if (i + 1 < brailleText.length) {
-      int lookAhead = i + 1;
-      bool hadCapital = false;
-      while (lookAhead < brailleText.length &&
-          brailleText[lookAhead] == _mapping.capitalIndicator) {
-        hadCapital = true;
-        lookAhead++;
-      }
-      if (lookAhead < brailleText.length) {
-        final result = _tryToneOnNextVowel(brailleText, lookAhead, toneMark);
-        if (result != null) {
-          final composed = _mapping.composeNfc(result);
-          final (capitalized, newCapState) = _applyCapitalization(
-            composed,
-            hadCapitalIndicator: hadCapital,
-            state: capState,
-          );
-          buffer.write(capitalized);
-          return (
-            _CellResult(handled: true, delta: lookAhead - i + 1),
-            newCapState,
-          );
-        }
+      final sequence = _decodeTonedVowelSequence(brailleText, i + 1, toneMark);
+      if (sequence != null) {
+        final (capitalized, newCapState) = _applyCapitalization(
+          sequence.text,
+          hadCapitalIndicator: sequence.hadCapitalIndicator,
+          state: capState,
+        );
+        buffer.write(capitalized);
+        return (
+          _CellResult(handled: true, delta: sequence.endIndex - i),
+          newCapState,
+        );
       }
     }
 
@@ -658,6 +655,84 @@ class BrailleReverseConverterImpl implements BrailleReverseConverter {
       return nextReversed + toneMark;
     }
     return null;
+  }
+
+  ({String text, int endIndex, bool hadCapitalIndicator})?
+  _decodeTonedVowelSequence(
+    String brailleText,
+    int startIndex,
+    String toneMark,
+  ) {
+    var cursor = startIndex;
+    var hadCapitalIndicator = false;
+    final vowels = <String>[];
+
+    while (cursor < brailleText.length) {
+      if (brailleText[cursor] == _mapping.capitalIndicator) {
+        if (vowels.isNotEmpty) break;
+        hadCapitalIndicator = true;
+        cursor++;
+        continue;
+      }
+
+      final vowel = _decodeVowelCell(brailleText[cursor]);
+      if (vowel == null) break;
+      vowels.add(vowel);
+      cursor++;
+    }
+
+    if (vowels.isEmpty) return null;
+
+    final following = cursor < brailleText.length
+        ? _handleSingleCell(brailleText[cursor])
+        : '';
+    final hasFollowingConsonant =
+        following.length == 1 &&
+        _isLetter(following) &&
+        !_isDecodedVowel(following);
+    final targetIndex = _toneTargetIndex(
+      vowels,
+      hasFollowingConsonant: hasFollowingConsonant,
+    );
+    final toned = <String>[
+      for (var index = 0; index < vowels.length; index++)
+        index == targetIndex ? vowels[index] + toneMark : vowels[index],
+    ].join();
+
+    return (
+      text: _mapping.composeNfc(toned),
+      endIndex: cursor,
+      hadCapitalIndicator: hadCapitalIndicator,
+    );
+  }
+
+  String? _decodeVowelCell(String cell) {
+    final vietnameseVowel = _mapping.reverseMapVowel(cell);
+    if (vietnameseVowel != null) return vietnameseVowel;
+    final latin = _mapping.reverseMapChar(cell);
+    if (latin != null && _isLatinVowel(latin)) return latin;
+    return null;
+  }
+
+  static int _toneTargetIndex(
+    List<String> vowels, {
+    required bool hasFollowingConsonant,
+  }) {
+    // Vowel mang dấu phụ là trung tâm của các vần iê/yê, uô, ươ, uâ...
+    const preferredNuclei = {'ê', 'ơ', 'ô', 'â', 'ă'};
+    for (var index = vowels.length - 1; index >= 0; index--) {
+      if (preferredNuclei.contains(vowels[index])) return index;
+    }
+
+    final cluster = vowels.join();
+    if (hasFollowingConsonant &&
+        (cluster == 'oa' || cluster == 'oe' || cluster == 'uy')) {
+      return vowels.length - 1;
+    }
+
+    // Các vần mở hòa, khỏe, thủy và ia, ua, ưa, ai, ao, oi... mang thanh
+    // ở nguyên âm đầu theo chính tả phổ biến hiện hành.
+    return 0;
   }
 
   void _retroactiveTone(StringBuffer buffer, String text, String toneMark) {

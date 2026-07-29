@@ -360,7 +360,7 @@ void main() {
       final endFormat = brf('156'); // ⠱
       expect(
         converter.convert('Việt Nam'),
-        '$initCapsPhrase$cellV$cellI$toneNang$cellEE$cellT $cellN$cellA$cellM$endFormat',
+        '$initCapsPhrase$cellV$toneNang$cellI$cellEE$cellT $cellN$cellA$cellM$endFormat',
       );
     });
     test('VIỆT NAM = all-caps phrase prefix + viêt nam + endFormat', () {
@@ -368,7 +368,7 @@ void main() {
       final endFormat = brf('156'); // ⠱
       expect(
         converter.convert('VIỆT NAM'),
-        '$allCapsPhrase$cellV$cellI$toneNang$cellEE$cellT $cellN$cellA$cellM$endFormat',
+        '$allCapsPhrase$cellV$toneNang$cellI$cellEE$cellT $cellN$cellA$cellM$endFormat',
       );
     });
     test('VII = Roman numeral single capital indicator', () {

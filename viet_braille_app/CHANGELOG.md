@@ -8,6 +8,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-07-28
+
 ### Changed
 - UI và tài liệu dùng đúng thuật ngữ Braille tiếng Việt 6 chấm.
 - BRF formatter mã hóa North American Braille ASCII thật.
@@ -15,6 +17,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 - App now consumes the shared `viet_braille_core` package as the single source of truth for conversion logic; removed duplicated copies in `lib/core` and `lib/domain` (mapping, dots, converter, reverse converter, BRF formatter).
 - `conversion_provider` services are exposed as overridable Riverpod providers for easier testing/mock injection.
 - `SpeechService` accepts an injectable `SpeechToText` dependency.
+- Quiz có nhãn mô tả số chấm, phím tắt 1–4/N và phản hồi đúng/sai không phụ
+  thuộc màu sắc.
+- Lưới Braille dùng được bằng bàn phím và công bố trạng thái bật/tắt cho trình
+  đọc màn hình.
+- Màn hình Cài đặt công bố cách xử lý dữ liệu, OCR và nhận dạng giọng nói.
 
 ### Fixed
 - Dấu `?`/`-` không còn bị đổi thành thanh hỏi/ngã trong các trường hợp như `a?a`, `a-a`, `Có?Ai`.
@@ -22,6 +29,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 - `lineLength <= 0` bị từ chối thay vì gây vòng lặp vô hạn.
 - Init-caps phrase grouping consistency in `viet_braille_core` (aligned with the all-caps fix; Bug #3).
 - Removed `print()` from the core library (`braille_converter.dart`).
+- Dấu thanh trong vần nhiều nguyên âm được đặt trước toàn bộ phần vần theo TT15.
+- Xóa lưới Braille nay đồng thời xóa ký tự kết quả cũ.
 
 ### Added
 - Tests: `SpeechService`, `LearningScreen`, `QuizScreen`; phrase-grouping regression tests in `viet_braille_core`.
