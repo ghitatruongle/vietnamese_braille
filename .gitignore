@@ -44,5 +44,13 @@ pubspec.lock
 # ─── Generated documentation ──────────────────────────────────────────────
 site/
 
+# ─── Tài liệu quy tắc nội bộ (đã purge khỏi toàn bộ lịch sử git) ──────
+# PDF TT15 không vendored; ai có tài liệu đặt vào quytac/ để đối chiếu
+# SHA-256 qua tools/compliance_report.py (thiếu file = not_vendored).
+quytac/
+
+# ─── Backup bundle trước khi purge lịch sử (không bao giờ commit) ────
+*.bundle
+
 # ─── Local editor/assistant state ─────────────────────────────────────
 .openclaude/

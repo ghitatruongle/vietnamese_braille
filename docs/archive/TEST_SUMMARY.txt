@@ -1,6 +1,9 @@
 Vietnamese Braille Converter - Test Summary
 ============================================
 
+[TAI LIEU LUU TRU - snapshot lich su 2026-06-30. So lieu "50/50 tests"
+chi dung tai thoi diem do. So lieu hien hanh: docs/phase-0-5-audit.md]
+
 Date: 2026-06-30
 Status: ALL TESTS PASSED ✅
 

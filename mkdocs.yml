@@ -34,6 +34,7 @@ nav:
   - Mô hình đe dọa: threat-model.md
   - Checklist phát hành: release-checklist.md
   - Ma trận Phase 0–5: phase-0-5-audit.md
+  - Số liệu chất lượng: metrics.md
   - Quyết định kiến trúc: adr/README.md
   - Kiến trúc: architecture.md
   - Đóng góp: contributing.md

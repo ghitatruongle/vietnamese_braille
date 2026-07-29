@@ -37,8 +37,8 @@ limit.
 |---|---:|---|
 | `PORT` | `8080` | Cổng lắng nghe |
 | `ALLOWED_ORIGINS` | rỗng | Danh sách origin CORS, phân cách bằng dấu phẩy |
-| `API_KEYS` | rỗng | Danh sách API key, phân cách bằng dấu phẩy; rỗng chỉ phù hợp môi trường phát triển/API công khai có chủ đích |
-| `API_AUTH_REQUIRED` | `false` | Đặt `true` trong production; server từ chối khởi động nếu `API_KEYS` rỗng |
+| `API_KEYS` | rỗng | Danh sách API key, phân cách bằng dấu phẩy; bắt buộc trừ khi bật `ALLOW_ANONYMOUS` |
+| `ALLOW_ANONYMOUS` | `false` | Secure-by-default: server từ chối khởi động nếu `API_KEYS` rỗng, trừ khi đặt tường minh `true` (chỉ phù hợp phát triển/API công khai có chủ đích) |
 | `RATE_LIMIT_REQUESTS` | `120` | Số yêu cầu tối đa trong một cửa sổ |
 | `RATE_LIMIT_WINDOW_SECONDS` | `60` | Độ dài cửa sổ rate limit |
 | `TRUST_PROXY` | `false` | Chỉ bật khi reverse proxy đáng tin đã chuẩn hóa `X-Forwarded-For` |
@@ -55,9 +55,13 @@ X-API-Key: <secret>
 Authorization: Bearer <secret>
 ```
 
-Không ghi API key vào mã nguồn, log hoặc image. Môi trường production phải đặt
-`API_AUTH_REQUIRED=true`, dùng secret có entropy cao và xoay vòng tại secret
-manager/gateway.
+Không ghi API key vào mã nguồn, log hoặc image. Xác thực là mặc định;
+muốn chạy không xác thực phải đặt `ALLOW_ANONYMOUS=true` tường minh.
+Dùng secret có entropy cao và xoay vòng tại secret manager/gateway.
+
+Rate limiter mặc định là in-memory theo từng tiến trình; khi chạy nhiều
+instance sau load balancer, inject implementation `RateLimiter` dùng backend
+chung (ví dụ Redis) qua `createApiHandler(rateLimiter: ...)`.
 
 Mỗi phản hồi có `X-Request-ID`, security headers và metadata rate-limit. Log có
 request ID, method, path, status, thời lượng; không ghi body chuyển đổi.

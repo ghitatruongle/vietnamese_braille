@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+- Job Semgrep SAST trong CI (rule `p/ci`, `p/python`, `p/github-actions`)
+- Gate `check_release_workflow.py` từ chối mọi action không pin commit SHA
+- `tools/refresh_metrics.py` sinh `docs/metrics.md` và badge coverage gộp
+- API: interface `RateLimiter` cho phép inject backend chia sẻ khi scale ngang
+- API: `BrailleHandlers` nhận converter qua constructor (bỏ singleton toàn cục)
+- ADR-0003 về va chạm ô `?`/thanh hỏi và `-`/thanh ngã
+
+### Changed
+- **BREAKING (lịch sử git):** thư mục `quytac/` (tài liệu nội bộ) bị xóa
+  vĩnh viễn khỏi toàn bộ lịch sử bằng `git filter-branch`; commit hash đổi
+  toàn bộ, cần force-push và các clone cũ phải clone lại
+- Gate TT15: PDF nguồn không còn vendored — thiếu file báo cáo trung thực
+  `not_vendored` (gate dựa trên 141 phép kiểm fixture), hash sai vẫn fail;
+  `verify_tt15.dart` kiểm tham chiếu nguồn thay vì sự tồn tại của file
+- **BREAKING (API server):** xác thực là mặc định khi cấu hình từ biến môi
+  trường; biến `API_AUTH_REQUIRED` bị thay bằng `ALLOW_ANONYMOUS` — server
+  từ chối khởi động nếu `API_KEYS` rỗng mà không đặt `ALLOW_ANONYMOUS=true`
+- Toàn bộ GitHub Actions pin bằng commit SHA kèm comment version
+- CI nâng mức analyze lên `--fatal-infos` cho cả 3 module
+- Tài liệu lịch sử 2026-06-30 (BUG_REPORT, FIXES_COMPLETED, TEST_SUMMARY)
+  chuyển vào `docs/archive/` kèm banner snapshot
+
 ## [1.1.0] - 2026-07-28
 
 ### Added
