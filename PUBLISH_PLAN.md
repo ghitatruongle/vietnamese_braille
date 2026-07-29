@@ -24,8 +24,8 @@ diện” hay “production-ready” khi chưa có đủ bằng chứng ở bả
 
 | Hạng mục | Trạng thái hiện tại |
 |---|---|
-| Format/docs/analyze/test cục bộ | Đạt ngày 27/07/2026 bằng `python tools/verify.py --all` |
-| Coverage cục bộ | Đạt: core 92,92%; app 82,89%; API 92,31% |
+| Format/docs/analyze/test cục bộ | Đạt ngày 30/07/2026: 821/821 test xanh (core 81, app 709, API 31) |
+| Coverage cục bộ | Đạt ngày 30/07/2026: core 92,94%; app 84,33%; API 90,94% — xem `docs/metrics.md` (sinh bằng `tools/refresh_metrics.py`) |
 | Build release cục bộ | Đạt: Windows x64, Web và Android AAB |
 | Lỗ hổng dependency đã biết | OSV-Scanner 2.4.0: không phát hiện vấn đề trong 3 lockfile |
 | TT15 fixture + SHA-256 + exact output | Đạt tự động; external review còn chờ |

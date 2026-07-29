@@ -34,6 +34,8 @@ flutter test test/accessibility --no-pub
 
 “Chưa thực hiện” là cổng phát hành, không được đổi thành “đạt” nếu thiếu ngày,
 phiên bản hệ điều hành, phiên bản trình đọc màn hình, người kiểm thử và biên bản.
+Kịch bản thao tác từng bước và biên bản mẫu cho cả bốn phiên:
+[external-validation/screen-reader-scripts.md](external-validation/screen-reader-scripts.md).
 
 Biên bản đã được ký xác nhận phải được tóm tắt theo mẫu
 `release_evidence/release-evidence.json.example`. Workflow yêu cầu đủ bốn phiên

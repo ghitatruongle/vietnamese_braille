@@ -1,7 +1,7 @@
 name: viet_braille_app
 description: "Ứng dụng chuyển đổi văn bản tiếng Việt sang Braille Unicode 6 chấm và BRF."
 publish_to: 'none'
-version: 1.1.0+2
+version: 1.2.0+3
 
 environment:
   sdk: ^3.11.5

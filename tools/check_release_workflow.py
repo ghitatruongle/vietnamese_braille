@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 import sys
 
 
@@ -28,7 +29,9 @@ REQUIRED_SNIPPETS = {
         "jarsigner -verify -strict -certs"
     ),
     "SPDX SBOM": "format: spdx-json",
-    "artifact attestation": "uses: actions/attest@v4",
+    "artifact attestation": (
+        "uses: actions/attest@36051bcae73b7c2a8a6945a48cbf80953c6baa35"
+    ),
     "protected release environment": "environment: production-release",
     "immutable tag verification": "--verify-tag",
 }
@@ -36,6 +39,9 @@ FORBIDDEN_SNIPPETS = {
     "debug signing fallback": "signingConfigs.getByName(\"debug\")",
     "unenforced Flutter dependency resolution": "flutter pub get\n",
 }
+
+# Mọi action phải pin bằng commit SHA 40 ký tự, không dùng tag nổi (v4, v2...).
+_UNPINNED_ACTION = re.compile(r"uses:\s*[\w./-]+@(?![0-9a-f]{40}\b)\S+")
 
 
 def validate_release_workflow(source: str) -> list[str]:
@@ -54,6 +60,10 @@ def validate_release_workflow(source: str) -> list[str]:
             "all quality, Windows, and Android/Web jobs must enforce "
             "the Flutter lockfile"
         )
+    failures.extend(
+        f"unpinned action reference: {match.group(0).strip()}"
+        for match in _UNPINNED_ACTION.finditer(source)
+    )
     return failures
 
 

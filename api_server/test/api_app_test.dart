@@ -28,12 +28,12 @@ void main() {
     final configured = ApiConfig.fromEnvironment({
       'ALLOWED_ORIGINS': 'https://one.example, https://two.example',
       'API_KEYS': 'first-secret, second-secret, first-secret',
-      'API_AUTH_REQUIRED': 'TRUE',
       'RATE_LIMIT_REQUESTS': '7',
       'RATE_LIMIT_WINDOW_SECONDS': '30',
       'TRUST_PROXY': 'TRUE',
     });
     final fallback = ApiConfig.fromEnvironment({
+      'ALLOW_ANONYMOUS': 'true',
       'RATE_LIMIT_REQUESTS': '0',
       'RATE_LIMIT_WINDOW_SECONDS': 'invalid',
     });
@@ -55,9 +55,9 @@ void main() {
     expect(fallback.trustProxy, isFalse);
   });
 
-  test('mandatory authentication rejects an empty key set', () {
+  test('authentication is mandatory unless anonymous is explicit', () {
     expect(
-      () => ApiConfig.fromEnvironment({'API_AUTH_REQUIRED': 'true'}),
+      () => ApiConfig.fromEnvironment({}),
       throwsA(isA<FormatException>()),
     );
     expect(
@@ -381,6 +381,30 @@ void main() {
     expect(secondClient.statusCode, 200);
   });
 
+  test(
+    'an injected rate limiter strategy replaces the in-memory one',
+    () async {
+      final checkedKeys = <String>[];
+      final handler = createApiHandler(
+        logger: (_) {},
+        clientKey: (_) => 'injected-client',
+        rateLimiter: _DenyAllRateLimiter(onCheck: checkedKeys.add),
+      );
+
+      final response = await handler(
+        _request(
+          'POST',
+          '/convert',
+          headers: {'Content-Type': 'application/json'},
+          body: '{"text":"xin"}',
+        ),
+      );
+
+      expect(response.statusCode, 429);
+      expect(checkedKeys, ['injected-client']);
+    },
+  );
+
   test('health checks are not rate limited', () async {
     final handler = createApiHandler(
       config: const ApiConfig(rateLimitRequests: 1),
@@ -393,4 +417,23 @@ void main() {
       expect(response.statusCode, 200);
     }
   });
+}
+
+class _DenyAllRateLimiter implements RateLimiter {
+  _DenyAllRateLimiter({required this.onCheck});
+
+  final void Function(String key) onCheck;
+
+  @override
+  int get maxRequests => 0;
+
+  @override
+  RateLimitDecision check(String key) {
+    onCheck(key);
+    return const RateLimitDecision(
+      allowed: false,
+      remaining: 0,
+      retryAfterSeconds: 1,
+    );
+  }
 }

@@ -1,5 +1,7 @@
 # Bug Report & Accuracy Analysis - Vietnamese Braille Converter
 
+> **⚠️ TÀI LIỆU LƯU TRỮ (snapshot lịch sử 2026-06-30).** Nội dung phản ánh trạng thái mã nguồn tại thời điểm đó và đã lỗi thời. Các bug liệt kê đã được sửa (xem `FIXES_COMPLETED.md`). Số liệu hiện hành: xem `docs/phase-0-5-audit.md`.
+
 **Generated:** 2026-06-30  
 **Analyzed File:** `packages/viet_braille_core/lib/braille_converter.dart`  
 **Analysis Tool:** `tools/bug_check.py`
