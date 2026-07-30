@@ -1,0 +1,2020 @@
+
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Vietnamese Braille Converter - Text to Braille Unicode and reverse">
+      
+      
+      
+        <link rel="canonical" href="https://ghitatruongle.github.io/vietnamese-braille/archive/BUG_REPORT/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Bug Report & Accuracy Analysis - Vietnamese Braille Converter - Vietnamese Braille</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bug-report-accuracy-analysis-vietnamese-braille-converter" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Đầu trang">
+    <a href="../.." title="Vietnamese Braille" class="md-header__button md-logo" aria-label="Vietnamese Braille" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Vietnamese Braille
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Bug Report &amp; Accuracy Analysis - Vietnamese Braille Converter
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Tìm kiếm" placeholder="Tìm kiếm" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Tìm kiếm">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Xoá" aria-label="Xoá" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Trang chủ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../user-guide/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Hướng dẫn sử dụng
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tt15-compliance/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Đối chiếu Thông tư 15
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../accessibility-testing/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Kiểm thử khả năng tiếp cận
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../external-validation/" class="md-tabs__link">
+          
+  
+  
+  Xác thực bên ngoài
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../privacy/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quyền riêng tư
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../threat-model/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Mô hình đe dọa
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../release-checklist/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Checklist phát hành
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../phase-0-5-audit/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Ma trận Phase 0–5
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../metrics/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Số liệu chất lượng
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../adr/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quyết định kiến trúc
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Kiến trúc
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../contributing/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Đóng góp
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Vietnamese Braille" class="md-nav__button md-logo" aria-label="Vietnamese Braille" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Vietnamese Braille
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trang chủ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hướng dẫn sử dụng
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tt15-compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Đối chiếu Thông tư 15
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../accessibility-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiểm thử khả năng tiếp cận
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Xác thực bên ngoài
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Xác thực bên ngoài
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../external-validation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../external-validation/screen-reader-scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kịch bản trình đọc màn hình
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../external-validation/user-validation-survey/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phiếu nghiệm thu người dùng
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../external-validation/expert-review-packet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gói đối chiếu chuyên gia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quyền riêng tư
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../threat-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mô hình đe dọa
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../release-checklist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist phát hành
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phase-0-5-audit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ma trận Phase 0–5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Số liệu chất lượng
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quyết định kiến trúc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Đóng góp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executive Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-priority-bugs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔴 HIGH PRIORITY BUGS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔴 HIGH PRIORITY BUGS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-2-logic-error-trong-phrase-grouping-line-138-140" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug #2: Logic Error trong Phrase Grouping (Line 138-140)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#medium-priority-bugs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🟡 MEDIUM PRIORITY BUGS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🟡 MEDIUM PRIORITY BUGS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-1-decimal-point-logic-conflict-line-277-291" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug #1: Decimal Point Logic Conflict (Line 277-291)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-4-qu-context-tracking-issue-line-319-321" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug #4: qu Context Tracking Issue (Line 319-321)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-7-operator-space-removal-infinite-loop-risk-line-56-64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug #7: Operator Space Removal - Infinite Loop Risk (Line 56-64)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#low-priority-bugs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🟢 LOW PRIORITY BUGS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🟢 LOW PRIORITY BUGS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-3-code-duplication-init-caps-phrase-line-169" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug #3: Code Duplication - Init Caps Phrase (Line 169)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-6-unit-regex-pattern-coverage-line-47-52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug #6: Unit Regex Pattern Coverage (Line 47-52)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-8-nfc-composition-hard-coded-3-passes-braille_mappingdart376-402" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug #8: NFC Composition - Hard-coded 3 Passes (braille_mapping.dart:376-402)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accuracy-concerns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📊 ACCURACY CONCERNS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 ACCURACY CONCERNS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#concern-1-qugi-rule-edge-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concern #1: qu/gi Rule Edge Cases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concern-2-capitalization-voi-tone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concern #2: Capitalization với Tone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concern-3-number-mode-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concern #3: Number Mode Context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concern-4-nfd-normalization-voi-qugi-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concern #4: NFD Normalization với qu/gi Rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concern-5-phrase-capitalization-end-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concern #5: Phrase Capitalization End Format
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧪 RECOMMENDED TESTS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧪 RECOMMENDED TESTS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-suite-1-phrase-grouping-fix-bug-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Suite 1: Phrase Grouping (Fix Bug #2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-suite-2-qugi-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Suite 2: qu/gi Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-suite-3-number-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Suite 3: Number Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-suite-4-nfd-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Suite 4: NFD Input
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-suite-5-edge-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Suite 5: Edge Cases
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#immediate-actions-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔧 IMMEDIATE ACTIONS REQUIRED
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 IMMEDIATE ACTIONS REQUIRED">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#priority-1-fix-bug-2-high" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority 1: FIX BUG #2 (HIGH)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priority-2-add-unit-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority 2: ADD UNIT TESTS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priority-3-verify-accuracy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority 3: VERIFY ACCURACY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priority-4-add-safeguards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority 4: ADD SAFEGUARDS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priority-5-code-refactoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority 5: CODE REFACTORING
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verification-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📈 VERIFICATION CHECKLIST
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 REFERENCES
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 NOTES
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="bug-report-accuracy-analysis-vietnamese-braille-converter">Bug Report &amp; Accuracy Analysis - Vietnamese Braille Converter<a class="headerlink" href="#bug-report-accuracy-analysis-vietnamese-braille-converter" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>⚠️ TÀI LIỆU LƯU TRỮ (snapshot lịch sử 2026-06-30).</strong> Nội dung phản ánh trạng thái mã nguồn tại thời điểm đó và đã lỗi thời. Các bug liệt kê đã được sửa (xem <code>FIXES_COMPLETED.md</code>). Số liệu hiện hành: xem <code>docs/phase-0-5-audit.md</code>.</p>
+</blockquote>
+<p><strong>Generated:</strong> 2026-06-30<br />
+<strong>Analyzed File:</strong> <code>packages/viet_braille_core/lib/braille_converter.dart</code><br />
+<strong>Analysis Tool:</strong> <code>tools/bug_check.py</code></p>
+<hr />
+<h2 id="executive-summary">Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
+<p>Phân tích code đã phát hiện <strong>7 bugs</strong> với mức độ nghiêm trọng từ LOW đến HIGH, và <strong>5 vấn đề về độ chính xác</strong> cần được xác minh. Bug quan trọng nhất là lỗi logic tại line 138 có thể ảnh hưởng đến việc nhóm từ viết hoa.</p>
+<hr />
+<h2 id="high-priority-bugs">🔴 HIGH PRIORITY BUGS<a class="headerlink" href="#high-priority-bugs" title="Permanent link">&para;</a></h2>
+<h3 id="bug-2-logic-error-trong-phrase-grouping-line-138-140">Bug #2: Logic Error trong Phrase Grouping (Line 138-140)<a class="headerlink" href="#bug-2-logic-error-trong-phrase-grouping-line-138-140" title="Permanent link">&para;</a></h3>
+<p><strong>Mức độ:</strong> HIGH<br />
+<strong>File:</strong> <code>braille_converter.dart:138-140</code><br />
+<strong>Vị trí:</strong> Hàm <code>_groupWords()</code> - All Caps Phrase detection</p>
+<p><strong>Code hiện tại:</strong>
+<div class="highlight"><pre><span></span><code><span class="kd">final</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">normalized</span><span class="p">.</span><span class="n">substring</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="p">].</span><span class="n">end</span><span class="p">,</span><span class="w"> </span><span class="n">words</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">start</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sep</span><span class="p">.</span><span class="n">trim</span><span class="p">().</span><span class="n">isNotEmpty</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">sep</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">break</span><span class="p">;</span><span class="w"> </span><span class="c1">// chỉ cho phép ngăn cách bằng khoảng trắng</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Vấn đề:</strong>
+- Điều kiện <code>sep.trim().isNotEmpty || sep.isEmpty</code> <strong>LUÔN LUÔN ĐÚNG</strong> (always true)
+- Logic này không bao giờ cho phép các từ viết hoa được nhóm lại thành cụm
+- Test cases như "THÔNG TƯ SỐ 15" sẽ không được xử lý đúng</p>
+<p><strong>Phân tích logic:</strong>
+- Nếu <code>sep = "  "</code> (2 spaces):
+  - <code>sep.trim().isNotEmpty</code> = false
+  - <code>sep.isEmpty</code> = false<br />
+  - → false || false = false ✓ (không break, tiếp tục)</p>
+<ul>
+<li>Nếu <code>sep = ""</code> (empty):</li>
+<li><code>sep.trim().isNotEmpty</code> = false</li>
+<li><code>sep.isEmpty</code> = true</li>
+<li>
+<p>→ false || true = <strong>TRUE</strong> ✗ (break ngay lập tức!)</p>
+</li>
+<li>
+<p>Nếu <code>sep = "\n"</code> hoặc ký tự đặc biệt:</p>
+</li>
+<li><code>sep.trim().isNotEmpty</code> = false (sau trim còn "")</li>
+<li><code>sep.isEmpty</code> = false (trước trim khác "")</li>
+<li>→ false || false = false ✓</li>
+</ul>
+<p><strong>Cách sửa:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1">// Option 1: Chỉ break khi có ký tự không phải whitespace</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sep</span><span class="p">.</span><span class="n">trim</span><span class="p">().</span><span class="n">isNotEmpty</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Option 2: Rõ ràng hơn</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">sep</span><span class="p">.</span><span class="n">trim</span><span class="p">().</span><span class="n">isEmpty</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">sep</span><span class="p">.</span><span class="n">isNotEmpty</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">break</span><span class="p">;</span><span class="w"> </span><span class="c1">// có ký tự đặc biệt, không phải chỉ khoảng trắng</span>
+<span class="p">}</span>
+
+<span class="c1">// Option 3: Đơn giản nhất (recommended)</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sep</span><span class="p">.</span><span class="n">trim</span><span class="p">().</span><span class="n">isNotEmpty</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">break</span><span class="p">;</span><span class="w"> </span><span class="c1">// chỉ cho phép ngăn cách bằng khoảng trắng/tab/newline</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Impact:</strong>
+- Tất cả các cụm từ viết hoa như "HÀ NỘI", "UNESCO VIỆT NAM" sẽ không được format đúng
+- Dấu <code>allCapsPhrase</code> và <code>endFormat</code> không được thêm vào
+- Vi phạm quy tắc trình bày Braille theo Thông tư 15</p>
+<p><strong>Test case bị ảnh hưởng:</strong>
+<div class="highlight"><pre><span></span><code><span class="s2">&quot;THÔNG TƯ SỐ 15&quot;</span> <span class="err">→</span> <span class="n">Cần</span><span class="p">:</span> <span class="n">allCapsPhrase</span> <span class="o">+</span> <span class="o">...</span> <span class="o">+</span> <span class="n">endFormat</span>
+<span class="s2">&quot;HÀ NỘI&quot;</span> <span class="err">→</span> <span class="n">Initcaps</span> <span class="n">nhưng</span> <span class="n">không</span> <span class="n">áp</span> <span class="n">dụng</span> <span class="n">phrase</span> <span class="n">mode</span> <span class="n">đúng</span>
+</code></pre></div></p>
+<hr />
+<h2 id="medium-priority-bugs">🟡 MEDIUM PRIORITY BUGS<a class="headerlink" href="#medium-priority-bugs" title="Permanent link">&para;</a></h2>
+<h3 id="bug-1-decimal-point-logic-conflict-line-277-291">Bug #1: Decimal Point Logic Conflict (Line 277-291)<a class="headerlink" href="#bug-1-decimal-point-logic-conflict-line-277-291" title="Permanent link">&para;</a></h3>
+<p><strong>Mức độ:</strong> MEDIUM<br />
+<strong>File:</strong> <code>braille_converter.dart:277-291</code><br />
+<strong>Vị trí:</strong> Number mode - decimal separator handling</p>
+<p><strong>Code hiện tại:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">inNumber</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">    </span><span class="n">ch</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;.&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">normalized</span><span class="p">.</span><span class="n">length</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">    </span><span class="n">_isDigit</span><span class="p">(</span><span class="n">normalized</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">]))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">buffer</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">_mapping</span><span class="p">.</span><span class="n">mapChar</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span><span class="o">!</span><span class="p">);</span><span class="w"> </span><span class="c1">// chấm hàng nghìn -&gt; ⠄ (dot 3)</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">inNumber</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">    </span><span class="n">ch</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">normalized</span><span class="p">.</span><span class="n">length</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">    </span><span class="n">_isDigit</span><span class="p">(</span><span class="n">normalized</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">]))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">buffer</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">_mapping</span><span class="p">.</span><span class="n">mapChar</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span><span class="o">!</span><span class="p">);</span><span class="w"> </span><span class="c1">// phẩy thập phân -&gt; ⠂ (dot 2)</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Vấn đề:</strong>
+- Logic xử lý dấu chấm <code>.</code> và phẩy <code>,</code> chỉ hoạt động trong <code>inNumber</code> mode
+- Nếu <code>inNumber</code> flag không được set đúng, dấu chấm sẽ được xử lý như punctuation thông thường
+- Có thể conflict với dấu chấm kết thúc câu ngay sau số</p>
+<p><strong>Ví dụ edge case:</strong>
+<div class="highlight"><pre><span></span><code>Input: &quot;Năm 2024. Việt Nam...&quot;
+       ↓
+&quot;2024.&quot; ← Dấu chấm này là punctuation hay decimal?
+
+Input: &quot;3.14 là số PI&quot;
+       ↓
+Nếu inNumber = false trước &quot;3&quot; thì &quot;.14&quot; sẽ không được xử lý đúng
+</code></pre></div></p>
+<p><strong>Khuyến nghị:</strong>
+- Thêm lookahead/lookbehind để phân biệt decimal point vs sentence punctuation
+- Xem xét context rộng hơn (ví dụ: <code>\d+\.\d+</code> pattern)
+- Test với các trường hợp: "123.", "3.14", "1,234.56"</p>
+<hr />
+<h3 id="bug-4-qu-context-tracking-issue-line-319-321">Bug #4: qu Context Tracking Issue (Line 319-321)<a class="headerlink" href="#bug-4-qu-context-tracking-issue-line-319-321" title="Permanent link">&para;</a></h3>
+<p><strong>Mức độ:</strong> MEDIUM<br />
+<strong>File:</strong> <code>braille_converter.dart:319-321</code><br />
+<strong>Vị trí:</strong> qu rule handling</p>
+<p><strong>Code hiện tại:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">inQuContext</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ch</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;u&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">prevCharLower</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;q&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">inQuContext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">inQuContext</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">_isVowel</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">_isTonedVowel</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Clear qu context when we hit a consonant or non-vowel</span>
+<span class="w">  </span><span class="n">inQuContext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Vấn đề:</strong>
+- <code>inQuContext</code> được set sau khi gặp <code>q + u</code>
+- Nhưng không clear khi gặp consonant <strong>ngay sau <code>u</code></strong>
+- Có thể gây false positive cho các từ không thuộc qu rule</p>
+<p><strong>Ví dụ có vấn đề:</strong>
+<div class="highlight"><pre><span></span><code>Input: &quot;quy&quot; (từ đúng qu rule)
+  q → prevChar = &#39;q&#39;
+  u → inQuContext = true ✓
+  y → _isVowel(&#39;y&#39;) = true, không clear context ✓
+
+Input: &quot;quyết&quot; (từ đúng qu rule)
+  q → u → inQuContext = true
+  y → vowel, không clear
+  ê → toned vowel, không clear ✓
+  t → consonant, clear context ✓
+
+Input: &quot;qu-abc&quot; (giả định, không phải từ thực)
+  q → u → inQuContext = true
+  - → không phải vowel/tonedVowel/consonant?
+     → Context có clear không?
+</code></pre></div></p>
+<p><strong>Khuyến nghị:</strong>
+- Kiểm tra logic <code>_isVowel()</code> và <code>_isTonedVowel()</code> có cover hết các ký tự không?
+- Thêm test cho các edge case: số, punctuation nằm giữa qu sequence
+- Xem xét dùng state machine rõ ràng hơn cho qu/gi rules</p>
+<hr />
+<h3 id="bug-7-operator-space-removal-infinite-loop-risk-line-56-64">Bug #7: Operator Space Removal - Infinite Loop Risk (Line 56-64)<a class="headerlink" href="#bug-7-operator-space-removal-infinite-loop-risk-line-56-64" title="Permanent link">&para;</a></h3>
+<p><strong>Mức độ:</strong> MEDIUM<br />
+<strong>File:</strong> <code>braille_converter.dart:56-64</code><br />
+<strong>Vị trí:</strong> <code>_preprocess()</code> - operator whitespace removal</p>
+<p><strong>Code hiện tại:</strong>
+<div class="highlight"><pre><span></span><code><span class="kd">final</span><span class="w"> </span><span class="n">opRegex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RegExp</span><span class="p">(</span><span class="s1">r&#39;(\d)\s*([\+\-\*\/x\:=\&lt;\&gt;≈≤≥])\s*(\d)&#39;</span><span class="p">);</span>
+<span class="kt">String</span><span class="w"> </span><span class="n">prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">text</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">prev</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">text</span><span class="p">;</span>
+<span class="w">  </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">text</span><span class="p">.</span><span class="n">replaceAllMapped</span><span class="p">(</span>
+<span class="w">    </span><span class="n">opRegex</span><span class="p">,</span>
+<span class="w">    </span><span class="p">(</span><span class="n">match</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;</span><span class="si">${</span><span class="n">match</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="m">1</span><span class="p">)</span><span class="si">}${</span><span class="n">match</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="m">2</span><span class="p">)</span><span class="si">}${</span><span class="n">match</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="m">3</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Vấn đề:</strong>
+- While loop với điều kiện <code>text != prev</code>
+- Nếu regex không match hoặc replacement tạo ra cùng pattern, loop vẫn an toàn
+- Nhưng nếu có bug trong regex hoặc edge case, có thể gây infinite loop</p>
+<p><strong>Phân tích an toàn:</strong>
+- Regex yêu cầu <code>\d</code> ở cả 2 đầu → chỉ match với số
+- Replacement xóa whitespace → text ngắn hơn hoặc bằng
+- Mỗi lần loop, text phải thay đổi (ngắn hơn) hoặc không match nữa
+- → <strong>Về lý thuyết an toàn</strong>, nhưng khó debug nếu có vấn đề</p>
+<p><strong>Ví dụ:</strong>
+<div class="highlight"><pre><span></span><code>&quot;2  +  3  *  4&quot; 
+→ &quot;2+3  *  4&quot;   (lần 1)
+→ &quot;2+3*4&quot;       (lần 2)
+→ &quot;2+3*4&quot;       (lần 3, không đổi, thoát loop) ✓
+</code></pre></div></p>
+<p><strong>Khuyến nghị:</strong>
+- Thêm counter max iterations (vd: 100) để prevent infinite loop
+- Log warning nếu loop chạy quá nhiều lần
+- Có thể thay bằng regex global match một lần:
+  <div class="highlight"><pre><span></span><code><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">text</span><span class="p">.</span><span class="n">replaceAll</span><span class="p">(</span><span class="n">RegExp</span><span class="p">(</span><span class="s1">r&#39;(\d)\s*([\+\-\*\/x\:=\&lt;\&gt;≈≤≥])\s*(\d)&#39;</span><span class="p">),</span><span class="w"> </span><span class="s1">r&#39;$1$2$3&#39;</span><span class="p">);</span>
+</code></pre></div>
+  (Nhưng cần kiểm tra xem có case nào cần multiple passes không)</p>
+<hr />
+<h2 id="low-priority-bugs">🟢 LOW PRIORITY BUGS<a class="headerlink" href="#low-priority-bugs" title="Permanent link">&para;</a></h2>
+<h3 id="bug-3-code-duplication-init-caps-phrase-line-169">Bug #3: Code Duplication - Init Caps Phrase (Line 169)<a class="headerlink" href="#bug-3-code-duplication-init-caps-phrase-line-169" title="Permanent link">&para;</a></h3>
+<p><strong>Mức độ:</strong> LOW<br />
+<strong>File:</strong> <code>braille_converter.dart:169</code><br />
+<strong>Vấn đề:</strong> Logic tương tự với all caps phrase, có thể refactor để tái sử dụng code</p>
+<hr />
+<h3 id="bug-6-unit-regex-pattern-coverage-line-47-52">Bug #6: Unit Regex Pattern Coverage (Line 47-52)<a class="headerlink" href="#bug-6-unit-regex-pattern-coverage-line-47-52" title="Permanent link">&para;</a></h3>
+<p><strong>Mức độ:</strong> LOW<br />
+<strong>File:</strong> <code>braille_converter.dart:47-52</code><br />
+<strong>Vấn đề:</strong> Negative lookahead có thể không cover hết edge cases (cuối chuỗi, sau ký tự đặc biệt)</p>
+<p><strong>Test cases cần verify:</strong>
+<div class="highlight"><pre><span></span><code>&quot;5km&quot; → ✓
+&quot;5km.&quot; → ? (sau đơn vị có dấu chấm)
+&quot;5km\n&quot; → ? (sau đơn vị có newline)
+&quot;(5km)&quot; → ? (trong ngoặc)
+</code></pre></div></p>
+<hr />
+<h3 id="bug-8-nfc-composition-hard-coded-3-passes-braille_mappingdart376-402">Bug #8: NFC Composition - Hard-coded 3 Passes (braille_mapping.dart:376-402)<a class="headerlink" href="#bug-8-nfc-composition-hard-coded-3-passes-braille_mappingdart376-402" title="Permanent link">&para;</a></h3>
+<p><strong>Mức độ:</strong> LOW<br />
+<strong>File:</strong> <code>braille_mapping.dart:376-402</code><br />
+<strong>Vấn đề:</strong> Hard-coded max 3 passes cho NFC composition, có thể không đủ cho các trường hợp phức tạp (nhưng rất hiếm gặp trong tiếng Việt)</p>
+<hr />
+<h2 id="accuracy-concerns">📊 ACCURACY CONCERNS<a class="headerlink" href="#accuracy-concerns" title="Permanent link">&para;</a></h2>
+<h3 id="concern-1-qugi-rule-edge-cases">Concern #1: qu/gi Rule Edge Cases<a class="headerlink" href="#concern-1-qugi-rule-edge-cases" title="Permanent link">&para;</a></h3>
+<p><strong>Mô tả:</strong> Các từ có nhiều nguyên âm sau qu/gi cần verify tone placement chính xác</p>
+<p><strong>Ví dụ cần test:</strong>
+<div class="highlight"><pre><span></span><code>quyết → q + u + sắc + y + ê + t (dấu sau u, trước y) ✓ hay
+        q + u + y + sắc + ê + t (dấu trên ế) ✗
+
+quyền → q + u + sac + y + ê + n hay q + u + y + ê + sac + n?
+
+giảng → g + hoi + i + ă + n + g (dấu giữa g và i) ✓
+
+quá → q + u + sac + a ✓ (case đơn giản)
+</code></pre></div></p>
+<p><strong>Quy tắc cần verify:</strong>
+- Theo Thông tư 15: Dấu thanh đặt <strong>sau chữ cái đầu tiên</strong> trong cụm qu/gi
+- "qu + á" → dấu sau u (chữ cái đầu tiên của cụm ấm vần)
+- "qu + yết" → dấu sau u (chữ cái đầu của nhóm), trước y</p>
+<p><strong>Recommended action:</strong> Test với real braille converter và so sánh với tài liệu chuẩn</p>
+<hr />
+<h3 id="concern-2-capitalization-voi-tone">Concern #2: Capitalization với Tone<a class="headerlink" href="#concern-2-capitalization-voi-tone" title="Permanent link">&para;</a></h3>
+<p><strong>Mô tả:</strong> Thứ tự capital/tone indicator phức tạp, dễ nhầm</p>
+<p><strong>Quy tắc:</strong>
+<div class="highlight"><pre><span></span><code>Chữ thường có phụ âm:  
+  Việt → v + i + ê + t
+
+Chữ HOA có phụ âm:
+  Việt → capital + v + i + ê + t
+
+Chữ thường KHÔNG phụ âm (nguyên âm đầu có dấu):
+  ấn → sac + â + n
+
+Chữ HOA KHÔNG phụ âm (nguyên âm đầu có dấu):
+  Ấn → sac + capital + â + n
+       ^^^^^^^^^^^^^^^^^^^^
+       TONE + CAPITAL + VOWEL
+</code></pre></div></p>
+<p><strong>Code hiện tại (line 375-398):</strong>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isCapital</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">    </span><span class="n">_isTonedVowel</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">    </span><span class="o">!</span><span class="n">hasConsonantBefore</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">    </span><span class="n">prevCharLower</span><span class="p">.</span><span class="n">isNotEmpty</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">    </span><span class="n">_isVowel</span><span class="p">(</span><span class="n">prevCharLower</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">    </span><span class="c1">// ... nhiều điều kiện khác</span>
+</code></pre></div></p>
+<p><strong>Vấn đề:</strong>
+- Logic phức tạp với nhiều điều kiện lồng nhau
+- Khó verify tất cả các edge cases
+- Cần test kỹ với: Ấn, Ảnh, Ứng, Ướt, etc.</p>
+<hr />
+<h3 id="concern-3-number-mode-context">Concern #3: Number Mode Context<a class="headerlink" href="#concern-3-number-mode-context" title="Permanent link">&para;</a></h3>
+<p><strong>Mô tả:</strong> <code>inNumber</code> flag có thể bị reset không đúng lúc</p>
+<p><strong>Test cases:</strong>
+<div class="highlight"><pre><span></span><code>&quot;123abc456&quot; 
+→ Expected: number_indicator + 1 + 2 + 3 + a + b + c + number_indicator + 4 + 5 + 6
+→ Actual: cần verify
+
+&quot;Năm 2024&quot;
+→ Expected: n + ă + m + space + number_indicator + 2 + 0 + 2 + 4
+→ inNumber được set khi nào? Clear khi nào?
+
+&quot;2+3=5&quot;
+→ inNumber có bị break bởi operators không?
+</code></pre></div></p>
+<p><strong>Code cần review:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_isDigit</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">inNumber</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">buffer</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">_mapping</span><span class="p">.</span><span class="n">numberIndicator</span><span class="p">);</span>
+<span class="w">    </span><span class="n">inNumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">inNumber</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">inNumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Question:</strong> Operators (<code>+</code>, <code>-</code>, <code>=</code>) có làm break number mode không?</p>
+<hr />
+<h3 id="concern-4-nfd-normalization-voi-qugi-rule">Concern #4: NFD Normalization với qu/gi Rule<a class="headerlink" href="#concern-4-nfd-normalization-voi-qugi-rule" title="Permanent link">&para;</a></h3>
+<p><strong>Mô tả:</strong> NFD input (combining diacritics) có thể xử lý sai với qu/gi rule</p>
+<p><strong>Ví dụ:</strong>
+<div class="highlight"><pre><span></span><code>NFD: q + u + a + combining_acute
+     ^^^^^^^^^^^^^^^^^^^^^^^^^ 
+     4 characters riêng biệt
+
+NFC: q + u + á
+     ^^^^^^^^^
+     3 characters (á = single codepoint)
+</code></pre></div></p>
+<p><strong>Vấn đề potential:</strong>
+- Logic qu rule check <code>prevCharLower == 'q'</code> và <code>ch == 'u'</code>
+- Nhưng khi xử lý NFD, tone mark là character riêng biệt
+- Có thể tone được xử lý trước khi nhận ra đây là qu cluster</p>
+<p><strong>Test case cần verify:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1"># NFC</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;quá&quot;</span>  <span class="c1"># q + u + á (3 chars)</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="p">[</span><span class="n">q</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">sac</span><span class="p">,</span> <span class="n">a</span><span class="p">]</span>
+
+<span class="c1"># NFD  </span>
+<span class="nb">input</span> <span class="o">=</span> <span class="s2">&quot;qu</span><span class="se">\u0061\u0301</span><span class="s2">&quot;</span>  <span class="c1"># q + u + a + combining_acute (4 chars)</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="p">[</span><span class="n">q</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">sac</span><span class="p">,</span> <span class="n">a</span><span class="p">]</span>  <span class="c1"># Phải giống NFC!</span>
+</code></pre></div></p>
+<p><strong>Code preprocess có normalize:</strong>
+<div class="highlight"><pre><span></span><code><span class="kt">String</span><span class="w"> </span><span class="n">normalized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">text</span><span class="p">.</span><span class="n">toNFC</span><span class="p">();</span>
+</code></pre></div></p>
+<p>→ Nếu normalize đúng ở đầu thì không vấn đề. Nhưng cần test.</p>
+<hr />
+<h3 id="concern-5-phrase-capitalization-end-format">Concern #5: Phrase Capitalization End Format<a class="headerlink" href="#concern-5-phrase-capitalization-end-format" title="Permanent link">&para;</a></h3>
+<p><strong>Mô tả:</strong> Dấu kết thúc <code>endFormat</code> có được thêm đúng vị trí không?</p>
+<p><strong>Theo Thông tư 15:</strong>
+- Cụm từ viết hoa cần có dấu kết thúc sau từ cuối cùng
+- <code>HÀ NỘI</code> → <code>allCapsPhrase + H + À + space + N + Ô + I + endFormat</code></p>
+<p><strong>Code cần verify:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">k</span><span class="p">].</span><span class="n">phraseMode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">_PhraseMode</span><span class="p">.</span><span class="n">allCaps</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Thêm allCapsPhrase indicator</span>
+<span class="p">}</span>
+<span class="c1">// ... convert word ...</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isLastInPhrase</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Thêm endFormat</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Test cases:</strong>
+<div class="highlight"><pre><span></span><code>&quot;HÀ NỘI&quot; → endFormat sau I ✓
+&quot;THÔNG TƯ SỐ 15&quot; → endFormat sau 5 hay sau &quot;15&quot;? 
+                    (vì &quot;15&quot; là Roman hay số?)
+</code></pre></div></p>
+<hr />
+<h2 id="recommended-tests">🧪 RECOMMENDED TESTS<a class="headerlink" href="#recommended-tests" title="Permanent link">&para;</a></h2>
+<h3 id="test-suite-1-phrase-grouping-fix-bug-2">Test Suite 1: Phrase Grouping (Fix Bug #2)<a class="headerlink" href="#test-suite-1-phrase-grouping-fix-bug-2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">test</span><span class="p">(</span><span class="s1">&#39;All caps phrase with spaces&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;UNESCO&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">contains</span><span class="p">(</span><span class="n">allCapsWord</span><span class="p">));</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;HÀ NỘI&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">contains</span><span class="p">(</span><span class="n">allCapsPhrase</span><span class="p">));</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;THÔNG TƯ SỐ 15&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">contains</span><span class="p">(</span><span class="n">allCapsPhrase</span><span class="p">));</span>
+<span class="p">});</span>
+
+<span class="n">test</span><span class="p">(</span><span class="s1">&#39;Mixed case should not trigger phrase mode&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;Hà Nội&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">contains</span><span class="p">(</span><span class="n">initCapsPhrase</span><span class="p">));</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;UNESCO Việt Nam&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">isNot</span><span class="p">(</span><span class="n">contains</span><span class="p">(</span><span class="n">allCapsPhrase</span><span class="p">)));</span>
+<span class="p">});</span>
+</code></pre></div>
+<h3 id="test-suite-2-qugi-rules">Test Suite 2: qu/gi Rules<a class="headerlink" href="#test-suite-2-qugi-rules" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">test</span><span class="p">(</span><span class="s1">&#39;qu with tone placement&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;quá&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;q + u + sac + a&quot;</span><span class="p">));</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;quyết&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;q + u + sac + y + ê + t&quot;</span><span class="p">));</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;quyền&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;q + u + sac + y + ê + n&quot;</span><span class="p">));</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;Quý&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;capital + q + u + sac + y&quot;</span><span class="p">));</span>
+<span class="p">});</span>
+
+<span class="n">test</span><span class="p">(</span><span class="s1">&#39;gi with tone placement&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;giá&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;g + sac + i + a&quot;</span><span class="p">));</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;gió&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;g + sac + i + o&quot;</span><span class="p">));</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;Giảng&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;capital + g + hoi + i + ă + n + g&quot;</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre></div>
+<h3 id="test-suite-3-number-mode">Test Suite 3: Number Mode<a class="headerlink" href="#test-suite-3-number-mode" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">test</span><span class="p">(</span><span class="s1">&#39;Numbers with punctuation&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;123&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">contains</span><span class="p">(</span><span class="n">numberIndicator</span><span class="p">));</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;3.14&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">contains</span><span class="p">(</span><span class="n">numberIndicator</span><span class="p">));</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;Năm 2024.&quot;</span><span class="p">),</span><span class="w"> </span><span class="cm">/* verify correct handling */</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="n">test</span><span class="p">(</span><span class="s1">&#39;Mixed letters and numbers&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;abc123xyz&quot;</span><span class="p">),</span><span class="w"> </span><span class="cm">/* should have 2 number indicators? */</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<h3 id="test-suite-4-nfd-input">Test Suite 4: NFD Input<a class="headerlink" href="#test-suite-4-nfd-input" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">test</span><span class="p">(</span><span class="s1">&#39;NFD normalization&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">final</span><span class="w"> </span><span class="n">nfc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;quá&quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">// NFC</span>
+<span class="w">  </span><span class="kd">final</span><span class="w"> </span><span class="n">nfd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;qu</span><span class="se">\u0061\u0301</span><span class="s2">&quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">// NFD</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="n">nfc</span><span class="p">),</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="n">nfd</span><span class="p">)));</span>
+<span class="p">});</span>
+</code></pre></div>
+<h3 id="test-suite-5-edge-cases">Test Suite 5: Edge Cases<a class="headerlink" href="#test-suite-5-edge-cases" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">test</span><span class="p">(</span><span class="s1">&#39;Empty and whitespace&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">));</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;   &quot;</span><span class="p">),</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;   &quot;</span><span class="p">));</span>
+<span class="p">});</span>
+
+<span class="n">test</span><span class="p">(</span><span class="s1">&#39;Units with punctuation&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;5km.&quot;</span><span class="p">),</span><span class="w"> </span><span class="cm">/* verify unit + punct handling */</span><span class="p">);</span>
+<span class="w">  </span><span class="n">expect</span><span class="p">(</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;(10kg)&quot;</span><span class="p">),</span><span class="w"> </span><span class="cm">/* verify unit in parens */</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<hr />
+<h2 id="immediate-actions-required">🔧 IMMEDIATE ACTIONS REQUIRED<a class="headerlink" href="#immediate-actions-required" title="Permanent link">&para;</a></h2>
+<h3 id="priority-1-fix-bug-2-high">Priority 1: FIX BUG #2 (HIGH)<a class="headerlink" href="#priority-1-fix-bug-2-high" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>packages/viet_braille_core/lib/braille_converter.dart:138</code></p>
+<p><strong>Change:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1">// BEFORE (BUG):</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sep</span><span class="p">.</span><span class="n">trim</span><span class="p">().</span><span class="n">isNotEmpty</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">sep</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// AFTER (FIXED):</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sep</span><span class="p">.</span><span class="n">trim</span><span class="p">().</span><span class="n">isNotEmpty</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Impact:</strong> Critical fix cho phrase capitalization</p>
+<hr />
+<h3 id="priority-2-add-unit-tests">Priority 2: ADD UNIT TESTS<a class="headerlink" href="#priority-2-add-unit-tests" title="Permanent link">&para;</a></h3>
+<p>Tạo test file: <code>packages/viet_braille_core/test/braille_converter_test.dart</code></p>
+<p>Implement test suites 1-5 ở trên.</p>
+<hr />
+<h3 id="priority-3-verify-accuracy">Priority 3: VERIFY ACCURACY<a class="headerlink" href="#priority-3-verify-accuracy" title="Permanent link">&para;</a></h3>
+<p>Chạy test với các test cases từ <code>bug_check.py</code>:
+- 30 test cases cover 12 categories
+- So sánh output với quy tắc trong Thông tư 15
+- Document các edge cases phát hiện được</p>
+<hr />
+<h3 id="priority-4-add-safeguards">Priority 4: ADD SAFEGUARDS<a class="headerlink" href="#priority-4-add-safeguards" title="Permanent link">&para;</a></h3>
+<p><strong>Bug #7 - Infinite loop protection:</strong>
+<div class="highlight"><pre><span></span><code><span class="kd">final</span><span class="w"> </span><span class="n">opRegex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RegExp</span><span class="p">(</span><span class="s1">r&#39;(\d)\s*([\+\-\*\/x\:=\&lt;\&gt;≈≤≥])\s*(\d)&#39;</span><span class="p">);</span>
+<span class="kt">String</span><span class="w"> </span><span class="n">prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">iterations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="n">maxIterations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">100</span><span class="p">;</span>
+
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">text</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">prev</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">iterations</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">maxIterations</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">iterations</span><span class="o">++</span><span class="p">;</span>
+<span class="w">  </span><span class="n">prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">text</span><span class="p">;</span>
+<span class="w">  </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">text</span><span class="p">.</span><span class="n">replaceAllMapped</span><span class="p">(</span><span class="n">opRegex</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">match</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span>
+<span class="w">    </span><span class="s1">&#39;</span><span class="si">${</span><span class="n">match</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="m">1</span><span class="p">)</span><span class="si">}${</span><span class="n">match</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="m">2</span><span class="p">)</span><span class="si">}${</span><span class="n">match</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="m">3</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iterations</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">maxIterations</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;WARNING: Operator space removal exceeded max iterations&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h3 id="priority-5-code-refactoring">Priority 5: CODE REFACTORING<a class="headerlink" href="#priority-5-code-refactoring" title="Permanent link">&para;</a></h3>
+<p><strong>Bug #5 - Simplify complex logic:</strong></p>
+<p>Extract initial vowel handling to separate method:
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">_shouldReorderToneForInitialVowel</span><span class="p">(</span><span class="kt">String</span><span class="w"> </span><span class="n">ch</span><span class="p">,</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span><span class="n">prevChar</span><span class="p">,</span><span class="w"> </span><span class="kt">String</span><span class="w"> </span><span class="n">prevPrevChar</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">hasConsonantBefore</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hasConsonantBefore</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">_isTonedVowel</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">_isVowel</span><span class="p">(</span><span class="n">prevChar</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">prevPrevChar</span><span class="p">.</span><span class="n">isNotEmpty</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">_isConsonant</span><span class="p">(</span><span class="n">prevPrevChar</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h2 id="verification-checklist">📈 VERIFICATION CHECKLIST<a class="headerlink" href="#verification-checklist" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[ ] Fix bug #2 (phrase grouping logic)</li>
+<li>[ ] Test bug #2 fix với "HÀ NỘI", "THÔNG TƯ SỐ 15"</li>
+<li>[ ] Implement 30 test cases từ bug_check.py</li>
+<li>[ ] Verify qu/gi rule với quyết, quyền, giảng</li>
+<li>[ ] Test capitalization với Ấn, Ảnh, Ứng</li>
+<li>[ ] Test number mode với "123abc456", "Năm 2024."</li>
+<li>[ ] Test NFD input với qu/gi rules</li>
+<li>[ ] Add safeguard cho infinite loop trong operator removal</li>
+<li>[ ] Refactor complex initial vowel logic</li>
+<li>[ ] Document edge cases và expected behaviors</li>
+<li>[ ] Validate với tài liệu Thông tư 15 chính thức</li>
+<li>[ ] Test với real-world Vietnamese text</li>
+</ul>
+<hr />
+<h2 id="references">📚 REFERENCES<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Quy tắc trình bày:</strong> <code>quytac/QUY_TAC_TRINH_BAY_VAN_BAN_CHU_NOI_BRAILLE.md</code></li>
+<li><strong>Thông tư 15/2017/TT-BGDĐT</strong></li>
+<li><strong>Test cases:</strong> <code>tools/bug_check.py</code> (30 tests, 12 categories)</li>
+<li><strong>Mapping definitions:</strong> <code>packages/viet_braille_core/lib/braille_mapping.dart</code></li>
+</ul>
+<hr />
+<h2 id="notes">📝 NOTES<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Bug #2 là critical</strong> - cần fix ngay vì ảnh hưởng đến tất cả phrase capitalization</li>
+<li>Các bugs khác (MEDIUM/LOW) ít ảnh hưởng đến usage thông thường nhưng cần fix để đạt 100% accuracy</li>
+<li>Accuracy concerns cần verify bằng test thực tế, không chỉ code review</li>
+<li>Nên tạo comprehensive test suite trước khi refactor code</li>
+</ol>
+<hr />
+<p><strong>End of Report</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/ghitatruongle/vietnamese-braille" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

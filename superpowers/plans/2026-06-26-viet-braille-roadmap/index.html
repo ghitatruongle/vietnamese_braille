@@ -1,0 +1,2567 @@
+
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Vietnamese Braille Converter - Text to Braille Unicode and reverse">
+      
+      
+      
+        <link rel="canonical" href="https://ghitatruongle.github.io/vietnamese-braille/superpowers/plans/2026-06-26-viet-braille-roadmap/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Vietnamese Braille — Full Roadmap Implementation Plan - Vietnamese Braille</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#vietnamese-braille-full-roadmap-implementation-plan" class="md-skip">
+          Bỏ qua
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Đầu trang">
+    <a href="../../.." title="Vietnamese Braille" class="md-header__button md-logo" aria-label="Vietnamese Braille" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Vietnamese Braille
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Vietnamese Braille — Full Roadmap Implementation Plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Tìm kiếm" placeholder="Tìm kiếm" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Tìm kiếm">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Xoá" aria-label="Xoá" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Trang chủ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../user-guide/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Hướng dẫn sử dụng
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../tt15-compliance/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Đối chiếu Thông tư 15
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../accessibility-testing/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Kiểm thử khả năng tiếp cận
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../external-validation/" class="md-tabs__link">
+          
+  
+  
+  Xác thực bên ngoài
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../privacy/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quyền riêng tư
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../threat-model/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Mô hình đe dọa
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../release-checklist/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Checklist phát hành
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../phase-0-5-audit/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Ma trận Phase 0–5
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../metrics/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Số liệu chất lượng
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../adr/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quyết định kiến trúc
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Kiến trúc
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../contributing/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Đóng góp
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Thanh điều hướng" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Vietnamese Braille" class="md-nav__button md-logo" aria-label="Vietnamese Braille" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Vietnamese Braille
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trang chủ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hướng dẫn sử dụng
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tt15-compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Đối chiếu Thông tư 15
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../accessibility-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiểm thử khả năng tiếp cận
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Xác thực bên ngoài
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Xác thực bên ngoài
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../external-validation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tổng quan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../external-validation/screen-reader-scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kịch bản trình đọc màn hình
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../external-validation/user-validation-survey/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phiếu nghiệm thu người dùng
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../external-validation/expert-review-packet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gói đối chiếu chuyên gia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../privacy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quyền riêng tư
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../threat-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mô hình đe dọa
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../release-checklist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist phát hành
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../phase-0-5-audit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ma trận Phase 0–5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Số liệu chất lượng
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quyết định kiến trúc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kiến trúc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Đóng góp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Mục lục">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Mục lục
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#file-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ---
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="vietnamese-braille-full-roadmap-implementation-plan">Vietnamese Braille — Full Roadmap Implementation Plan<a class="headerlink" href="#vietnamese-braille-full-roadmap-implementation-plan" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Nâng cấp dự án Vietnamese Braille thành nền tảng toàn diện phục vụ người khiếm thị, giáo viên, và developer trong 5 tháng (10 sprints × 2 tuần).</p>
+<p><strong>Architecture:</strong> 4 parallel tracks — Foundation (code quality), Features (accessibility, web, API, teaching), Integration (Python tools), Documentation. Track A là nền tảng, các track khác depend vào.</p>
+<p><strong>Tech Stack:</strong> Flutter 3.29.x, Dart, Riverpod, GoRouter, Google ML Kit, Dart Shelf, Python 3.11+, pytest, GitHub Actions, MkDocs</p>
+<p><strong>Design Spec:</strong> <code>docs/superpowers/specs/2026-06-26-viet-braille-roadmap-design.md</code></p>
+<hr />
+<h2 id="file-map">File Map<a class="headerlink" href="#file-map" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Track</th>
+<th>Files Created</th>
+<th>Files Modified</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td><code>README.md</code>, <code>.github/workflows/ci.yml</code>, <code>test/integration/</code>, <code>test/edge_cases/</code>, <code>test/performance/</code>, <code>analysis_options.yaml</code></td>
+<td><code>lib/domain/braille_reverse_converter.dart</code>, <code>lib/core/braille_mapping.dart</code></td>
+</tr>
+<tr>
+<td>B</td>
+<td><code>lib/accessibility/</code>, <code>packages/viet_braille_core/</code>, <code>lib/teaching/</code>, <code>api_server/</code>, <code>lib/data/speech_service.dart</code></td>
+<td><code>lib/main.dart</code>, <code>lib/presentation/widgets/</code>, <code>pubspec.yaml</code></td>
+</tr>
+<tr>
+<td>C</td>
+<td><code>tools/verify/</code>, <code>tools/analysis/</code>, <code>tools/comparison/</code>, <code>tools/requirements.txt</code>, <code>tools/verify.py</code></td>
+<td><code>.github/workflows/ci.yml</code></td>
+</tr>
+<tr>
+<td>D</td>
+<td><code>CONTRIBUTING.md</code>, <code>LICENSE</code>, <code>CHANGELOG.md</code>, <code>docs/user-guide.md</code>, <code>docs/architecture.md</code>, <code>.github/ISSUE_TEMPLATE/</code></td>
+<td><code>README.md</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="-">---<a class="headerlink" href="#-" title="Permanent link">&para;</a></h2>
+<h1 id="track-a-foundation">TRACK A: FOUNDATION<a class="headerlink" href="#track-a-foundation" title="Permanent link">&para;</a></h1>
+<h2 id="task-a1-viet-readmemd-chinh-thuc">Task A1: Viết README.md chính thức<a class="headerlink" href="#task-a1-viet-readmemd-chinh-thuc" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Tạo README.md chuyên nghiệp với badges, features, quick start.</p>
+<p><strong>Files:</strong>
+- Create: <code>README.md</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Tạo README.md</strong></li>
+</ul>
+<p>Nội dung README bao gồm: badges (CI, codecov, license), feature list, quick start, cách sử dụng, kiến trúc, contributing, license.</p>
+<ul>
+<li>[ ] <strong>Step 2: Verify markdown renders</strong></li>
+</ul>
+<p>Mở trên GitHub hoặc preview editor.</p>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>README.md
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;docs: add official README with badges, features, quick start&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-a2-fix-reverse-converter-state-leak">Task A2: Fix Reverse Converter State Leak<a class="headerlink" href="#task-a2-fix-reverse-converter-state-leak" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> <code>BrailleReverseConverterImpl</code> dùng instance variables có thể leak state giữa các lần gọi <code>convert()</code>. Dùng immutable state object.</p>
+<p><strong>Files:</strong>
+- Modify: <code>viet_braille_app/lib/domain/braille_reverse_converter.dart</code>
+- Modify: <code>viet_braille_app/test/domain/braille_reverse_converter_test.dart</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Viết test chứng minh state leak</strong></li>
+</ul>
+<p>Thêm group mới vào <code>test/domain/braille_reverse_converter_test.dart</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">group</span><span class="p">(</span><span class="s1">&#39;state isolation between convert() calls&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;consecutive calls do not leak capitalization state&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// First call: all-caps</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">allCapsBraille</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;</span><span class="si">${</span><span class="n">brf</span><span class="p">(</span><span class="s1">&#39;46&#39;</span><span class="p">)</span><span class="si">}${</span><span class="n">brf</span><span class="p">(</span><span class="s1">&#39;46&#39;</span><span class="p">)</span><span class="si">}$</span><span class="n">cellH</span><span class="si">$</span><span class="n">cellE</span><span class="si">$</span><span class="n">cellL</span><span class="si">$</span><span class="n">cellL</span><span class="si">$</span><span class="n">cellO</span><span class="si">${</span><span class="n">brf</span><span class="p">(</span><span class="s1">&#39;156&#39;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">result1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="n">allCapsBraille</span><span class="p">);</span>
+<span class="w">    </span><span class="n">expect</span><span class="p">(</span><span class="n">result1</span><span class="p">,</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="s1">&#39;HELLO&#39;</span><span class="p">));</span>
+
+<span class="w">    </span><span class="c1">// Second call: should NOT inherit allCaps state</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">$</span><span class="n">cellA</span><span class="si">$</span><span class="n">cellB</span><span class="si">$</span><span class="n">cellC</span><span class="s1">&#39;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">expect</span><span class="p">(</span><span class="n">result2</span><span class="p">,</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="s1">&#39;abc&#39;</span><span class="p">));</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;consecutive calls do not leak number mode state&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">numBraille</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;</span><span class="si">$</span><span class="n">numIndicator</span><span class="si">$</span><span class="n">cellA</span><span class="si">$</span><span class="n">cellB</span><span class="si">$</span><span class="n">cellC</span><span class="s1">&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">result1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="n">numBraille</span><span class="p">);</span>
+<span class="w">    </span><span class="n">expect</span><span class="p">(</span><span class="n">result1</span><span class="p">,</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="s1">&#39;123&#39;</span><span class="p">));</span>
+
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">result2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">$</span><span class="n">cellA</span><span class="si">$</span><span class="n">cellB</span><span class="si">$</span><span class="n">cellC</span><span class="s1">&#39;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">expect</span><span class="p">(</span><span class="n">result2</span><span class="p">,</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="s1">&#39;abc&#39;</span><span class="p">));</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Chạy test — ghi nhận baseline</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>flutter<span class="w"> </span><span class="nb">test</span><span class="w"> </span>test/domain/braille_reverse_converter_test.dart
+</code></pre></div>
+<p>Expected: Tất cả PASS (setUp tạo instance mới mỗi lần).</p>
+<ul>
+<li>[ ] <strong>Step 3: Tạo <code>_ConvertState</code> class</strong></li>
+</ul>
+<p>Thêm sau class <code>_CellResult</code> trong <code>lib/domain/braille_reverse_converter.dart</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">class</span><span class="w"> </span><span class="nc">_ConvertState</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">_ConvertState</span><span class="p">({</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="n">isAllCapsPhrase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="n">isInitCapsPhrase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="n">isAllCapsWord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="n">capNextLetter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="n">isWordStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="kd">final</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">isAllCapsPhrase</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">final</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">isInitCapsPhrase</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">final</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">isAllCapsWord</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">final</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">capNextLetter</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">final</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">isWordStart</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">_ConvertState</span><span class="w"> </span><span class="n">copyWith</span><span class="p">({</span>
+<span class="w">    </span><span class="kt">bool</span><span class="o">?</span><span class="w"> </span><span class="n">isAllCapsPhrase</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">bool</span><span class="o">?</span><span class="w"> </span><span class="n">isInitCapsPhrase</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">bool</span><span class="o">?</span><span class="w"> </span><span class="n">isAllCapsWord</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">bool</span><span class="o">?</span><span class="w"> </span><span class="n">capNextLetter</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">bool</span><span class="o">?</span><span class="w"> </span><span class="n">isWordStart</span><span class="p">,</span>
+<span class="w">  </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">_ConvertState</span><span class="p">(</span>
+<span class="w">      </span><span class="nl">isAllCapsPhrase:</span><span class="w"> </span><span class="n">isAllCapsPhrase</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="n">isAllCapsPhrase</span><span class="p">,</span>
+<span class="w">      </span><span class="nl">isInitCapsPhrase:</span><span class="w"> </span><span class="n">isInitCapsPhrase</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="n">isInitCapsPhrase</span><span class="p">,</span>
+<span class="w">      </span><span class="nl">isAllCapsWord:</span><span class="w"> </span><span class="n">isAllCapsWord</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="n">isAllCapsWord</span><span class="p">,</span>
+<span class="w">      </span><span class="nl">capNextLetter:</span><span class="w"> </span><span class="n">capNextLetter</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="n">capNextLetter</span><span class="p">,</span>
+<span class="w">      </span><span class="nl">isWordStart:</span><span class="w"> </span><span class="n">isWordStart</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="n">isWordStart</span><span class="p">,</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Xóa instance variables cũ</strong></li>
+</ul>
+<p>Xóa <code>bool isAllCapsPhrase</code>, <code>isInitCapsPhrase</code>, <code>isAllCapsWord</code>, <code>capNextLetter</code>, <code>isWordStart</code> trong class chính.</p>
+<ul>
+<li>[ ] <strong>Step 5: Refactor <code>convert()</code> — dùng <code>var state = const _ConvertState()</code></strong></li>
+</ul>
+<p>Thay thế tất cả <code>isAllCapsPhrase = true</code> thành <code>state = state.copyWith(isAllCapsPhrase: true)</code>, tương tự cho các biến khác.</p>
+<ul>
+<li>[ ] <strong>Step 6: Refactor <code>_applyCapitalization</code> nhận <code>_ConvertState</code></strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kt">String</span><span class="w"> </span><span class="n">_applyCapitalization</span><span class="p">(</span><span class="kt">String</span><span class="w"> </span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">required</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">hadCapitalIndicator</span><span class="p">,</span>
+<span class="w">  </span><span class="kd">required</span><span class="w"> </span><span class="n">_ConvertState</span><span class="w"> </span><span class="n">state</span><span class="p">,</span>
+<span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">text</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">isAllCapsPhrase</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">state</span><span class="p">.</span><span class="n">isAllCapsWord</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">text</span><span class="p">.</span><span class="n">toUpperCase</span><span class="p">();</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">isInitCapsPhrase</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">state</span><span class="p">.</span><span class="n">isWordStart</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">text</span><span class="p">.</span><span class="n">substring</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">).</span><span class="n">toUpperCase</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">text</span><span class="p">.</span><span class="n">substring</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hadCapitalIndicator</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">state</span><span class="p">.</span><span class="n">capNextLetter</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">text</span><span class="p">.</span><span class="n">substring</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">).</span><span class="n">toUpperCase</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">text</span><span class="p">.</span><span class="n">substring</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">text</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 7: Chạy toàn bộ tests</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>flutter<span class="w"> </span><span class="nb">test</span>
+</code></pre></div>
+<p>Expected: Tất cả PASS.</p>
+<ul>
+<li>[ ] <strong>Step 8: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/lib/domain/braille_reverse_converter.dart<span class="w"> </span>viet_braille_app/test/domain/braille_reverse_converter_test.dart
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;refactor: use immutable state in reverse converter</span>
+
+<span class="s2">- Replace instance variables with _ConvertState value object</span>
+<span class="s2">- Each convert() call starts with fresh state</span>
+<span class="s2">- Eliminates state leak between consecutive calls&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-a3-refactor-_composenfc-extract-shared-logic">Task A3: Refactor <code>_composeNfc</code> — Extract Shared Logic<a class="headerlink" href="#task-a3-refactor-_composenfc-extract-shared-logic" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Loại bỏ code trùng lặp giữa <code>_composeNfc</code> và <code>_composeNfcWithCapitals</code>.</p>
+<p><strong>Files:</strong>
+- Modify: <code>viet_braille_app/lib/core/braille_mapping.dart</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Chạy tests baseline</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>flutter<span class="w"> </span><span class="nb">test</span><span class="w"> </span>test/core/braille_mapping_test.dart<span class="w"> </span>test/domain/braille_converter_test.dart
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Thêm <code>_composeNfcCore</code> method</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">({</span><span class="kt">String</span><span class="w"> </span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">capitals</span><span class="p">})</span><span class="w"> </span><span class="n">_composeNfcCore</span><span class="p">(</span><span class="kt">String</span><span class="w"> </span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">List</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">capitals</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">String</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">text</span><span class="p">;</span>
+<span class="w">  </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">resultCapitals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">capitals</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">.</span><span class="n">from</span><span class="p">(</span><span class="n">capitals</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">pass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">;</span><span class="w"> </span><span class="n">pass</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">3</span><span class="p">;</span><span class="w"> </span><span class="n">pass</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">buf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">StringBuffer</span><span class="p">();</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">newCapitals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">[];</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">changed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">length</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">length</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">          </span><span class="n">result</span><span class="p">.</span><span class="n">codeUnitAt</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mh">0x0300</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">          </span><span class="n">result</span><span class="p">.</span><span class="n">codeUnitAt</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">0x036F</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">composed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_nfdToNfc</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">?</span><span class="p">[</span><span class="n">result</span><span class="p">.</span><span class="n">codeUnitAt</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">)];</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">composed</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">buf</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">composed</span><span class="p">);</span>
+<span class="w">          </span><span class="n">resultCapitals</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">newCapitals</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">resultCapitals</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">          </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="m">2</span><span class="p">;</span>
+<span class="w">          </span><span class="n">changed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="w">          </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="n">buf</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">      </span><span class="n">resultCapitals</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">newCapitals</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">resultCapitals</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<span class="w">      </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buf</span><span class="p">.</span><span class="n">toString</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">resultCapitals</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="n">resultCapitals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newCapitals</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">changed</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="nl">text:</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="nl">capitals:</span><span class="w"> </span><span class="n">resultCapitals</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Thay thế <code>_composeNfc</code></strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kt">String</span><span class="w"> </span><span class="n">_composeNfc</span><span class="p">(</span><span class="kt">String</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">_composeNfcCore</span><span class="p">(</span><span class="n">text</span><span class="p">).</span><span class="n">text</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Thay thế <code>_composeNfcWithCapitals</code></strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">({</span><span class="kt">String</span><span class="w"> </span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">capitals</span><span class="p">})</span><span class="w"> </span><span class="n">_composeNfcWithCapitals</span><span class="p">(</span><span class="kt">String</span><span class="w"> </span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">capitals</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_composeNfcCore</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="n">capitals</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="nl">text:</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="nl">capitals:</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">capitals</span><span class="o">!</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 5: Chạy toàn bộ tests</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>flutter<span class="w"> </span><span class="nb">test</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 6: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/lib/core/braille_mapping.dart
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;refactor: extract shared NFD→NFC compose logic</span>
+
+<span class="s2">- Extract _composeNfcCore() as shared implementation</span>
+<span class="s2">- Eliminates code duplication, single source of truth&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-a4-add-integration-tests">Task A4: Add Integration Tests<a class="headerlink" href="#task-a4-add-integration-tests" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Verify end-to-end flow: text → BrailleConverter → BRF format.</p>
+<p><strong>Files:</strong>
+- Create: <code>viet_braille_app/test/integration/full_flow_test.dart</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Tạo thư mục</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>viet_braille_app/test/integration
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Viết integration test</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:flutter_test/flutter_test.dart&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:viet_braille_app/core/braille_mapping.dart&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:viet_braille_app/domain/braille_converter.dart&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:viet_braille_app/domain/braille_reverse_converter.dart&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:viet_braille_app/domain/brf_formatter.dart&#39;</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">late</span><span class="w"> </span><span class="n">BrailleMappingImpl</span><span class="w"> </span><span class="n">mapping</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">late</span><span class="w"> </span><span class="n">BrailleConverter</span><span class="w"> </span><span class="n">converter</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">late</span><span class="w"> </span><span class="n">BrailleReverseConverter</span><span class="w"> </span><span class="n">reverseConverter</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">late</span><span class="w"> </span><span class="n">BrfFormatter</span><span class="w"> </span><span class="n">formatter</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">setUp</span><span class="p">(()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mapping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BrailleMappingImpl</span><span class="p">();</span>
+<span class="w">    </span><span class="n">converter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BrailleConverterImpl</span><span class="p">(</span><span class="n">mapping</span><span class="p">);</span>
+<span class="w">    </span><span class="n">reverseConverter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BrailleReverseConverterImpl</span><span class="p">(</span><span class="n">mapping</span><span class="p">);</span>
+<span class="w">    </span><span class="n">formatter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BrfFormatterImpl</span><span class="p">();</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;full pipeline: text → Braille → BRF&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;simple Vietnamese sentence&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Xin chào Việt Nam&#39;</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">hasWarnings</span><span class="p">,</span><span class="w"> </span><span class="n">isFalse</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">brf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">formatter</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="nl">lineLength:</span><span class="w"> </span><span class="m">40</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">brf</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">brf</span><span class="p">,</span><span class="w"> </span><span class="n">endsWith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">));</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;all Vietnamese special vowels&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ăâêôơưđ&#39;</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">hasWarnings</span><span class="p">,</span><span class="w"> </span><span class="n">isFalse</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;mixed case with numbers&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Học sinh lớp 10A&#39;</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">reversed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reverseConverter</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">reversed</span><span class="p">.</span><span class="n">toLowerCase</span><span class="p">(),</span><span class="w"> </span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;học&#39;</span><span class="p">));</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">reversed</span><span class="p">,</span><span class="w"> </span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;10&#39;</span><span class="p">));</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;empty input returns empty result&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isEmpty</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;round-trip: text → Braille → text&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;plain ASCII round-trips&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;hello world&#39;</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">braille</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">reversed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reverseConverter</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="n">braille</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">reversed</span><span class="p">,</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="n">input</span><span class="p">));</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;Vietnamese without tone round-trips&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;đây là tiếng việt&#39;</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">braille</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">reversed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reverseConverter</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="n">braille</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">reversed</span><span class="p">,</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="n">input</span><span class="p">));</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;numbers round-trip&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;123&#39;</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">braille</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">reversed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reverseConverter</span><span class="p">.</span><span class="n">convert</span><span class="p">(</span><span class="n">braille</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">reversed</span><span class="p">,</span><span class="w"> </span><span class="n">equals</span><span class="p">(</span><span class="n">input</span><span class="p">));</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;BRF formatting&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;long text wraps at lineLength&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Đây là một đoạn văn bản tiếng Việt đủ dài để kiểm tra việc ngắt dòng trong định dạng BRF&#39;</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">brf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">formatter</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="nl">lineLength:</span><span class="w"> </span><span class="m">20</span><span class="p">);</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">lines</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">brf</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">).</span><span class="n">where</span><span class="p">((</span><span class="n">l</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">isNotEmpty</span><span class="p">).</span><span class="n">toList</span><span class="p">();</span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lines</span><span class="p">.</span><span class="n">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">expect</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">lessThanOrEqualTo</span><span class="p">(</span><span class="m">20</span><span class="p">));</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Chạy integration tests</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>flutter<span class="w"> </span><span class="nb">test</span><span class="w"> </span>test/integration/full_flow_test.dart
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Chạy toàn bộ test suite</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>flutter<span class="w"> </span><span class="nb">test</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/test/integration/full_flow_test.dart
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;test: add integration tests for full conversion pipeline</span>
+
+<span class="s2">- Text → Braille → BRF full flow tests</span>
+<span class="s2">- Round-trip: text → Braille → text verification</span>
+<span class="s2">- BRF formatting integration with line wrapping&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-a5-setup-ci-pipeline">Task A5: Setup CI Pipeline<a class="headerlink" href="#task-a5-setup-ci-pipeline" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Thiết lập GitHub Actions CI với dart format, dart analyze, flutter test.</p>
+<p><strong>Files:</strong>
+- Create: <code>.github/workflows/ci.yml</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Tạo workflow</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Flutter CI</span>
+
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">master</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">main</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">develop</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">master</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">main</span><span class="p p-Indicator">]</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">test</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Setup Flutter</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subosito/flutter-action@v2</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">flutter-version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.29.x&#39;</span>
+<span class="w">          </span><span class="nt">channel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stable</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install dependencies</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">flutter pub get</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check formatting</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dart format --set-exit-if-changed lib/ test/</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Analyze Dart code</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dart analyze</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run tests</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">flutter test --coverage</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Upload coverage to Codecov</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">codecov/codecov-action@v4</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.CODECOV_TOKEN }}</span>
+<span class="w">          </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coverage/lcov.info</span>
+<span class="w">          </span><span class="nt">fail_ci_if_error</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="w">  </span><span class="nt">python-verify</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Setup Python</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v5</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.11&#39;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run verification scripts</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">python verify_braille.py</span>
+<span class="w">          </span><span class="no">python deep_analysis.py</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Format code</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>dart<span class="w"> </span>format<span class="w"> </span>lib/<span class="w"> </span>test/
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>.github/workflows
+git<span class="w"> </span>add<span class="w"> </span>.github/workflows/ci.yml
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;ci: add Flutter CI with format, analyze, test, coverage&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-a6-add-edge-case-tests">Task A6: Add Edge Case Tests<a class="headerlink" href="#task-a6-add-edge-case-tests" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Thêm tests cho tone stacking, qu/gi rules, special characters.</p>
+<p><strong>Files:</strong>
+- Create: <code>viet_braille_app/test/edge_cases/tone_stacking_test.dart</code>
+- Create: <code>viet_braille_app/test/edge_cases/qu_gi_rules_test.dart</code>
+- Create: <code>viet_braille_app/test/edge_cases/special_chars_test.dart</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Tạo thư mục</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>viet_braille_app/test/edge_cases
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Viết tone stacking tests</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1">// test/edge_cases/tone_stacking_test.dart</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:flutter_test/flutter_test.dart&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:viet_braille_app/core/braille_mapping.dart&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:viet_braille_app/domain/braille_converter.dart&#39;</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">late</span><span class="w"> </span><span class="n">BrailleMapping</span><span class="w"> </span><span class="n">mapping</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">late</span><span class="w"> </span><span class="n">BrailleConverter</span><span class="w"> </span><span class="n">converter</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">setUp</span><span class="p">(()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mapping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BrailleMappingImpl</span><span class="p">();</span>
+<span class="w">    </span><span class="n">converter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BrailleConverterImpl</span><span class="p">(</span><span class="n">mapping</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;tone stacking&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;ấ (a + circumflex + acute)&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="s1">&#39;ấ&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">hasWarnings</span><span class="p">,</span><span class="w"> </span><span class="n">isFalse</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;ầ (a + circumflex + grave)&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="s1">&#39;ầ&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;ẩ (a + circumflex + hook)&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="s1">&#39;ẩ&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;ẫ (a + circumflex + tilde)&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="s1">&#39;ẫ&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;ậ (a + circumflex + dot)&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="s1">&#39;ậ&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;all double toned vowels in sentence&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ấ ầ ẩ ẫ ậ&#39;</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">hasWarnings</span><span class="p">,</span><span class="w"> </span><span class="n">isFalse</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Viết qu/gi rule tests</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1">// test/edge_cases/qu_gi_rules_test.dart</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:flutter_test/flutter_test.dart&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:viet_braille_app/core/braille_mapping.dart&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:viet_braille_app/domain/braille_converter.dart&#39;</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">late</span><span class="w"> </span><span class="n">BrailleMapping</span><span class="w"> </span><span class="n">mapping</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">late</span><span class="w"> </span><span class="n">BrailleConverter</span><span class="w"> </span><span class="n">converter</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">setUp</span><span class="p">(()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mapping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BrailleMappingImpl</span><span class="p">();</span>
+<span class="w">    </span><span class="n">converter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BrailleConverterImpl</span><span class="p">(</span><span class="n">mapping</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;qu rule&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;quyết&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="s1">&#39;quyết&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">hasWarnings</span><span class="p">,</span><span class="w"> </span><span class="n">isFalse</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;quả&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="s1">&#39;quả&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;qui&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="s1">&#39;qui&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;quốc&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="s1">&#39;quốc&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;gi rule&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;giải&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="s1">&#39;giải&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">hasWarnings</span><span class="p">,</span><span class="w"> </span><span class="n">isFalse</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;gạo&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="s1">&#39;gạo&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;giếng&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="s1">&#39;giếng&#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Viết special characters tests</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1">// test/edge_cases/special_chars_test.dart</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:flutter_test/flutter_test.dart&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:viet_braille_app/core/braille_mapping.dart&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:viet_braille_app/domain/braille_converter.dart&#39;</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">late</span><span class="w"> </span><span class="n">BrailleMapping</span><span class="w"> </span><span class="n">mapping</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">late</span><span class="w"> </span><span class="n">BrailleConverter</span><span class="w"> </span><span class="n">converter</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">setUp</span><span class="p">(()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mapping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BrailleMappingImpl</span><span class="p">();</span>
+<span class="w">    </span><span class="n">converter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BrailleConverterImpl</span><span class="p">(</span><span class="n">mapping</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;special characters&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;punctuation: comma, period, question, exclaim&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Xin chào, Việt Nam! Bạn khỏe không?&#39;</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">hasWarnings</span><span class="p">,</span><span class="w"> </span><span class="n">isFalse</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;numbers with separators&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;1.234.567,89&#39;</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;very long text (performance)&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Xin chào Việt Nam. &#39;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">100</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;whitespace-only input&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="s1">&#39;   &#39;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isEmpty</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 5: Chạy tests</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>flutter<span class="w"> </span><span class="nb">test</span><span class="w"> </span>test/edge_cases/
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 6: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/test/edge_cases/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;test: add edge case tests for tones, qu/gi rules, special chars&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-a7-dart-analyze-strict-mode">Task A7: Dart Analyze Strict Mode<a class="headerlink" href="#task-a7-dart-analyze-strict-mode" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Bật strict mode trong analysis_options.yaml.</p>
+<p><strong>Files:</strong>
+- Create: <code>viet_braille_app/analysis_options.yaml</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Tạo analysis_options.yaml</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">include</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">package:flutter_lints/flutter.yaml</span>
+
+<span class="nt">linter</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prefer_const_constructors</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prefer_final_locals</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">avoid_print</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">require_trailing_commas</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prefer_single_quotes</span>
+
+<span class="nt">analyzer</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">errors</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">missing_return</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">error</span>
+<span class="w">    </span><span class="nt">dead_code</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warning</span>
+<span class="w">    </span><span class="nt">unused_import</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warning</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Chạy dart analyze, sửa warnings</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>dart<span class="w"> </span>analyze
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/analysis_options.yaml
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: enable strict dart analysis mode&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-a8-performance-benchmarks">Task A8: Performance Benchmarks<a class="headerlink" href="#task-a8-performance-benchmarks" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Profile large text conversion, ghi nhận baseline.</p>
+<p><strong>Files:</strong>
+- Create: <code>viet_braille_app/test/performance/conversion_benchmark.dart</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Tạo benchmark test</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:flutter_test/flutter_test.dart&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:viet_braille_app/core/braille_mapping.dart&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:viet_braille_app/domain/braille_converter.dart&#39;</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">late</span><span class="w"> </span><span class="n">BrailleMapping</span><span class="w"> </span><span class="n">mapping</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">late</span><span class="w"> </span><span class="n">BrailleConverter</span><span class="w"> </span><span class="n">converter</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">setUp</span><span class="p">(()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mapping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BrailleMappingImpl</span><span class="p">();</span>
+<span class="w">    </span><span class="n">converter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BrailleConverterImpl</span><span class="p">(</span><span class="n">mapping</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;performance benchmarks&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;convert 1000 words under 1 second&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Xin chào Việt Nam. &#39;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">200</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">stopwatch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Stopwatch</span><span class="p">()..</span><span class="n">start</span><span class="p">();</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">      </span><span class="n">stopwatch</span><span class="p">.</span><span class="n">stop</span><span class="p">();</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">stopwatch</span><span class="p">.</span><span class="n">elapsedMilliseconds</span><span class="p">,</span><span class="w"> </span><span class="n">lessThan</span><span class="p">(</span><span class="m">1000</span><span class="p">));</span>
+<span class="w">      </span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;1000 words: </span><span class="si">${</span><span class="n">stopwatch</span><span class="p">.</span><span class="n">elapsedMilliseconds</span><span class="si">}</span><span class="s1">ms&#39;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+
+<span class="w">    </span><span class="n">test</span><span class="p">(</span><span class="s1">&#39;convert 10000 words under 5 seconds&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Xin chào Việt Nam. &#39;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">2000</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">stopwatch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Stopwatch</span><span class="p">()..</span><span class="n">start</span><span class="p">();</span>
+<span class="w">      </span><span class="kd">final</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">converter</span><span class="p">.</span><span class="n">convertWithDetails</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">      </span><span class="n">stopwatch</span><span class="p">.</span><span class="n">stop</span><span class="p">();</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">brailleText</span><span class="p">,</span><span class="w"> </span><span class="n">isNotEmpty</span><span class="p">);</span>
+<span class="w">      </span><span class="n">expect</span><span class="p">(</span><span class="n">stopwatch</span><span class="p">.</span><span class="n">elapsedMilliseconds</span><span class="p">,</span><span class="w"> </span><span class="n">lessThan</span><span class="p">(</span><span class="m">5000</span><span class="p">));</span>
+<span class="w">      </span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;10000 words: </span><span class="si">${</span><span class="n">stopwatch</span><span class="p">.</span><span class="n">elapsedMilliseconds</span><span class="si">}</span><span class="s1">ms&#39;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Chạy benchmark</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>flutter<span class="w"> </span><span class="nb">test</span><span class="w"> </span>test/performance/conversion_benchmark.dart
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/test/performance/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;test: add performance benchmarks for text conversion&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-a9-memory-leak-audit">Task A9: Memory Leak Audit<a class="headerlink" href="#task-a9-memory-leak-audit" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Kiểm tra OCR processor dispose đúng cách.</p>
+<p><strong>Files:</strong>
+- Modify: <code>viet_braille_app/lib/data/ocr_processor.dart</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Verify OcrProcessor có dispose method</strong></li>
+</ul>
+<p>Đọc <code>lib/data/ocr_processor.dart</code>, đảm bảo <code>dispose()</code> gọi <code>_textRecognizer.close()</code>.</p>
+<ul>
+<li>[ ] <strong>Step 2: Verify callers gọi dispose</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>grep<span class="w"> </span>-r<span class="w"> </span><span class="s2">&quot;OcrProcessorImpl&quot;</span><span class="w"> </span>lib/
+</code></pre></div>
+<p>Đảm bảo mọi nơi tạo OcrProcessorImpl đều gọi dispose() khi xong.</p>
+<ul>
+<li>[ ] <strong>Step 3: Commit nếu có thay đổi</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/lib/data/ocr_processor.dart
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;fix: ensure OCR processor disposes text recognizer properly&quot;</span>
+</code></pre></div>
+<h2 id="-_1">---<a class="headerlink" href="#-_1" title="Permanent link">&para;</a></h2>
+<h1 id="track-b-features">TRACK B: FEATURES<a class="headerlink" href="#track-b-features" title="Permanent link">&para;</a></h1>
+<h2 id="task-b1-screen-reader-support-semantics">Task B1: Screen Reader Support (Semantics)<a class="headerlink" href="#task-b1-screen-reader-support-semantics" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Thêm Semantics labels cho tất cả widgets.</p>
+<p><strong>Files:</strong>
+- Modify: <code>viet_braille_app/lib/presentation/widgets/text_input_section.dart</code>
+- Modify: <code>viet_braille_app/lib/presentation/widgets/braille_display_section.dart</code>
+- Modify: <code>viet_braille_app/lib/presentation/screens/home_screen.dart</code>
+- Modify: <code>viet_braille_app/lib/presentation/widgets/app_drawer.dart</code></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: Đọc widget files</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Thêm Semantics cho TextField</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">Semantics</span><span class="p">(</span>
+<span class="w">  </span><span class="nl">label:</span><span class="w"> </span><span class="s1">&#39;Nhập văn bản tiếng Việt để chuyển đổi sang Braille&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nl">textField:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nl">child:</span><span class="w"> </span><span class="n">TextField</span><span class="p">(...),</span>
+<span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Thêm Semantics cho display sections</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">Semantics</span><span class="p">(</span>
+<span class="w">  </span><span class="nl">label:</span><span class="w"> </span><span class="s1">&#39;Kết quả chữ Braille. Nhấn để sao chép.&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nl">button:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nl">child:</span><span class="w"> </span><span class="n">GestureDetector</span><span class="p">(...),</span>
+<span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Thêm Semantics cho action buttons</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">Semantics</span><span class="p">(</span>
+<span class="w">  </span><span class="nl">label:</span><span class="w"> </span><span class="s1">&#39;Chuyển đổi văn bản sang Braille&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nl">button:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nl">child:</span><span class="w"> </span><span class="n">ElevatedButton</span><span class="p">(...),</span>
+<span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 5: Thêm Semantics cho drawer items</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">Semantics</span><span class="p">(</span>
+<span class="w">  </span><span class="nl">label:</span><span class="w"> </span><span class="s1">&#39;Trang chủ - Chuyển đổi Braille&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nl">button:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nl">child:</span><span class="w"> </span><span class="n">ListTile</span><span class="p">(...),</span>
+<span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 6: Chạy tests, commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>flutter<span class="w"> </span><span class="nb">test</span>
+git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/lib/presentation/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: add screen reader support with Semantics labels&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-b2-font-size-adjustment">Task B2: Font Size Adjustment<a class="headerlink" href="#task-b2-font-size-adjustment" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Settings slider để điều chỉnh kích thước chữ.</p>
+<p><strong>Files:</strong>
+- Modify: <code>viet_braille_app/lib/presentation/screens/settings_screen.dart</code>
+- Modify: <code>viet_braille_app/lib/core/app_theme.dart</code>
+- Modify: <code>viet_braille_app/lib/presentation/providers/theme_provider.dart</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Thêm fontScale vào ThemeNotifier</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kt">double</span><span class="w"> </span><span class="n">_fontScale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.0</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="kd">get</span><span class="w"> </span><span class="n">fontScale</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">_fontScale</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">setFontScale</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">scale</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">_fontScale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scale</span><span class="p">.</span><span class="n">clamp</span><span class="p">(</span><span class="m">0.8</span><span class="p">,</span><span class="w"> </span><span class="m">2.0</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// notify listeners</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Thêm slider vào SettingsScreen</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">Slider</span><span class="p">(</span>
+<span class="w">  </span><span class="nl">value:</span><span class="w"> </span><span class="n">ref</span><span class="p">.</span><span class="n">watch</span><span class="p">(</span><span class="n">themeProvider</span><span class="p">.</span><span class="n">notifier</span><span class="p">).</span><span class="n">fontScale</span><span class="p">,</span>
+<span class="w">  </span><span class="nl">min:</span><span class="w"> </span><span class="m">0.8</span><span class="p">,</span><span class="w"> </span><span class="nl">max:</span><span class="w"> </span><span class="m">2.0</span><span class="p">,</span><span class="w"> </span><span class="nl">divisions:</span><span class="w"> </span><span class="m">6</span><span class="p">,</span>
+<span class="w">  </span><span class="nl">label:</span><span class="w"> </span><span class="s1">&#39;</span><span class="si">${</span><span class="p">(</span><span class="n">ref</span><span class="p">.</span><span class="n">watch</span><span class="p">(</span><span class="n">themeProvider</span><span class="p">.</span><span class="n">notifier</span><span class="p">).</span><span class="n">fontScale</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">100</span><span class="p">).</span><span class="n">round</span><span class="p">()</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nl">onChanged:</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">ref</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="n">themeProvider</span><span class="p">.</span><span class="n">notifier</span><span class="p">).</span><span class="n">setFontScale</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
+<span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Áp dụng fontSizeFactor trong theme</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nl">textTheme:</span><span class="w"> </span><span class="n">ThemeData</span><span class="p">.</span><span class="n">light</span><span class="p">().</span><span class="n">textTheme</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="nl">fontSizeFactor:</span><span class="w"> </span><span class="n">fontScale</span><span class="p">),</span>
+</code></pre></div>
+<ul>
+<li>
+<p>[ ] <strong>Step 4: Persist qua SharedPreferences</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 5: Chạy tests, commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>flutter<span class="w"> </span><span class="nb">test</span>
+git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/lib/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: add font size adjustment for accessibility&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-b3-voice-input-speech-to-text">Task B3: Voice Input (Speech-to-Text)<a class="headerlink" href="#task-b3-voice-input-speech-to-text" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Nhập liệu bằng giọng nói tiếng Việt.</p>
+<p><strong>Files:</strong>
+- Modify: <code>viet_braille_app/pubspec.yaml</code>
+- Create: <code>viet_braille_app/lib/data/speech_service.dart</code>
+- Modify: <code>viet_braille_app/lib/presentation/widgets/text_input_section.dart</code></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: Thêm dependency <code>speech_to_text: ^6.6.0</code></strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Tạo SpeechService</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kd">class</span><span class="w"> </span><span class="nc">SpeechService</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">final</span><span class="w"> </span><span class="n">SpeechToText</span><span class="w"> </span><span class="n">_speech</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SpeechToText</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">Future</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">initialize</span><span class="p">()</span><span class="w"> </span><span class="kd">async</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kd">await</span><span class="w"> </span><span class="n">_speech</span><span class="p">.</span><span class="n">initialize</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">Future</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span><span class="w"> </span><span class="n">startListening</span><span class="p">({</span>
+<span class="w">    </span><span class="kd">required</span><span class="w"> </span><span class="kt">Function</span><span class="p">(</span><span class="kt">String</span><span class="p">)</span><span class="w"> </span><span class="n">onResult</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">String</span><span class="w"> </span><span class="n">localeId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;vi_VN&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="p">})</span><span class="w"> </span><span class="kd">async</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">await</span><span class="w"> </span><span class="n">_speech</span><span class="p">.</span><span class="n">listen</span><span class="p">(</span>
+<span class="w">      </span><span class="nl">onResult:</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">onResult</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">recognizedWords</span><span class="p">),</span>
+<span class="w">      </span><span class="nl">localeId:</span><span class="w"> </span><span class="n">localeId</span><span class="p">,</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">Future</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stopListening</span><span class="p">()</span><span class="w"> </span><span class="kd">async</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kd">await</span><span class="w"> </span><span class="n">_speech</span><span class="p">.</span><span class="n">stop</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="kd">get</span><span class="w"> </span><span class="n">isListening</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">_speech</span><span class="p">.</span><span class="n">isListening</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>
+<p>[ ] <strong>Step 3: Thêm microphone button vào TextInputSection</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 4: Chạy tests, commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>flutter<span class="w"> </span><span class="nb">test</span>
+git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: add voice input with Vietnamese speech recognition&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-b4-flutter-web-build">Task B4: Flutter Web Build<a class="headerlink" href="#task-b4-flutter-web-build" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Enable Flutter web target.</p>
+<p><strong>Files:</strong>
+- Modify: <code>viet_braille_app/lib/data/ocr_processor.dart</code> (conditional import)</p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: <code>flutter config --enable-web</code></strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Conditional import cho OCR (not available on web)</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="s1">&#39;ocr_processor_stub.dart&#39;</span>
+<span class="w">    </span><span class="n">if</span><span class="w"> </span><span class="err">(</span><span class="n">dart</span><span class="err">.</span><span class="n">library</span><span class="err">.</span><span class="n">io</span><span class="err">)</span><span class="w"> </span><span class="s1">&#39;ocr_processor_io.dart&#39;</span>
+<span class="w">    </span><span class="n">if</span><span class="w"> </span><span class="err">(</span><span class="n">dart</span><span class="err">.</span><span class="n">library</span><span class="err">.</span><span class="n">html</span><span class="err">)</span><span class="w"> </span><span class="s1">&#39;ocr_processor_web.dart&#39;</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>
+<p>[ ] <strong>Step 3: Tạo stub implementations</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 4: <code>flutter build web</code></strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 5: Commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: enable Flutter web build with platform-safe OCR&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-b5-extract-viet_braille_core-package">Task B5: Extract viet_braille_core Package<a class="headerlink" href="#task-b5-extract-viet_braille_core-package" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Tách core logic thành package độc lập.</p>
+<p><strong>Files:</strong>
+- Create: <code>packages/viet_braille_core/pubspec.yaml</code>
+- Create: <code>packages/viet_braille_core/lib/viet_braille_core.dart</code>
+- Copy: core files vào package</p>
+<ul>
+<li>[ ] <strong>Step 1: Tạo package structure</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>packages/viet_braille_core/lib<span class="w"> </span>packages/viet_braille_core/test
+</code></pre></div>
+<ul>
+<li>
+<p>[ ] <strong>Step 2: Tạo pubspec.yaml (pure Dart, no dependencies)</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 3: Copy core files</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>cp<span class="w"> </span>viet_braille_app/lib/core/braille_mapping.dart<span class="w"> </span>packages/viet_braille_core/lib/
+cp<span class="w"> </span>viet_braille_app/lib/core/braille_dots.dart<span class="w"> </span>packages/viet_braille_core/lib/
+cp<span class="w"> </span>viet_braille_app/lib/domain/braille_converter.dart<span class="w"> </span>packages/viet_braille_core/lib/
+cp<span class="w"> </span>viet_braille_app/lib/domain/braille_reverse_converter.dart<span class="w"> </span>packages/viet_braille_core/lib/
+cp<span class="w"> </span>viet_braille_app/lib/domain/brf_formatter.dart<span class="w"> </span>packages/viet_braille_core/lib/
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Tạo barrel file</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">library</span><span class="w"> </span><span class="n">viet_braille_core</span><span class="p">;</span>
+<span class="k">export</span><span class="w"> </span><span class="s1">&#39;braille_dots.dart&#39;</span><span class="p">;</span>
+<span class="k">export</span><span class="w"> </span><span class="s1">&#39;braille_mapping.dart&#39;</span><span class="p">;</span>
+<span class="k">export</span><span class="w"> </span><span class="s1">&#39;braille_converter.dart&#39;</span><span class="p">;</span>
+<span class="k">export</span><span class="w"> </span><span class="s1">&#39;braille_reverse_converter.dart&#39;</span><span class="p">;</span>
+<span class="k">export</span><span class="w"> </span><span class="s1">&#39;brf_formatter.dart&#39;</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 5: Thêm path dependency vào app</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">viet_braille_core</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../packages/viet_braille_core</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 6: Update imports, chạy tests, commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>viet_braille_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>flutter<span class="w"> </span><span class="nb">test</span>
+git<span class="w"> </span>add<span class="w"> </span>packages/<span class="w"> </span>viet_braille_app/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;refactor: extract viet_braille_core as standalone package&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-b6-rest-api-server">Task B6: REST API Server<a class="headerlink" href="#task-b6-rest-api-server" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Tạo REST API cho Braille conversion.</p>
+<p><strong>Files:</strong>
+- Create: <code>api_server/bin/server.dart</code>
+- Create: <code>api_server/lib/handlers/convert_handler.dart</code>
+- Create: <code>api_server/pubspec.yaml</code></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: Tạo package với shelf + viet_braille_core dependency</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Tạo server entry point với CORS</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 3: Tạo handlers: POST /convert, POST /reverse, POST /batch</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 4: Test locally</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>api_server<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>dart<span class="w"> </span>run<span class="w"> </span>bin/server.dart
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8080/convert<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;text&quot;: &quot;Xin chào&quot;}&#39;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>api_server/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: add REST API server for Braille conversion&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-b7-interactive-braille-learning-mode">Task B7: Interactive Braille Learning Mode<a class="headerlink" href="#task-b7-interactive-braille-learning-mode" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Chế độ học Braille — tap vào dots để xem ký tự.</p>
+<p><strong>Files:</strong>
+- Create: <code>viet_braille_app/lib/teaching/learning_screen.dart</code>
+- Create: <code>viet_braille_app/lib/teaching/braille_grid_widget.dart</code>
+- Modify: <code>viet_braille_app/lib/main.dart</code> (add route)</p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: Tạo BrailleGridWidget (6 dots, tap to toggle)</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Tạo LearningScreen với alphabet grid</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 3: Thêm route <code>/learn</code> và drawer item</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 4: Chạy tests, commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/lib/teaching/<span class="w"> </span>viet_braille_app/lib/main.dart
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: add interactive Braille learning mode&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-b8-quiz-mode">Task B8: Quiz Mode<a class="headerlink" href="#task-b8-quiz-mode" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Quiz: text → Braille, scoring.</p>
+<p><strong>Files:</strong>
+- Create: <code>viet_braille_app/lib/teaching/quiz_screen.dart</code></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: Tạo QuizScreen với multiple choice</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Thêm route <code>/quiz</code> và drawer item</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 3: Chạy tests, commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/lib/teaching/quiz_screen.dart
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: add quiz mode for Braille learning&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-b9-batch-processing">Task B9: Batch Processing<a class="headerlink" href="#task-b9-batch-processing" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Upload file, convert all lines.</p>
+<p><strong>Files:</strong>
+- Modify: <code>viet_braille_app/lib/presentation/providers/conversion_provider.dart</code>
+- Modify: <code>viet_braille_app/lib/presentation/screens/home_screen.dart</code></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: Thêm batchConvert method</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Thêm "Chuyển đổi từ file" button</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 3: Chạy tests, commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/lib/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: add batch processing from file upload&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-b10-pdf-export">Task B10: PDF Export<a class="headerlink" href="#task-b10-pdf-export" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Xuất Braille ra PDF.</p>
+<p><strong>Files:</strong>
+- Modify: <code>viet_braille_app/lib/data/file_exporter.dart</code>
+- Modify: <code>viet_braille_app/pubspec.yaml</code></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: Thêm dependencies <code>pdf: ^3.10.0</code>, <code>printing: ^5.12.0</code></strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Thêm exportToPdf method</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 3: Thêm "Xuất PDF" button</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 4: Chạy tests, commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>viet_braille_app/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: add PDF export for Braille text&quot;</span>
+</code></pre></div>
+<h2 id="-_2">---<a class="headerlink" href="#-_2" title="Permanent link">&para;</a></h2>
+<h1 id="track-c-integration">TRACK C: INTEGRATION<a class="headerlink" href="#track-c-integration" title="Permanent link">&para;</a></h1>
+<h2 id="task-c1-organize-python-tools">Task C1: Organize Python Tools<a class="headerlink" href="#task-c1-organize-python-tools" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Tạo <code>tools/</code> directory, di chuyển scripts, tạo unified CLI.</p>
+<p><strong>Files:</strong>
+- Move: Python scripts → <code>tools/verify/</code>, <code>tools/analysis/</code>, <code>tools/comparison/</code>
+- Create: <code>tools/requirements.txt</code>
+- Create: <code>tools/verify.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Tạo thư mục và di chuyển</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>tools/verify<span class="w"> </span>tools/analysis<span class="w"> </span>tools/comparison
+mv<span class="w"> </span>verify_braille.py<span class="w"> </span>tools/verify/
+mv<span class="w"> </span>deep_analysis.py<span class="w"> </span>tools/analysis/
+mv<span class="w"> </span>ueb_comparison.py<span class="w"> </span>tools/comparison/
+mv<span class="w"> </span>compare_detail.py<span class="w"> </span>tools/comparison/
+mv<span class="w"> </span>compare_detailed_v2.py<span class="w"> </span>tools/comparison/
+mv<span class="w"> </span>compare_rules_vs_app.py<span class="w"> </span>tools/comparison/
+mv<span class="w"> </span>extract_braille.py<span class="w"> </span>tools/analysis/
+mv<span class="w"> </span>verify_braille_complete.py<span class="w"> </span>tools/verify/
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Tạo requirements.txt</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>pytest&gt;=7.4.0
+pdfplumber&gt;=0.10.0
+pyyaml&gt;=6.0
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Tạo unified CLI <code>tools/verify.py</code></strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+<span class="sd">&quot;&quot;&quot;Unified CLI for Vietnamese Braille verification.&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">subprocess</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run_script</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">desc</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">desc</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="n">path</span><span class="p">])</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">scripts</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;tools/verify/verify_braille.py&quot;</span><span class="p">,</span> <span class="s2">&quot;Braille mapping verification&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;tools/analysis/deep_analysis.py&quot;</span><span class="p">,</span> <span class="s2">&quot;Deep analysis&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;tools/comparison/ueb_comparison.py&quot;</span><span class="p">,</span> <span class="s2">&quot;UEB comparison&quot;</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="n">failures</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">scripts</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">run_script</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">desc</span><span class="p">):</span>
+                <span class="n">failures</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">failures</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">failures</span><span class="si">}</span><span class="s2"> verification(s) FAILED&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">All verifications PASSED&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>tools/<span class="w"> </span>verify_braille.py<span class="w"> </span>deep_analysis.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: organize Python tools into tools/ directory with unified CLI&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-c2-ci-python-verification">Task C2: CI Python Verification<a class="headerlink" href="#task-c2-ci-python-verification" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Chạy Python verification trong CI.</p>
+<p><strong>Files:</strong>
+- Modify: <code>.github/workflows/ci.yml</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Thêm python-verify job vào CI workflow</strong></li>
+</ul>
+<p>(Đã có trong Task A5, chỉ cần verify hoạt động)</p>
+<ul>
+<li>[ ] <strong>Step 2: Commit nếu cần sửa</strong></li>
+</ul>
+<hr />
+<h2 id="task-c3-parse-thong-tu-15-pdf">Task C3: Parse Thông tư 15 PDF<a class="headerlink" href="#task-c3-parse-thong-tu-15-pdf" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Extract rules từ PDF thành structured data.</p>
+<p><strong>Files:</strong>
+- Create: <code>tools/parse_rules.py</code>
+- Create: <code>tools/data/tt15_rules.json</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Tạo script parse PDF</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+<span class="sd">&quot;&quot;&quot;Parse Thông tư 15/2019 PDF into structured JSON.&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pdfplumber</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_pdf</span><span class="p">(</span><span class="n">pdf_path</span><span class="p">):</span>
+    <span class="n">rules</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;alphabet&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;tones&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;symbols&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+    <span class="k">with</span> <span class="n">pdfplumber</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">pdf_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">pdf</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">pdf</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
+            <span class="n">tables</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">extract_tables</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span>
+                    <span class="c1"># Parse rows into rules structure</span>
+                    <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">rules</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">rules</span> <span class="o">=</span> <span class="n">parse_pdf</span><span class="p">(</span><span class="s2">&quot;quytac/501196e24bee7141a3d2d37f879d04a615_2019_TT_BGDDT.pdf&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;tools/data/tt15_rules.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">rules</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Rules parsed successfully&quot;</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Chạy script, verify output</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>tools/parse_rules.py
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>tools/parse_rules.py<span class="w"> </span>tools/data/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: add PDF parser for Thông tư 15/2019 Braille rules&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-c4-auto-generate-test-cases-tu-rules">Task C4: Auto-generate Test Cases từ Rules<a class="headerlink" href="#task-c4-auto-generate-test-cases-tu-rules" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Tạo test cases tự động từ parsed rules.</p>
+<p><strong>Files:</strong>
+- Create: <code>tools/generate_tests.py</code></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: Tạo script generate tests từ JSON</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Chạy script, verify generated tests</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 3: Commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>tools/generate_tests.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: auto-generate test cases from Braille rules PDF&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-c5-compliance-report">Task C5: Compliance Report<a class="headerlink" href="#task-c5-compliance-report" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Tạo report app compliance với Thông tư 15.</p>
+<p><strong>Files:</strong>
+- Create: <code>tools/compliance_report.py</code></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: Tạo script so sánh app mapping với rules</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Chạy script, xem report</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 3: Commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>tools/compliance_report.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: add compliance report against Thông tư 15/2019&quot;</span>
+</code></pre></div>
+<h2 id="-_3">---<a class="headerlink" href="#-_3" title="Permanent link">&para;</a></h2>
+<h1 id="track-d-documentation">TRACK D: DOCUMENTATION<a class="headerlink" href="#track-d-documentation" title="Permanent link">&para;</a></h1>
+<h2 id="task-d1-contributingmd">Task D1: CONTRIBUTING.md<a class="headerlink" href="#task-d1-contributingmd" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Hướng dẫn đóng góp chi tiết.</p>
+<p><strong>Files:</strong>
+- Create: <code>CONTRIBUTING.md</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Tạo CONTRIBUTING.md</strong></li>
+</ul>
+<p>Nội dung: prerequisites, setup, code style, PR process, issue templates.</p>
+<ul>
+<li>[ ] <strong>Step 2: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>CONTRIBUTING.md
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;docs: add detailed contributing guide&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-d2-license">Task D2: LICENSE<a class="headerlink" href="#task-d2-license" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Thêm file LICENSE.</p>
+<p><strong>Files:</strong>
+- Create: <code>LICENSE</code></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: Tạo MIT License</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>LICENSE
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: add MIT license&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-d3-user-guide">Task D3: User Guide<a class="headerlink" href="#task-d3-user-guide" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Hướng dẫn sử dụng app cho người dùng.</p>
+<p><strong>Files:</strong>
+- Create: <code>docs/user-guide.md</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Viết user guide</strong></li>
+</ul>
+<p>Nội dung: cài đặt, cách dùng (text→Braille, Braille→text, OCR, export), FAQ.</p>
+<ul>
+<li>[ ] <strong>Step 2: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>docs/user-guide.md
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;docs: add user guide with step-by-step instructions&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-d4-architecture-overview">Task D4: Architecture Overview<a class="headerlink" href="#task-d4-architecture-overview" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Tài liệu kiến trúc với diagrams.</p>
+<p><strong>Files:</strong>
+- Create: <code>docs/architecture.md</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Viết architecture doc với Mermaid diagrams</strong></li>
+</ul>
+<p>Nội dung: clean architecture layers, data flow, component relationships.</p>
+<ul>
+<li>[ ] <strong>Step 2: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>docs/architecture.md
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;docs: add architecture overview with Mermaid diagrams&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-d5-changelogmd">Task D5: CHANGELOG.md<a class="headerlink" href="#task-d5-changelogmd" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Theo dõi thay đổi theo định dạng Keep a Changelog.</p>
+<p><strong>Files:</strong>
+- Create: <code>CHANGELOG.md</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Tạo CHANGELOG.md</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="gh"># Changelog</span>
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [<span class="nt">Keep a Changelog</span>](<span class="na">https://keepachangelog.com/</span>).
+
+<span class="gu">## [Unreleased]</span>
+
+<span class="gu">### Added</span>
+<span class="k">-</span><span class="w"> </span>Official README with badges and quick start
+<span class="k">-</span><span class="w"> </span>Integration tests for full conversion pipeline
+<span class="k">-</span><span class="w"> </span>Edge case tests for tone stacking, qu/gi rules
+<span class="k">-</span><span class="w"> </span>CI pipeline with dart format, analyze, test
+<span class="k">-</span><span class="w"> </span>Screen reader support (Semantics)
+<span class="k">-</span><span class="w"> </span>Font size adjustment
+<span class="k">-</span><span class="w"> </span>Voice input (Vietnamese speech-to-text)
+<span class="k">-</span><span class="w"> </span>Flutter web build support
+<span class="k">-</span><span class="w"> </span>Interactive Braille learning mode
+<span class="k">-</span><span class="w"> </span>Quiz mode
+<span class="k">-</span><span class="w"> </span>REST API server
+<span class="k">-</span><span class="w"> </span>PDF export
+<span class="k">-</span><span class="w"> </span>Batch processing
+<span class="k">-</span><span class="w"> </span>Python tools organization with unified CLI
+<span class="k">-</span><span class="w"> </span>Compliance report against Thông tư 15/2019
+
+<span class="gu">### Changed</span>
+<span class="k">-</span><span class="w"> </span>Reverse converter uses immutable state (no more state leak)
+<span class="k">-</span><span class="w"> </span>composeNfc logic extracted to shared implementation
+
+<span class="gu">### Fixed</span>
+<span class="k">-</span><span class="w"> </span>State leak between consecutive convert() calls
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>CHANGELOG.md
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;docs: add changelog following Keep a Changelog format&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-d6-github-issue-templates">Task D6: GitHub Issue Templates<a class="headerlink" href="#task-d6-github-issue-templates" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Templates cho bug reports, feature requests.</p>
+<p><strong>Files:</strong>
+- Create: <code>.github/ISSUE_TEMPLATE/bug_report.md</code>
+- Create: <code>.github/ISSUE_TEMPLATE/feature_request.md</code></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: Tạo templates</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>.github/ISSUE_TEMPLATE/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: add GitHub issue templates for bugs and features&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-d7-github-pages-docs-site">Task D7: GitHub Pages Docs Site<a class="headerlink" href="#task-d7-github-pages-docs-site" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Deploy docs site với MkDocs.</p>
+<p><strong>Files:</strong>
+- Create: <code>mkdocs.yml</code>
+- Create: <code>.github/workflows/docs.yml</code></p>
+<ul>
+<li>
+<p>[ ] <strong>Step 1: Tạo mkdocs.yml</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Tạo GitHub Actions workflow để deploy</strong></p>
+</li>
+<li>
+<p>[ ] <strong>Step 3: Commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>mkdocs.yml<span class="w"> </span>.github/workflows/docs.yml
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;docs: add MkDocs site with GitHub Pages deployment&quot;</span>
+</code></pre></div>
+<h2 id="-_4">---<a class="headerlink" href="#-_4" title="Permanent link">&para;</a></h2>
+<h2 id="verification-checklist">Verification Checklist<a class="headerlink" href="#verification-checklist" title="Permanent link">&para;</a></h2>
+<p>Sau khi hoàn thành tất cả tasks:</p>
+<ul>
+<li>[ ] <code>cd viet_braille_app &amp;&amp; dart format --set-exit-if-changed lib/ test/</code> → exit 0</li>
+<li>[ ] <code>cd viet_braille_app &amp;&amp; dart analyze</code> → no warnings</li>
+<li>[ ] <code>cd viet_braille_app &amp;&amp; flutter test</code> → all tests PASS</li>
+<li>[ ] <code>python tools/verify.py</code> → all verifications PASSED</li>
+<li>[ ] <code>cd api_server &amp;&amp; dart run bin/server.dart</code> → server starts</li>
+<li>[ ] <code>git log --oneline -30</code> → clean commits</li>
+<li>[ ] README renders correctly on GitHub</li>
+<li>[ ] CI pipeline green</li>
+</ul>
+<hr />
+<h2 id="execution-order-recommended">Execution Order (Recommended)<a class="headerlink" href="#execution-order-recommended" title="Permanent link">&para;</a></h2>
+<p><strong>Sprint 1 (Tuần 1-2):</strong> A1, A2, A5, D1, D2, C1
+<strong>Sprint 2 (Tuần 3-4):</strong> A3, A4, A6, D3, C2
+<strong>Sprint 3 (Tuần 5-6):</strong> A7, A8, B1, B2, D4
+<strong>Sprint 4 (Tuần 7-8):</strong> B3, B4, B5, C3, D5
+<strong>Sprint 5 (Tuần 9-10):</strong> B6, B7, C4, D6
+<strong>Sprint 6 (Tuần 11-12):</strong> B8, B9, C5, D7
+<strong>Sprint 7-10:</strong> Polish, maintenance, dependency updates</p>
+<p>Tasks trong cùng sprint có thể chạy song song (độc lập nhau).</p>
+<h1 id="tai-lieu-lich-su">Tài liệu lịch sử<a class="headerlink" href="#tai-lieu-lich-su" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Kế hoạch này được lưu để truy vết quyết định, không phải tài liệu sử dụng
+hiện tại. Xem README và <code>docs/architecture.md</code>.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Trở lại mục lục
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/ghitatruongle/vietnamese-braille" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0110\u00e3 sao ch\u00e9p", "clipboard.copy": "Sao ch\u00e9p v\u00e0o b\u1ed9 nh\u1edb t\u1ea1m", "search.result.more.one": "1 t\u1eeb kh\u00e1c trong trang", "search.result.more.other": "# t\u1eeb kh\u00e1c trong trang", "search.result.none": "Kh\u00f4ng t\u00ecm th\u1ea5y t\u00e0i li\u1ec7u li\u00ean quan", "search.result.one": "1 t\u00e0i li\u1ec7u li\u00ean quan", "search.result.other": "# t\u00e0i li\u1ec7u li\u00ean quan", "search.result.placeholder": "Nh\u1eadp \u0111\u1ec3 b\u1eaft \u0111\u1ea7u t\u00ecm ki\u1ebfm", "search.result.term.missing": "Kh\u00f4ng", "select.version": "Ch\u1ecdn phi\u00ean b\u1ea3n"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
