@@ -27,6 +27,28 @@ class BrailleReverseConverterImpl implements BrailleReverseConverter {
     '${_mapping.symbolPrefix}${_cellOf(_d4 | _d5 | _d6)}': '_',
     '${_mapping.symbolPrefix}${_cellOf(_d2 | _d3 | _d4)}': '\$',
     '${_mapping.symbolPrefix}${_cellOf(_d2 | _d6)}': '^',
+    // B2 special characters — must match _charMap exactly.
+    '${_mapping.symbolPrefix}${_cellOf(_d2 | _d3 | _d6)}': '«',
+    '${_mapping.symbolPrefix}${_cellOf(_d3 | _d5 | _d6)}': '»',
+    '${_mapping.symbolPrefix}${_cellOf(_d3 | _d6)}': '–',
+    '${_mapping.symbolPrefix}${_cellOf(_d2 | _d5 | _d6)}': '—',
+    '${_mapping.symbolPrefix}${_cellOf(_d1 | _d4 | _d5 | _d6)}': '₫',
+    '${_mapping.symbolPrefix}${_cellOf(_d2 | _d4 | _d5 | _d6)}': '‰',
+    '${_mapping.symbolPrefix}${_cellOf(_d1 | _d4)}': '©',
+    '${_mapping.symbolPrefix}${_cellOf(_d1 | _d2 | _d3 | _d5)}': '®',
+    '${_mapping.symbolPrefix}${_cellOf(_d1 | _d2 | _d3 | _d4 | _d5 | _d6)}':
+        '™',
+    '${_mapping.symbolPrefix}${_cellOf(_d1 | _d2 | _d5 | _d6)}': '°',
+    '${_mapping.symbolPrefix}${_cellOf(_d1 | _d2 | _d3)}': '²',
+    '${_mapping.symbolPrefix}${_cellOf(_d1 | _d4 | _d5)}': '³',
+    '${_mapping.symbolPrefix}${_cellOf(_d1 | _d2 | _d5)}': '←',
+    '${_mapping.symbolPrefix}${_cellOf(_d2 | _d3 | _d5)}': '→',
+    '${_mapping.symbolPrefix}${_cellOf(_d1 | _d2 | _d3 | _d4)}': '↑',
+    '${_mapping.symbolPrefix}${_cellOf(_d2 | _d3 | _d4 | _d5)}': '↓',
+    // B5 formatting markers — must match _charMap exactly.
+    '${_mapping.symbolPrefix}${_cellOf(_d4 | _d5)}': '\u0002',
+    '${_mapping.symbolPrefix}${_cellOf(_d2 | _d4)}': '\u000E',
+    '${_mapping.symbolPrefix}${_cellOf(_d2 | _d3 | _d4 | _d6)}': '\u001F',
   };
 
   late final Map<String, String> _mathMap = {
@@ -35,6 +57,15 @@ class BrailleReverseConverterImpl implements BrailleReverseConverter {
     '${_mapping.mathPrefix}${_cellOf(_d2 | _d3 | _d6)}': '*',
     '${_mapping.mathPrefix}${_cellOf(_d2 | _d4 | _d6)}': '<',
     '${_mapping.mathPrefix}${_cellOf(_d1 | _d3 | _d5)}': '>',
+    // Extended math symbols — must match _charMap exactly.
+    '${_mapping.mathPrefix}${_cellOf(_d1 | _d3 | _d4 | _d5)}': '≈',
+    '${_mapping.mathPrefix}${_cellOf(_d2 | _d3 | _d4 | _d5)}': '≤',
+    '${_mapping.mathPrefix}${_cellOf(_d1 | _d2 | _d4 | _d5)}': '≥',
+    '${_mapping.mathPrefix}${_cellOf(_d2 | _d3 | _d4)}': '≠',
+    '${_mapping.mathPrefix}${_cellOf(_d1 | _d2 | _d3)}': '±',
+    '${_mapping.mathPrefix}${_cellOf(_d1 | _d3 | _d6)}': '×',
+    '${_mapping.mathPrefix}${_cellOf(_d1 | _d2 | _d4)}': '÷',
+    '${_mapping.mathPrefix}${_cellOf(_d1 | _d3 | _d4)}': '√',
   };
 
   late final Map<String, String> _specialMap = {
@@ -170,7 +201,16 @@ class BrailleReverseConverterImpl implements BrailleReverseConverter {
       }
 
       // 3. allCapsWord: ⠸ (dots 4,5,6)
+      //    BUT: this same cell is also `specialPrefix` for {, }, |, #.
+      //    If the next cell forms a valid special-prefix pair, delegate to
+      //    the prefix handler instead of treating it as allCapsWord.
       if (cell == _cellOf(_d4 | _d5 | _d6)) {
+        final prefixResult = _handlePrefixCell(brailleText, i);
+        if (prefixResult.handled) {
+          buffer.write(prefixResult.output);
+          i += prefixResult.delta;
+          continue;
+        }
         capState = capState.copyWith(isAllCapsWord: true);
         i++;
         continue;

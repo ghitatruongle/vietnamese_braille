@@ -351,7 +351,7 @@ packages:
       path: "../packages/viet_braille_core"
       relative: true
     source: path
-    version: "1.2.0"
+    version: "1.5.0-beta1"
   vm_service:
     dependency: transitive
     description:

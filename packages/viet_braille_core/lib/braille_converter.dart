@@ -41,12 +41,14 @@ abstract class BrailleConverter {
   String convert(
     String text, {
     BrailleConversionMode mode = BrailleConversionMode.standard,
+    bool enableMarkdown = false,
   });
 
   /// Convert with full result including unmapped character warnings.
   ConversionResult convertWithDetails(
     String text, {
     BrailleConversionMode mode = BrailleConversionMode.standard,
+    bool enableMarkdown = false,
   });
 }
 
@@ -69,19 +71,25 @@ class BrailleConverterImpl implements BrailleConverter {
   String convert(
     String text, {
     BrailleConversionMode mode = BrailleConversionMode.standard,
-  }) => convertWithDetails(text, mode: mode).brailleText;
+    bool enableMarkdown = false,
+  }) => convertWithDetails(
+    text,
+    mode: mode,
+    enableMarkdown: enableMarkdown,
+  ).brailleText;
 
   @override
   ConversionResult convertWithDetails(
     String text, {
     BrailleConversionMode mode = BrailleConversionMode.standard,
+    bool enableMarkdown = false,
   }) {
     if (text.isEmpty) {
       return const ConversionResult(brailleText: '', unmappedCharacters: []);
     }
 
-    // Tiền xử lý văn bản (đơn vị đo, phép toán, chấm lửng)
-    text = _preprocessor.preprocess(text);
+    // Tiền xử lý văn bản (đơn vị đo, phép toán, chấm lửng, marker markdown B5)
+    text = _preprocessor.preprocess(text, enableMarkdown: enableMarkdown);
 
     // Normalize + theo dõi chữ hoa (xử lý đúng cả NFD input).
     final result = _mapping.normalizeWithCapitals(text);
@@ -395,12 +403,13 @@ class BrailleConverterImpl implements BrailleConverter {
   }
 
   /// Kiểm tra ký tự có phải phụ âm đầu (consonant) trong tiếng Việt.
-  /// Bao gồm cả Latin consonants và 'đ'.
+  /// Bao gồm cả Latin consonants (kể cả `w`/`f`/`j`/`z` dùng trong từ ngoại
+  /// lai, tên riêng) và 'đ'.
   /// Dùng để xác định thứ tự capital indicator theo chuẩn Braille Việt Nam:
   /// - Có phụ âm đầu → capital trước consonant
   /// - Không có phụ âm đầu (standalone vowel) → tone → capital → vowel
   static bool _isConsonant(String ch) {
-    return 'bcdfghjklmnpqrstvxđ'.contains(ch);
+    return 'bcdfghjklmnpqrstvwxyzđ'.contains(ch);
   }
 
   /// Kiểm tra ký tự có phải nguyên âm tiếng Việt (không dấu).

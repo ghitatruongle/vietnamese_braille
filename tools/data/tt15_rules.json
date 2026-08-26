@@ -14,7 +14,8 @@
     ],
     "last_internal_review": "2026-07-27",
     "review_status": "pending_external",
-    "review_note": "Đã đối chiếu nội bộ với bản PDF và ảnh render; chưa có biên bản xác nhận của chuyên gia Braille độc lập."
+    "review_note": "Đã đối chiếu nội bộ với bản PDF và ảnh render; chưa có biên bản xác nhận của chuyên gia Braille độc lập.",
+    "app_extensions": "Các ký hiệu toán học mở rộng (≈ ≤ ≥ ≠ ± × ÷ √) và ký tự đặc biệt là quy ước riêng của ứng dụng (prefix dot 5 + base cell duy nhất), KHÔNG nằm trong Thông tư 15. Chi tiết tại docs/symbol_extensions.md."
   },
   "alphabet": {
     "a": {

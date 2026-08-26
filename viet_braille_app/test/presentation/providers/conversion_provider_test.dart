@@ -368,4 +368,10 @@ class _FailingHistoryService implements HistoryServiceBase {
 
   @override
   Future<List<ConversionHistoryEntry>> searchHistory(String query) async => [];
+
+  @override
+  Future<int> replaceAll(List<ConversionHistoryEntry> entries) async => 0;
+
+  @override
+  Future<int> mergeEntries(List<ConversionHistoryEntry> entries) async => 0;
 }

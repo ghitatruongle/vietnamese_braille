@@ -33,6 +33,14 @@ abstract class HistoryServiceBase {
   Future<void> clearHistory();
   Future<void> deleteEntry(int index);
   Future<List<ConversionHistoryEntry>> searchHistory(String query);
+
+  /// Ghi đè toàn bộ lịch sử (nhập backup chế độ "thay thế").
+  /// Trả về số bản ghi đã ghi (chịu giới hạn số mục tối đa).
+  Future<int> replaceAll(List<ConversionHistoryEntry> entries);
+
+  /// Gộp [entries] vào lịch sử hiện có, bỏ qua bản ghi trùng lặp (so khớp
+  /// thời điểm + nội dung). Trả về số bản ghi mới được thêm.
+  Future<int> mergeEntries(List<ConversionHistoryEntry> entries);
 }
 
 class HistoryServiceImpl implements HistoryServiceBase {
@@ -116,6 +124,67 @@ class HistoryServiceImpl implements HistoryServiceBase {
               e.brailleText.toLowerCase().contains(lowerQuery),
         )
         .toList();
+  }
+
+  @override
+  Future<int> replaceAll(List<ConversionHistoryEntry> entries) {
+    return _enqueueMutationWithValue(entries, _replaceAll);
+  }
+
+  Future<int> _replaceAll(List<ConversionHistoryEntry> entries) async {
+    final capped = entries.take(_maxEntries).toList();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      _key,
+      jsonEncode(capped.map((e) => e.toJson()).toList()),
+    );
+    return capped.length;
+  }
+
+  @override
+  Future<int> mergeEntries(List<ConversionHistoryEntry> entries) {
+    return _enqueueMutationWithValue(entries, _mergeEntries);
+  }
+
+  Future<int> _mergeEntries(List<ConversionHistoryEntry> entries) async {
+    final history = await loadHistory();
+    final seen = history.map(_identityOf).toSet();
+    var added = 0;
+    for (final entry in entries) {
+      if (seen.add(_identityOf(entry))) {
+        history.add(entry);
+        added++;
+      }
+    }
+    // Chuẩn hóa thứ tự mới nhất đứng đầu bất kể thứ tự trong tệp backup.
+    history.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+    if (history.length > _maxEntries) {
+      history.removeRange(_maxEntries, history.length);
+    }
+    if (added > 0) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+        _key,
+        jsonEncode(history.map((e) => e.toJson()).toList()),
+      );
+    }
+    return added;
+  }
+
+  static String _identityOf(ConversionHistoryEntry e) =>
+      '${e.timestamp.toIso8601String()}|${e.originalText}|${e.brailleText}';
+
+  /// Tuần tự hóa mutation có giá trị trả về.
+  Future<int> _enqueueMutationWithValue(
+    List<ConversionHistoryEntry> arg,
+    Future<int> Function(List<ConversionHistoryEntry>) mutation,
+  ) {
+    final operation = _mutationQueue.then((_) => mutation(arg));
+    _mutationQueue = operation.then<void>(
+      (_) {},
+      onError: (Object _, StackTrace _) {},
+    );
+    return operation;
   }
 
   /// Tuần tự hóa mọi mutation để hai lần chuyển đổi đồng thời không cùng đọc

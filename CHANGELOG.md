@@ -6,6 +6,64 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [1.5.0-beta1] - 2026-08-25
+
+### Added
+- Màn hình **Braille→Text** (`/braille-to-text`): dán/nhập ô Braille Unicode,
+  dịch ngược thành chữ tiếng Việt (standard/lossless), copy kết quả
+- Màn hình **chuyển đổi batch** (`/batch`): chọn nhiều tệp TXT/DOCX, chuyển đổi
+  từng tệp độc lập, xuất BRF hàng loạt, lỗi một tệp không làm hỏng cả lô
+- Toggle **"Hỗ trợ định dạng"** trong Settings: nhận diện markdown
+  `**đậm**` / `*nghiêng*` / `_gạch chân_`; cờ `enableMarkdown` được đưa qua
+  API `convert`/`convertWithDetails` của lõi và nối vào cả pipeline chính
+  lẫn pipeline batch
+- Bảng ký hiệu mở rộng của ứng dụng (tài liệu hóa trong
+  `docs/symbol_extensions.md`): nhóm toán học prefix dot 5
+  (`≈ ≤ ≥ ≠ ± × ÷ √`) và nhóm ký tự đặc biệt prefix dot 4
+  (`« » – — ₫ ‰ © ® ™ ° ² ³ ← → ↑ ↓`), đồng bộ forward/reverse/preprocessor
+- Marker định dạng B5: bold `⠈⠘`, italic `⠈⠊`, underline `⠈⠞`;
+  reverse converter nhận diện đủ 3 marker ngược về control char
+- Test phủ mapping toàn diện `mapping_completeness_test.dart`: mọi ký tự
+  Latin/tiếng Việt, tone cell, capitalization, marker B5 và regression
+  markdown trên tiếng Việt có dấu
+
+### Added (Wave 2 — cùng bản Beta 1)
+- **Nhập Braille 6 phím kiểu Perkins** (`S D F` = chấm 1-2-3, `J K L` =
+  chấm 4-5-6): bật/tắt chấm, nút Chốt ô, xem trước ô; tích hợp màn
+  Braille→Text
+- **Đọc to (TTS)** bằng `flutter_tts`: nút loa trên văn bản gốc/đối chiếu ở
+  màn chính và kết quả Braille→Text; tốc độ + cao độ chỉnh trong Settings;
+  capability gating theo nền tảng (Android/iOS/Windows/macOS)
+- **Sao lưu / khôi phục lịch sử** JSON: xuất toàn bộ lịch sử ra tệp có schema,
+  nhập lại với lựa chọn Gộp (bỏ trùng lặp theo bản sắc) hoặc Thay thế;
+  validate schema chặt, báo lỗi tiếng Việt
+- **Drag & drop hoàn thiện trên desktop**: vùng phủ gợi ý khi kéo tệp vào cửa
+  sổ; định tuyến tự động TXT/DOCX → chuyển đổi, ảnh → OCR nơi nền tảng hỗ trợ
+- **Corpus độ chính xác reverse chuẩn**: 67 câu thực tế đạt **100%**
+  round-trip (tiêu chí ≥99%), chạy tự động trong suite; sửa lỗi vị trí dấu
+  thanh vần âm đệm "o+a" (*xoài/ngoái/hòa/toàn*) kèm regression test;
+  baseline hiệu năng ghi tại `docs/wave2_quality.md`
+
+### Fixed
+- Markdown bold `**text**` bị xử lý như ký tự literal vì cờ markdown chưa
+  được truyền qua API chuyển đổi — đã nối trọn đường từ Settings tới lõi
+- **Batch crash khi có ≥ 2 tệp:** `convertAll` đọc `state.items.sublist(i + 1)`
+  sau khi state đã bị thay bằng danh sách kết quả → `RangeError` ở tệp thứ hai;
+  vòng lặp được tái cấu trúc (snapshot phần đuôi, cập nhật state sau mọi nhánh,
+  item cuối không còn kẹt trạng thái "converting")
+- Ký hiệu `≈ ≤ ≥` không còn bị drop khỏi văn bản (preprocessor nhận diện
+  nhưng bảng mã thiếu entry)
+- Phụ âm đầu `w` được xử lý đúng như các phụ âm mở rộng khác (Wifi, Zoom…)
+- Reverse standard đoán va chạm `?`/thanh hỏi và `-`/thanh ngã theo ngữ cảnh
+  chính xác hơn; giữ lossless làm lớp an toàn
+- Version hiển thị trong Settings đọc từ `kAppVersion`, không còn hardcode
+
+### Changed
+- Dọn các script probe kiểm chứng một-lần trong
+  `packages/viet_braille_core/tool/`, giữ lại `verify_b5`, `verify_b5_cells`,
+  `verify_symbols`, `verify_tt15`
+- Phiên bản đồng bộ: app `1.5.0-beta1+4`, core/api `1.5.0-beta1`
+
 ## [1.2.0] - 2026-07-30
 
 ### Added

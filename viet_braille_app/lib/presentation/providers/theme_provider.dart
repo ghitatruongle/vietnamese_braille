@@ -50,3 +50,29 @@ class FontScaleNotifier extends StateNotifier<double> {
     await prefs.setDouble(_key, state);
   }
 }
+
+/// Bật/tắt nhận diện markdown `**bold**`, `*italic*`, `_underline_` trong
+/// văn bản nguồn và chèn marker định dạng Braille. Mặc định: tắt.
+final markdownFormatProvider =
+    StateNotifierProvider<MarkdownFormatNotifier, bool>((ref) {
+      return MarkdownFormatNotifier();
+    });
+
+class MarkdownFormatNotifier extends StateNotifier<bool> {
+  MarkdownFormatNotifier() : super(false) {
+    _load();
+  }
+
+  static const _key = 'markdown_format';
+
+  Future<void> _load() async {
+    final prefs = await SharedPreferences.getInstance();
+    state = prefs.getBool(_key) ?? false;
+  }
+
+  Future<void> setMarkdownFormat(bool value) async {
+    state = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_key, value);
+  }
+}

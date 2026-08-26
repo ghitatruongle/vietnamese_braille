@@ -20,6 +20,7 @@ class FilePickResult {
 /// Interface cho dịch vụ chọn file.
 abstract class FilePickerServiceBase {
   Future<FilePickResult?> pickFile();
+  Future<List<FilePickResult>> pickMultipleFiles();
 }
 
 typedef PickFiles =
@@ -91,8 +92,6 @@ class FilePickerServiceImpl implements FilePickerServiceBase {
         return 'text/plain';
       case 'docx':
         return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-      case 'pdf':
-        return 'application/pdf';
       case 'jpg':
       case 'jpeg':
         return 'image/jpeg';
@@ -100,6 +99,42 @@ class FilePickerServiceImpl implements FilePickerServiceBase {
         return 'image/png';
       default:
         return 'application/octet-stream';
+    }
+  }
+
+  @override
+  Future<List<FilePickResult>> pickMultipleFiles() async {
+    try {
+      final result = await _pickFiles(
+        allowMultiple: true,
+        type: FileType.custom,
+        allowedExtensions: ['txt', 'docx'],
+        withData: kIsWeb,
+      );
+
+      if (result == null || result.files.isEmpty) {
+        return const [];
+      }
+
+      return result.files
+          .where((file) {
+            final path = file.path;
+            return path != null || file.bytes != null;
+          })
+          .map((file) {
+            final path = file.path;
+            final mimeType = _getMimeType(file.extension);
+            return FilePickResult(
+              path: path,
+              bytes: file.bytes,
+              mimeType: mimeType,
+              name: file.name,
+            );
+          })
+          .toList();
+    } catch (e) {
+      if (e is Exception) rethrow;
+      throw Exception('Lỗi khi chọn file: $e');
     }
   }
 }

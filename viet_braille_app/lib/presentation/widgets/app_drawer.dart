@@ -67,6 +67,30 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           Semantics(
+            label: 'Chuyển Braille sang văn bản',
+            button: true,
+            child: ListTile(
+              leading: const Icon(Icons.swap_horiz),
+              title: const Text('Braille → Văn bản'),
+              onTap: () {
+                Navigator.pop(context);
+                context.push('/braille-to-text');
+              },
+            ),
+          ),
+          Semantics(
+            label: 'Chuyển đổi hàng loạt',
+            button: true,
+            child: ListTile(
+              leading: const Icon(Icons.batch_prediction),
+              title: const Text('Chuyển đổi hàng loạt'),
+              onTap: () {
+                Navigator.pop(context);
+                context.push('/batch');
+              },
+            ),
+          ),
+          Semantics(
             label: 'Cài đặt ứng dụng',
             button: true,
             child: ListTile(

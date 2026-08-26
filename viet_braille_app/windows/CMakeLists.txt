@@ -6,6 +6,15 @@ project(viet_braille_app LANGUAGES CXX)
 # the on-disk name of your application.
 set(BINARY_NAME "viet_braille_app")
 
+# Visual Studio 18 (2026) build cả target INSTALL với prefix mặc định
+# C:/Program Files — cần quyền admin và sai vị trí bundle. Ghim prefix về
+# thư mục runner/Release mà flutter tool dùng để thu hoạch artifact.
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT OR NOT CMAKE_INSTALL_PREFIX)
+  set(CMAKE_INSTALL_PREFIX
+    "${CMAKE_CURRENT_SOURCE_DIR}/../build/windows/x64/runner/Release"
+    CACHE PATH "Flutter Windows bundle directory" FORCE)
+endif()
+
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.
 cmake_policy(VERSION 3.14...3.25)

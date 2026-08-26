@@ -1,4 +1,3 @@
-import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +6,9 @@ import '../../core/platform_capabilities.dart';
 import '../providers/conversion_provider.dart';
 import '../providers/theme_provider.dart';
 import '../widgets/app_drawer.dart';
+import '../widgets/drop_zone.dart';
 import '../widgets/text_input_section.dart';
+import '../widgets/tts_speak_button.dart';
 import '../widgets/status_section.dart';
 import '../widgets/read_only_field.dart';
 import '../widgets/braille_display_section.dart';
@@ -46,12 +47,8 @@ class HomeScreen extends ConsumerWidget {
 
     return CallbackShortcuts(
       bindings: desktopShortcuts,
-      child: DropTarget(
-        onDragDone: (details) {
-          if (details.files.isNotEmpty) {
-            notifier.convertFilePath(details.files.first.path);
-          }
-        },
+      child: DropZone(
+        onFileDropped: notifier.convertDroppedFile,
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Chuyển đổi Braille'),
@@ -180,13 +177,21 @@ class HomeScreen extends ConsumerWidget {
         ],
         const SizedBox(height: 16),
         if (state.originalText.isNotEmpty)
-          Semantics(
-            label: 'Văn bản gốc: ${state.originalText}',
-            readOnly: true,
-            child: ReadOnlyField(
-              label: 'Văn bản gốc',
-              value: state.originalText,
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Semantics(
+                  label: 'Văn bản gốc: ${state.originalText}',
+                  readOnly: true,
+                  child: ReadOnlyField(
+                    label: 'Văn bản gốc',
+                    value: state.originalText,
+                  ),
+                ),
+              ),
+              TtsSpeakButton(text: state.originalText),
+            ],
           ),
         if (state.originalText.isNotEmpty) const SizedBox(height: 16),
         if (state.brailleUnicode.isNotEmpty) ...[
@@ -197,13 +202,21 @@ class HomeScreen extends ConsumerWidget {
           const SizedBox(height: 16),
         ],
         if (state.reverseText.isNotEmpty) ...[
-          Semantics(
-            label: 'Văn bản giải mã từ Braille: ${state.reverseText}',
-            readOnly: true,
-            child: ReadOnlyField(
-              label: 'Văn bản đối chiếu lossless',
-              value: state.reverseText,
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Semantics(
+                  label: 'Văn bản giải mã từ Braille: ${state.reverseText}',
+                  readOnly: true,
+                  child: ReadOnlyField(
+                    label: 'Văn bản đối chiếu lossless',
+                    value: state.reverseText,
+                  ),
+                ),
+              ),
+              TtsSpeakButton(text: state.reverseText),
+            ],
           ),
           const SizedBox(height: 16),
         ],

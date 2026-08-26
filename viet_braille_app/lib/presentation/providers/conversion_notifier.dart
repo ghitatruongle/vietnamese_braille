@@ -21,6 +21,7 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
     required this.fileExporter,
     required this.historyService,
     this.onConversionSuccess,
+    this.getMarkdownEnabled,
   }) : super(const ConversionState());
 
   final FilePickerServiceBase filePickerService;
@@ -32,6 +33,12 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
   final FileExporterBase fileExporter;
   final HistoryServiceBase historyService;
   final Future<void> Function()? onConversionSuccess;
+
+  /// Đọc trạng thái toggle "Hỗ trợ định dạng" (markdown B5) tại thời điểm
+  /// chuyển đổi; null nghĩa là luôn tắt.
+  final bool Function()? getMarkdownEnabled;
+
+  bool get _enableMarkdown => getMarkdownEnabled?.call() ?? false;
 
   /// Chuyển đổi text trực tiếp sang Braille.
   Future<void> convertText(String text) async {
@@ -92,6 +99,49 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
         ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         : 'text/plain';
 
+    await _convertFromPath(filePath, mimeType);
+  }
+
+  /// Điều tuyến tệp kéo-thả: ảnh đi vào OCR nơi nền tảng hỗ trợ,
+  /// TXT/DOCX đi vào bộ đọc văn bản như thường.
+  Future<void> convertDroppedFile(String filePath) async {
+    final lower = filePath.toLowerCase();
+    final isImage =
+        lower.endsWith('.png') ||
+        lower.endsWith('.jpg') ||
+        lower.endsWith('.jpeg') ||
+        lower.endsWith('.webp');
+    if (!isImage) {
+      await convertFilePath(filePath);
+      return;
+    }
+
+    if (!PlatformCapabilities.supportsOcr) {
+      state = state.copyWith(
+        status: AppStatus.error,
+        errorMessage: PlatformCapabilities.ocrUnsupportedMessage,
+      );
+      return;
+    }
+
+    state = _loadingState();
+    try {
+      final rawText = await ocrProcessor.recognizeImage(filePath);
+      final originalText = rawText.trim();
+      if (originalText.isEmpty) {
+        state = state.copyWith(
+          status: AppStatus.error,
+          errorMessage: 'Ảnh không chứa văn bản nào.',
+        );
+        return;
+      }
+      await _applyConversion(originalText);
+    } catch (e) {
+      state = _errorState(e);
+    }
+  }
+
+  Future<void> _convertFromPath(String filePath, String mimeType) async {
     state = _loadingState();
     try {
       final rawText = await textExtractor.extractText(filePath, mimeType);
@@ -113,11 +163,16 @@ class ConversionNotifier extends StateNotifier<ConversionState> {
   /// Pipeline chuyển đổi dùng chung cho mọi nguồn văn bản: forward → lossless
   /// round-trip → BRF, cập nhật state thành công, lưu lịch sử và phản hồi.
   Future<void> _applyConversion(String originalText) async {
-    final conversionResult = brailleConverter.convertWithDetails(originalText);
+    final enableMarkdown = _enableMarkdown;
+    final conversionResult = brailleConverter.convertWithDetails(
+      originalText,
+      enableMarkdown: enableMarkdown,
+    );
     final brailleUnicode = conversionResult.brailleText;
     final losslessBraille = brailleConverter.convert(
       originalText,
       mode: BrailleConversionMode.lossless,
+      enableMarkdown: enableMarkdown,
     );
     final reverseText = reverseConverter.convert(
       losslessBraille,

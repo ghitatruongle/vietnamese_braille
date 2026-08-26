@@ -23,6 +23,15 @@ abstract class BrailleMapping {
   /// Ký tự number indicator (đặt trước chuỗi chữ số).
   String get numberIndicator;
 
+  /// Marker bold (TT15 ⠘, app-defined 2-cell: symbolPrefix + dots 4,5).
+  String get boldMarker;
+
+  /// Marker italic (TT15 ⠐, app-defined 2-cell: symbolPrefix + dots 2,4).
+  String get italicMarker;
+
+  /// Marker underline (TT15 ⠸, app-defined 2-cell: symbolPrefix + 2,3,4,6).
+  String get underlineMarker;
+
   /// Kiểm tra ký tự có phải chữ cái viết hoa không.
   bool isUpperCase(String char);
 
@@ -173,6 +182,59 @@ class BrailleMappingImpl implements BrailleMapping {
   // Ampersand: dots 1,2,3,4,6 (⠯) under Decree 15
   static final String _ampersand = _cell(_d1 | _d2 | _d3 | _d4 | _d6);
 
+  // ──────────────────── Special characters (app-defined extensions) ─────
+  // Quy ước: symbolPrefix (dot 4) + base cell duy nhất, cùng cơ chế với các
+  // ký hiệu 2 ô khác. Đây KHÔNG phải chuẩn TT15 — xem docs/symbol_extensions.md.
+  static final String _guillemetLeft =
+      _symbolPrefix + _cell(_d2 | _d3 | _d6); // « : 4 + 2,3,6
+  static final String _guillemetRight =
+      _symbolPrefix + _cell(_d3 | _d5 | _d6); // » : 4 + 3,5,6
+  static final String _enDash = _symbolPrefix + _cell(_d3 | _d6); // – : 4 + 3,6
+  static final String _emDash =
+      _symbolPrefix + _cell(_d2 | _d5 | _d6); // — : 4 + 2,5,6
+  static final String _dong =
+      _symbolPrefix + _cell(_d1 | _d4 | _d5 | _d6); // ₫ : 4 + 1,4,5,6
+  static final String _perMille =
+      _symbolPrefix + _cell(_d2 | _d4 | _d5 | _d6); // ‰ : 4 + 2,4,5,6
+  static final String _copyright =
+      _symbolPrefix + _cell(_d1 | _d4); // © : 4 + 1,4
+  static final String _registered =
+      _symbolPrefix + _cell(_d1 | _d2 | _d3 | _d5); // ® : 4 + 1,2,3,5
+  static final String _trademark =
+      _symbolPrefix +
+      _cell(_d1 | _d2 | _d3 | _d4 | _d5 | _d6); // ™ : 4 + 1,2,3,4,5,6
+  static final String _degree =
+      _symbolPrefix + _cell(_d1 | _d2 | _d5 | _d6); // ° : 4 + 1,2,5,6
+  static final String _superTwo =
+      _symbolPrefix + _cell(_d1 | _d2 | _d3); // ² : 4 + 1,2,3
+  static final String _superThree =
+      _symbolPrefix + _cell(_d1 | _d4 | _d5); // ³ : 4 + 1,4,5
+  static final String _arrowLeft =
+      _symbolPrefix + _cell(_d1 | _d2 | _d5); // ← : 4 + 1,2,5
+  static final String _arrowRight =
+      _symbolPrefix + _cell(_d2 | _d3 | _d5); // → : 4 + 2,3,5
+  static final String _arrowUp =
+      _symbolPrefix + _cell(_d1 | _d2 | _d3 | _d4); // ↑ : 4 + 1,2,3,4
+  static final String _arrowDown =
+      _symbolPrefix + _cell(_d2 | _d3 | _d4 | _d5); // ↓ : 4 + 2,3,4,5
+
+  // ──────────────────── Formatting markers (TT15 bold/italic/underline) ─
+  // TT15 quy: bold=⠘(4,5), italic=⠐(5), underline=⠸(4,5,6).
+  // Ứng dụng dùng symbolPrefix (dot4) + base RIÊNG để tránh va chạm:
+  //   - dot 5 (⠐) = mathPrefix, đang dùng cho + - * / < > ≈ ≤ ≥ ≠ ± × ÷ √
+  //   - dots 4,5,6 (⠸) = allCapsWord
+  //   - dots 4,5 (⠘) miễn phí nhưng base-cell-only không distinguishable
+  //     khi đọc tay nên dùng prefix để nhất quán.
+  // Chi tiết tại docs/symbol_extensions.md.
+  static final String _boldMarker =
+      _symbolPrefix + _cell(_d4 | _d5); // ⠈⠘ : 4 + 4,5
+  static final String _italicMarker =
+      _symbolPrefix + _cell(_d2 | _d4); // ⠈⠊ : 4 + 2,4
+  static final String _underlineMarker =
+      _symbolPrefix + _cell(_d2 | _d3 | _d4 | _d6); // ⠈⠞ : 4 + 2,3,4,6
+
+  // ... formatted mappings appear in _charMap below.
+
   // ──────────────────── Math symbols (prefix dot 5 + base) ─────────────
   static final String _plus =
       _mathPrefix + _cell(_d2 | _d3 | _d5); // + : 5 + 2,3,5
@@ -276,6 +338,26 @@ class BrailleMappingImpl implements BrailleMapping {
 
     // ── Math symbols ──
     '+': _plus, '=': _equal, '*': _star, '<': _lt, '>': _gt,
+    // Extended math symbols — app-defined extensions (not in TT15 base set).
+    // Mỗi ký hiệu dùng base cell RIÊNG để reverse converter không nhầm lẫn
+    // với các ký hiệu đã có (=, <, >). Dùng prefix dot 5 (mathPrefix) theo
+    // cùng quy ước với các ký hiệu toán học khác:
+    //   ≈ (approx) = 5 + 1,3,4,5
+    //   ≤ (le)     = 5 + 2,3,4,5
+    //   ≥ (ge)     = 5 + 1,2,4,5
+    //   ≠ (ne)     = 5 + 2,3,4
+    '≈': _mathPrefix + _cell(_d1 | _d3 | _d4 | _d5),
+    '≤': _mathPrefix + _cell(_d2 | _d3 | _d4 | _d5),
+    '≥': _mathPrefix + _cell(_d1 | _d2 | _d4 | _d5),
+    '≠': _mathPrefix + _cell(_d2 | _d3 | _d4),
+    //   ± (plusminus) = 5 + 1,2,3
+    //   × (times)     = 5 + 1,3,6
+    //   ÷ (divide)    = 5 + 1,2,4
+    //   √ (sqrt)      = 5 + 1,3,4
+    '±': _mathPrefix + _cell(_d1 | _d2 | _d3),
+    '×': _mathPrefix + _cell(_d1 | _d3 | _d6),
+    '÷': _mathPrefix + _cell(_d1 | _d2 | _d4),
+    '√': _mathPrefix + _cell(_d1 | _d3 | _d4),
 
     // ── Additional symbols ──
     '\$': _symbolPrefix + _cell(_d2 | _d3 | _d4), // $: 4 + 2,3,4
@@ -289,6 +371,30 @@ class BrailleMappingImpl implements BrailleMapping {
         _cell(_d4 | _d5 | _d6) +
         _cell(_d1 | _d2 | _d5 | _d6), // |: 4,5,6 + 1,2,5,6
     '^': _symbolPrefix + _cell(_d2 | _d6), // ^: 4 + 2,6
+    // ── Special characters (app-defined extensions) ──
+    '«': _guillemetLeft, // « : 4 + 2,3,6
+    '»': _guillemetRight, // » : 4 + 3,5,6
+    '–': _enDash, // – : 4 + 3,6
+    '—': _emDash, // — : 4 + 2,5,6
+    '₫': _dong, // ₫ : 4 + 1,4,5,6
+    '‰': _perMille, // ‰ : 4 + 2,4,5,6
+    '©': _copyright, // © : 4 + 1,4
+    '®': _registered, // ® : 4 + 1,2,3,5
+    '™': _trademark, // ™ : 4 + 1,2,3,4,5,6
+    '°': _degree, // ° : 4 + 1,2,5,6
+    '²': _superTwo, // ² : 4 + 1,2,3
+    '³': _superThree, // ³ : 4 + 1,4,5
+    '←': _arrowLeft, // ← : 4 + 1,2,5
+    '→': _arrowRight, // → : 4 + 2,3,5
+    '↑': _arrowUp, // ↑ : 4 + 1,2,3,4
+    '↓': _arrowDown, // ↓ : 4 + 2,3,4,5
+    // ── Formatting markers (TT15 bold/italic/underline) ──
+    // NOTE: actual Braille is 2-cell (symbolPrefix + base), not single cell.
+    // The forward converter emits the 2-cell pair; reverse uses _symbolMap.
+    '\u0002': _boldMarker, // BOLD (STX = Ctrl-B, Markdown: **bold**)
+    '\u000E': _italicMarker, // ITALIC (SO = Ctrl-N, Markdown: *italic*)
+    '\u001F':
+        _underlineMarker, // UNDERLINE (US = Ctrl-_, Markdown: _underline_)
     '%':
         _num +
         _cell(_d2 | _d4 | _d5) +
@@ -424,6 +530,15 @@ class BrailleMappingImpl implements BrailleMapping {
 
   @override
   String get numberIndicator => _num;
+
+  @override
+  String get boldMarker => _boldMarker;
+
+  @override
+  String get italicMarker => _italicMarker;
+
+  @override
+  String get underlineMarker => _underlineMarker;
 
   @override
   String get symbolPrefix => _symbolPrefix;

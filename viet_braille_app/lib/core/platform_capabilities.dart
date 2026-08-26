@@ -17,6 +17,16 @@ abstract final class PlatformCapabilities {
       defaultTargetPlatform == TargetPlatform.macOS ||
       defaultTargetPlatform == TargetPlatform.windows;
 
+  /// Đọc to văn bản bằng flutter_tts: Android, iOS, Windows, macOS.
+  static bool get supportsTts =>
+      !kIsWeb &&
+      (defaultTargetPlatform == TargetPlatform.android ||
+          defaultTargetPlatform == TargetPlatform.iOS ||
+          defaultTargetPlatform == TargetPlatform.windows ||
+          defaultTargetPlatform == TargetPlatform.macOS);
+
   static const String ocrUnsupportedMessage =
       'OCR hiện chỉ được hỗ trợ trên Android và iOS.';
+  static const String ttsUnsupportedMessage =
+      'Đọc to (TTS) chưa được hỗ trợ trên nền tảng này.';
 }

@@ -10,31 +10,22 @@ void main() {
 
   group('Bug Fixes Verification', () {
     test('Bug #2 - All caps phrase grouping (HÀ NỘI)', () {
-      final result = converter.convert('HÀ NỘI');
-      // Should contain allCapsPhrase indicator and endFormat
-      expect(result, isNotEmpty);
-      // The phrase should be grouped together, not treated as separate words
-      print('HÀ NỘI -> $result');
+      // ⠨⠨ (allCapsPhrase) + HÀ NỘI + ⠱ (endFormat)
+      expect(converter.convert('HÀ NỘI'), '⠨⠨⠓⠰⠁ ⠝⠠⠹⠊⠱');
     });
 
     test('Bug #2 - Toned final vowel keeps phrase end marker', () {
-      expect(
-        converter.convert('HÀ QUÝ'),
-        '\u2828\u2828\u2813\u2830\u2801 '
-        '\u281f\u2825\u2814\u283d\u2831',
-      );
+      expect(converter.convert('HÀ QUÝ'), '⠨⠨⠓⠰⠁ ⠟⠥⠔⠽⠱');
     });
 
     test('Bug #2 - All caps phrase with spaces (THÔNG TƯ SỐ 15)', () {
-      final result = converter.convert('THÔNG TƯ SỐ 15');
-      expect(result, isNotEmpty);
-      print('THÔNG TƯ SỐ 15 -> $result');
+      // ⠨⠨ + thôngthư số ⠱ + ⠼ number 15
+      expect(converter.convert('THÔNG TƯ SỐ 15'), '⠨⠨⠞⠓⠹⠝⠛ ⠞⠳ ⠎⠔⠹⠱ ⠼⠁⠑');
     });
 
     test('Bug #2 - Single word all caps (UNESCO)', () {
-      final result = converter.convert('UNESCO');
-      expect(result, isNotEmpty);
-      print('UNESCO -> $result');
+      // ⠸ (allCapsWord) + u n e s c o
+      expect(converter.convert('UNESCO'), '⠸⠥⠝⠑⠎⠉⠕');
     });
 
     test('Bug #7 - Operator space removal doesn\'t cause infinite loop', () {
@@ -61,207 +52,159 @@ void main() {
   });
 
   group('NUMBERS', () {
-    test('Test 1: Số nguyên cơ bản - 123', () {
-      final result = converter.convert('123');
-      expect(result, contains('⠼')); // number indicator
-      print('123 -> $result');
+    test('Integer 123 → number indicator + 1 2 3', () {
+      expect(converter.convert('123'), '⠼⠁⠃⠉');
     });
 
-    test('Test 2: Số thập phân với dấu chấm - 3.14', () {
-      final result = converter.convert('3.14');
-      expect(result, contains('⠼')); // number indicator
-      print('3.14 -> $result');
+    test('Decimal 3.14 → number 3, dot-3 separator, 1 4', () {
+      expect(converter.convert('3.14'), '⠼⠉⠄⠁⠙');
     });
 
-    test('Test 3: Số với dấu phân cách hàng nghìn - 1,234.56', () {
-      final result = converter.convert('1,234.56');
-      expect(result, contains('⠼'));
-      print('1,234.56 -> $result');
+    test('Thousands 1,234.56 → number 1,2,3,4 dot 5 6', () {
+      expect(converter.convert('1,234.56'), '⠼⠁⠂⠃⠉⠙⠄⠑⠋');
     });
   });
 
   group('QU_RULE', () {
-    test('Test 1: quá - dấu sau u', () {
-      final result = converter.convert('quá');
-      expect(result, isNotEmpty);
-      // Expected: q + u + sac + a
-      print('quá -> $result');
+    test('quá - dấu sau u', () {
+      // q + u + sac + a
+      expect(converter.convert('quá'), '⠟⠥⠔⠁');
     });
 
-    test('Test 2: quyết - dấu sắc sau u, trước y', () {
-      final result = converter.convert('quyết');
-      expect(result, isNotEmpty);
-      // Expected: q + u + sac + y + ê + t
-      print('quyết -> $result');
+    test('quyết - dấu sắc sau u, trước y', () {
+      // q + u + sac + y + ê + t
+      expect(converter.convert('quyết'), '⠟⠥⠔⠽⠣⠞');
     });
 
-    test('Test 3: Quý viết hoa - capital trước q', () {
-      final result = converter.convert('Quý');
-      expect(result, isNotEmpty);
-      // Expected: capital + q + u + sac + y
-      print('Quý -> $result');
+    test('Quý viết hoa - capital trước q', () {
+      // capital + q + u + sac + y
+      expect(converter.convert('Quý'), '⠨⠟⠥⠔⠽');
     });
   });
 
   group('GI_RULE', () {
-    test('Test 1: giá - dấu giữa g và i', () {
-      final result = converter.convert('giá');
-      expect(result, isNotEmpty);
-      // Expected: g + sac + i + a
-      print('giá -> $result');
+    test('giá - dấu giữa g và i', () {
+      // g + sac + i + a
+      expect(converter.convert('giá'), '⠛⠊⠔⠁');
     });
 
-    test('Test 2: gió - dấu sắc giữa g và i', () {
-      final result = converter.convert('gió');
-      expect(result, isNotEmpty);
-      print('gió -> $result');
+    test('gió - dấu sắc giữa g và i', () {
+      // g + sac + i + o
+      expect(converter.convert('gió'), '⠛⠊⠔⠕');
     });
 
-    test('Test 3: Giảng viết hoa', () {
-      final result = converter.convert('Giảng');
-      expect(result, isNotEmpty);
-      // Expected: capital + g + hoi + i + ă + n + g
-      print('Giảng -> $result');
+    test('Giảng viết hoa', () {
+      // capital + g + hoi + i + ă + n + g
+      expect(converter.convert('Giảng'), '⠨⠛⠊⠢⠁⠝⠛');
     });
   });
 
   group('CAPITALIZATION_SINGLE', () {
-    test('Test 1: Việt - viết hoa chữ cái đầu có phụ âm', () {
-      final result = converter.convert('Việt');
-      expect(result, contains('⠠')); // capital indicator
-      // Expected: capital + v + i + ê + t
-      print('Việt -> $result');
+    test('Việt - viết hoa chữ cái đầu có phụ âm', () {
+      // capital + v + i + ê + t  (lossless? no, standard)
+      // Standard: capital + v + nặng + i + ê + t
+      expect(converter.convert('Việt'), '⠨⠧⠠⠊⠣⠞');
     });
 
-    test('Test 2: Ấn - viết hoa nguyên âm không phụ âm đầu', () {
-      final result = converter.convert('Ấn');
-      expect(result, isNotEmpty);
-      // Expected: sac + capital + â + n
-      print('Ấn -> $result');
+    test('Ấn - viết hoa nguyên âm không phụ âm đầu', () {
+      // sac + capital + â + n
+      expect(converter.convert('Ấn'), '⠔⠨⠡⠝');
     });
   });
 
   group('CAPITALIZATION_WORD', () {
-    test('Test 1: UNESCO - từ viết hoa toàn bộ', () {
-      final result = converter.convert('UNESCO');
-      expect(result, isNotEmpty);
-      // Expected: allCapsWord + u + n + e + s + c + o
-      print('UNESCO -> $result');
+    test('UNESCO - từ viết hoa toàn bộ', () {
+      expect(converter.convert('UNESCO'), '⠸⠥⠝⠑⠎⠉⠕');
     });
 
-    test('Test 2: II - số La Mã', () {
-      final result = converter.convert('II');
-      expect(result, isNotEmpty);
-      // Note: Uses ⠨⠨ (allCaps indicator) not ⠠ (single capital)
-      // Expected: capital + i + i
-      print('II -> $result');
+    test('II - số La Mã', () {
+      // capital + i + i
+      expect(converter.convert('II'), '⠨⠊⠊');
     });
 
-    test('Test 3: XVI - số La Mã', () {
-      final result = converter.convert('XVI');
-      expect(result, isNotEmpty);
-      // Note: Uses ⠨ (allCaps indicator) not ⠠
-      print('XVI -> $result');
+    test('XVI - số La Mã', () {
+      // capital + x + v + i
+      expect(converter.convert('XVI'), '⠨⠭⠧⠊');
     });
   });
 
   group('CAPITALIZATION_PHRASE', () {
-    test('Test 1: THÔNG TƯ SỐ 15 - cụm từ viết hoa toàn bộ', () {
-      final result = converter.convert('THÔNG TƯ SỐ 15');
-      expect(result, isNotEmpty);
-      print('THÔNG TƯ SỐ 15 -> $result');
+    test('THÔNG TƯ SỐ 15 - cụm từ viết hoa toàn bộ', () {
+      expect(converter.convert('THÔNG TƯ SỐ 15'), '⠨⠨⠞⠓⠹⠝⠛ ⠞⠳ ⠎⠔⠹⠱ ⠼⠁⠑');
     });
 
-    test('Test 2: Hà Nội - cụm từ viết hoa chữ cái đầu', () {
-      final result = converter.convert('Hà Nội');
-      expect(result, isNotEmpty);
-      print('Hà Nội -> $result');
+    test('Hà Nội - cụm từ viết hoa chữ cái đầu', () {
+      // initCapsPhrase ⠒⠨ + Hà Nội + ⠱
+      expect(converter.convert('Hà Nội'), '⠒⠨⠓⠰⠁ ⠝⠠⠹⠊⠱');
     });
   });
 
   group('STANDALONE_VOWEL', () {
-    test('Test 1: ấn - nguyên âm có dấu đứng đầu', () {
-      final result = converter.convert('ấn');
-      expect(result, isNotEmpty);
-      // Expected: sac + â + n
-      print('ấn -> $result');
+    test('ấn - nguyên âm có dấu đứng đầu', () {
+      // sac + â + n
+      expect(converter.convert('ấn'), '⠔⠡⠝');
     });
 
-    test('Test 2: ảnh - dấu hỏi trước a', () {
-      final result = converter.convert('ảnh');
-      expect(result, isNotEmpty);
-      // Expected: hoi + a + n + h
-      print('ảnh -> $result');
+    test('ảnh - dấu hỏi trước a', () {
+      // hoi + a + n + h
+      expect(converter.convert('ảnh'), '⠢⠁⠝⠓');
     });
   });
 
   group('PUNCTUATION', () {
-    test('Test 1: "Xin chào" - ngoặc kép', () {
-      final result = converter.convert('"Xin chào"');
-      expect(result, isNotEmpty);
-      print('"Xin chào" -> $result');
+    test('"Xin chào" - ngoặc kép', () {
+      // open quote + ... + close quote
+      expect(converter.convert('"Xin chào"'), '⠦⠨⠭⠊⠝ ⠉⠓⠰⠁⠕⠴');
     });
 
-    test('Test 2: a...b - dấu chấm lửng', () {
-      final result = converter.convert('a...b');
-      expect(result, isNotEmpty);
-      // Expected: a + dot3 + dot3 + dot3 + b
-      print('a...b -> $result');
+    test('a...b - dấu chấm lửng', () {
+      // a + dot3 + dot3 + dot3 + b
+      expect(converter.convert('a...b'), '⠁⠄⠄⠄⠃');
     });
 
-    test('Test 3: (a) - ngoặc đơn', () {
-      final result = converter.convert('(a)');
-      expect(result, isNotEmpty);
-      print('(a) -> $result');
+    test('(a) - ngoặc đơn', () {
+      // ( + a + )
+      expect(converter.convert('(a)'), '⠈⠣⠁⠈⠜');
     });
   });
 
   group('UNITS', () {
-    test('Test 1: 5km - đơn vị km', () {
-      final result = converter.convert('5km');
-      expect(result, isNotEmpty);
-      // Expected: number + 5 + space + k + m
-      print('5km -> $result');
+    test('5km - đơn vị km', () {
+      // number 5 + space + k + m
+      expect(converter.convert('5km'), '⠼⠑ ⠅⠍');
     });
 
-    test('Test 2: 10kg - đơn vị kg', () {
-      final result = converter.convert('10kg');
-      expect(result, isNotEmpty);
-      print('10kg -> $result');
+    test('10kg - đơn vị kg', () {
+      // number 10 + space + k + g
+      expect(converter.convert('10kg'), '⠼⠁⠚ ⠅⠛');
     });
   });
 
   group('MATH', () {
-    test('Test 1: 2+3=5 - phép cộng', () {
-      final result = converter.convert('2+3=5');
-      expect(result, isNotEmpty);
-      // Expected: number + 2 + plus + 3 + equal + 5
-      print('2+3=5 -> $result');
+    test('2+3=5 - phép cộng', () {
+      // number 2 + plus + number 3 + equal + number 5
+      expect(converter.convert('2+3=5'), '⠼⠃⠐⠖⠼⠉⠐⠶⠼⠑');
     });
 
-    test('Test 2: a + b - phép toán với chữ', () {
-      final result = converter.convert('a + b');
-      expect(result, isNotEmpty);
-      print('a + b -> $result');
+    test('a + b - phép toán với chữ', () {
+      expect(converter.convert('a + b'), '⠁ ⠐⠖ ⠃');
     });
   });
 
   group('NFD_INPUT', () {
-    test('Test 1: NFD á (a + combining acute)', () {
+    test('NFD á (a + combining acute)', () {
       final nfd = 'a\u0301'; // a + combining acute
       final result = converter.convert(nfd);
-      expect(result, isNotEmpty);
-      print('NFD á -> $result');
+      expect(result, '⠔⠁');
     });
 
-    test('Test 2: NFD quá', () {
+    test('NFD quá', () {
       final nfd = 'qua\u0301'; // qu + a + combining acute
       final result = converter.convert(nfd);
-      expect(result, isNotEmpty);
-      print('NFD quá -> $result');
+      expect(result, '⠟⠥⠔⠁');
     });
 
-    test('Test 3: NFD and NFC should produce same output', () {
+    test('NFD and NFC should produce same output', () {
       final nfc = 'quá';
       final nfd = 'qua\u0301';
       final resultNfc = converter.convert(nfc);
@@ -271,110 +214,137 @@ void main() {
   });
 
   group('EDGE_CASES', () {
-    test('Test 1: Empty string', () {
+    test('Empty string', () {
       final result = converter.convert('');
       expect(result, equals(''));
     });
 
-    test('Test 2: Whitespace only', () {
+    test('Whitespace only', () {
       final result = converter.convert('   ');
       expect(result, equals('   '));
     });
 
-    test('Test 3: Mixed letters and numbers', () {
-      final result = converter.convert('abc123xyz');
-      expect(result, isNotEmpty);
-      // Should have number indicator before 123
-      print('abc123xyz -> $result');
+    test('Mixed letters and numbers', () {
+      // a b c + number 1 2 3 + x y z
+      expect(converter.convert('abc123xyz'), '⠁⠃⠉⠼⠁⠃⠉⠭⠽⠵');
     });
 
-    test('Test 4: Number at end of sentence', () {
-      final result = converter.convert('Năm 2024.');
-      expect(result, isNotEmpty);
-      print('Năm 2024. -> $result');
+    test('Number at end of sentence', () {
+      // Năm + number 2024 + period
+      expect(converter.convert('Năm 2024.'), '⠨⠝⠜⠍ ⠼⠃⠚⠃⠙⠲');
     });
 
-    test('Test 5: Unit with punctuation', () {
-      final result = converter.convert('5km.');
-      expect(result, isNotEmpty);
-      print('5km. -> $result');
+    test('Unit with punctuation', () {
+      // number 5 + space + k + m + period
+      expect(converter.convert('5km.'), '⠼⠑ ⠅⠍⠲');
     });
 
-    test('Test 6: Unit in parentheses', () {
-      final result = converter.convert('(10kg)');
-      expect(result, isNotEmpty);
-      print('(10kg) -> $result');
+    test('Unit in parentheses', () {
+      // ( + number 10 + space + k + g + )
+      expect(converter.convert('(10kg)'), '⠈⠣⠼⠁⠚ ⠅⠛⠈⠜');
     });
   });
 
   group('ACCURACY_CONCERNS', () {
     test('Concern #1: quyền - complex qu rule', () {
-      final result = converter.convert('quyền');
-      expect(result, isNotEmpty);
-      print('quyền -> $result');
+      // q + u + huyen + y + ê + n
+      expect(converter.convert('quyền'), '⠟⠥⠰⠽⠣⠝');
     });
 
     test('Concern #2: Ảnh - capitalization with tone', () {
-      final result = converter.convert('Ảnh');
-      expect(result, isNotEmpty);
-      print('Ảnh -> $result');
+      // hoi + capital + a + n + h
+      expect(converter.convert('Ảnh'), '⠢⠨⠁⠝⠓');
     });
 
     test('Concern #2: Ứng - capitalization with tone', () {
-      final result = converter.convert('Ứng');
-      expect(result, isNotEmpty);
-      print('Ứng -> $result');
+      // sac + capital + ư + n + g
+      expect(converter.convert('Ứng'), '⠔⠨⠳⠝⠛');
     });
 
     test('Concern #3: Number mode with mixed content', () {
-      final result = converter.convert('123abc456');
-      expect(result, isNotEmpty);
-      print('123abc456 -> $result');
+      // number 123 + a + b + c + number 456
+      expect(converter.convert('123abc456'), '⠼⠁⠃⠉⠁⠃⠉⠼⠙⠑⠋');
     });
 
     test('Concern #4: giải - gi rule with complex vowels', () {
-      final result = converter.convert('giải');
-      expect(result, isNotEmpty);
-      print('giải -> $result');
+      // g + i + hoi + a + i
+      expect(converter.convert('giải'), '⠛⠊⠢⠁⠊');
     });
 
     test('Concern #5: HÀ NỘI - phrase end format', () {
-      final result = converter.convert('HÀ NỘI');
-      expect(result, isNotEmpty);
-      // Should have endFormat at the end
-      print('HÀ NỘI -> $result');
+      expect(converter.convert('HÀ NỘI'), '⠨⠨⠓⠰⠁ ⠝⠠⠹⠊⠱');
     });
   });
 
   group('REAL_WORLD_TEXT', () {
     test('Complete sentence 1', () {
-      final result = converter.convert('Việt Nam là một quốc gia xinh đẹp.');
-      expect(result, isNotEmpty);
-      print('Việt Nam là một quốc gia xinh đẹp. -> $result');
+      expect(
+        converter.convert('Việt Nam là một quốc gia xinh đẹp.'),
+        '⠒⠨⠧⠠⠊⠣⠞ ⠝⠁⠍⠱ ⠇⠰⠁ ⠍⠠⠹⠞ ⠟⠥⠔⠹⠉ ⠛⠊⠁ ⠭⠊⠝⠓ ⠮⠠⠑⠏⠲',
+      );
     });
 
     test('Complete sentence 2 with numbers', () {
-      final result = converter.convert('Năm 2024, Việt Nam có 98 triệu dân.');
-      expect(result, isNotEmpty);
-      print('Năm 2024, Việt Nam có 98 triệu dân. -> $result');
+      expect(
+        converter.convert('Năm 2024, Việt Nam có 98 triệu dân.'),
+        '⠨⠝⠜⠍ ⠼⠃⠚⠃⠙⠂ ⠒⠨⠧⠠⠊⠣⠞ ⠝⠁⠍⠱ '
+        '⠉⠔⠕ ⠼⠊⠓ ⠞⠗⠠⠊⠣⠥ ⠙⠡⠝⠲',
+      );
     });
 
     test('Sentence with quotes', () {
-      final result = converter.convert('Ông ấy nói: "Xin chào các bạn!"');
-      expect(result, isNotEmpty);
-      print('Ông ấy nói: "Xin chào các bạn!" -> $result');
+      expect(
+        converter.convert('Ông ấy nói: "Xin chào các bạn!"'),
+        '⠨⠹⠝⠛ ⠔⠡⠽ ⠝⠔⠕⠊⠒ ⠦⠨⠭⠊⠝ ⠉⠓⠰⠁⠕ ⠉⠔⠁⠉ ⠃⠠⠁⠝⠖⠴',
+      );
     });
 
     test('Math expression', () {
-      final result = converter.convert('Tính: 2+3=5, 10-4=6');
-      expect(result, isNotEmpty);
-      print('Tính: 2+3=5, 10-4=6 -> $result');
+      expect(
+        converter.convert('Tính: 2+3=5, 10-4=6'),
+        '⠨⠞⠔⠊⠝⠓⠒ ⠼⠃⠐⠖⠼⠉⠐⠶⠼⠑⠂ ⠼⠁⠚⠤⠼⠙⠐⠶⠼⠋',
+      );
     });
 
     test('Text with units', () {
-      final result = converter.convert('Quãng đường dài 5km, nặng 10kg.');
-      expect(result, isNotEmpty);
-      print('Quãng đường dài 5km, nặng 10kg. -> $result');
+      expect(
+        converter.convert('Quãng đường dài 5km, nặng 10kg.'),
+        '⠨⠟⠥⠤⠁⠝⠛ ⠮⠰⠳⠪⠝⠛ ⠙⠰⠁⠊ ⠼⠑ ⠅⠍⠂ ⠝⠠⠜⠝⠛ ⠼⠁⠚ ⠅⠛⠲',
+      );
+    });
+  });
+
+  group('EXTENDED_CONSONANTS_WFJZ', () {
+    test('Wifi', () {
+      expect(converter.convert('Wifi'), '⠨⠺⠊⠋⠊');
+    });
+
+    test('WiFi', () {
+      expect(converter.convert('WiFi'), '⠨⠺⠊⠨⠋⠊');
+    });
+
+    test('Zoom', () {
+      expect(converter.convert('Zoom'), '⠨⠵⠕⠕⠍');
+    });
+
+    test('Facebook', () {
+      expect(converter.convert('Facebook'), '⠨⠋⠁⠉⠑⠃⠕⠕⠅');
+    });
+
+    test('Jazz', () {
+      expect(converter.convert('Jazz'), '⠨⠚⠁⠵⠵');
+    });
+
+    test('FIFA', () {
+      expect(converter.convert('FIFA'), '⠸⠋⠊⠋⠁');
+    });
+
+    test('Jaguar', () {
+      expect(converter.convert('Jaguar'), '⠨⠚⠁⠛⠥⠁⠗');
+    });
+
+    test('Web', () {
+      expect(converter.convert('Web'), '⠨⠺⠑⠃');
     });
   });
 }

@@ -10,6 +10,7 @@ import '../../data/text_extractor.dart';
 import 'conversion_notifier.dart';
 import 'conversion_state.dart';
 import 'history_provider.dart';
+import 'theme_provider.dart';
 
 // ── Service providers (có thể override trong test để inject mock/fake) ──
 final filePickerServiceProvider = Provider<FilePickerServiceBase>(
@@ -52,5 +53,6 @@ final conversionProvider =
         fileExporter: ref.watch(fileExporterProvider),
         historyService: ref.watch(historyServiceProvider),
         onConversionSuccess: HapticFeedback.lightImpact,
+        getMarkdownEnabled: () => ref.read(markdownFormatProvider),
       );
     });

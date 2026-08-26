@@ -26,10 +26,39 @@ Sau khi chuyển đổi, nhấn **Xuất file BRF**. Ứng dụng:
 Tệp mở bằng editor sẽ thấy các chữ ASCII như `A`, `B`, `#`; đó là biểu diễn
 ô Braille của BRF, không phải nội dung print text.
 
+## Braille → Text
+
+Drawer → **Braille→Text** để dịch ngược độc lập:
+
+1. Dán hoặc nhập ô Braille Unicode vào ô trên — hoặc gõ trực tiếp bằng
+   **bàn phím 6 chấm kiểu Perkins** ngay dưới ô nhập: `S D F` = chấm 1-2-3,
+   `J K L` = chấm 4-5-6; bật các chấm rồi nhấn **Chốt ô (Space)**, nút ⌫ xóa
+   ô cuối.
+2. Chọn chế độ **Chuẩn** (đoán theo ngữ cảnh) hoặc **Lossless**
+   (khôi phục tuyệt đối với chuỗi do ứng dụng tạo).
+3. Nhấn **Chuyển đổi**, kết quả chữ tiếng Việt hiện ở ô dưới, có nút sao chép
+   và nút 🔊 **đọc to** (nền tảng hỗ trợ TTS).
+
+## Chuyển đổi batch
+
+Drawer → **Batch** để xử lý nhiều tệp cùng lúc:
+
+1. Chọn nhiều tệp TXT/DOCX trong một lần mở hộp thoại.
+2. Mỗi tệp được chuyển đổi độc lập; tệp lỗi chỉ được đánh dấu, không làm
+   hỏng các tệp còn lại.
+3. Bảng kết quả hiển thị trạng thái, số ký tự và cảnh báo của từng tệp;
+   có thể xuất toàn bộ thành các tệp `.brf`.
+
 ## Lịch sử và cài đặt
 
-- Drawer → **Lịch sử** để xem, tìm hoặc xóa các lần chuyển đổi.
-- **Cài đặt** cho phép đổi sáng/tối và cỡ chữ 80–200%.
+- Drawer → **Lịch sử** để xem, tìm hoặc xóa các lần chuyển đổi; trên thanh
+  ứng dụng có thêm **xuất bản sao lưu JSON** và **nhập bản sao lưu** — khi
+  nhập bạn chọn *Gộp* (bỏ qua bản ghi trùng) hoặc *Thay thế* toàn bộ.
+- Kéo-thả tệp vào cửa sổ trên desktop: TXT/DOCX đi thẳng vào chuyển đổi,
+  ảnh đi vào OCR nơi nền tảng hỗ trợ; khi kéo sẽ có lớp gợi ý "Thả tệp".
+- **Cài đặt** cho phép đổi sáng/tối, cỡ chữ 80–200%, bật
+  **"Hỗ trợ định dạng"** (markdown `**đậm**`, `*nghiêng*`, `_gạch chân_`)
+  và chỉnh **Đọc to (TTS)**: tốc độ + cao độ giọng đọc.
 - **Học Braille** và **Quiz** sử dụng lưới 6 chấm.
 
 ## Giới hạn chuyển ngược

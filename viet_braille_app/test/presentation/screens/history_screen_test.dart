@@ -56,7 +56,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('entry'), findsOneWidget);
+      // Per-item delete button + AppBar clear-all use distinct icons.
       expect(find.byIcon(Icons.delete_outline), findsOneWidget);
+      expect(find.byIcon(Icons.delete_sweep_outlined), findsOneWidget);
     });
 
     testWidgets('uses historyServiceProvider with interface', (tester) async {
@@ -108,14 +110,16 @@ void main() {
       await tester.pumpWidget(buildWithService(service));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.delete_outline));
+      // AppBar clear-all button uses delete_sweep_outlined (distinct from
+      // per-item delete_outline).
+      await tester.tap(find.byIcon(Icons.delete_sweep_outlined));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(TextButton).first);
       await tester.pumpAndSettle();
       expect(service.clearCalls, 0);
       expect(find.text('Fake entry'), findsOneWidget);
 
-      await tester.tap(find.byIcon(Icons.delete_outline));
+      await tester.tap(find.byIcon(Icons.delete_sweep_outlined));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(TextButton).last);
       await tester.pumpAndSettle();
@@ -178,6 +182,20 @@ class _FakeHistoryService implements HistoryServiceBase {
               entry.brailleText.toLowerCase().contains(normalized),
         )
         .toList();
+  }
+
+  @override
+  Future<int> replaceAll(List<ConversionHistoryEntry> entries) async {
+    _entries
+      ..clear()
+      ..addAll(entries);
+    return entries.length;
+  }
+
+  @override
+  Future<int> mergeEntries(List<ConversionHistoryEntry> entries) async {
+    _entries.insertAll(0, entries);
+    return entries.length;
   }
 }
 

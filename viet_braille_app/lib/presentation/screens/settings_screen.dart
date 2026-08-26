@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/constants.dart';
 import '../providers/theme_provider.dart';
+import '../providers/tts_providers.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -42,11 +44,74 @@ class SettingsScreen extends ConsumerWidget {
             },
           ),
           const Divider(),
+          Consumer(
+            builder: (context, ref, _) {
+              final markdownEnabled = ref.watch(markdownFormatProvider);
+              return SwitchListTile(
+                title: const Text('Hỗ trợ định dạng văn bản'),
+                subtitle: const Text(
+                  'Nhận diện **đậm**, *nghiêng*, _gạch chân_ trong văn bản',
+                ),
+                value: markdownEnabled,
+                onChanged: (value) => ref
+                    .read(markdownFormatProvider.notifier)
+                    .setMarkdownFormat(value),
+                secondary: const Icon(Icons.format_bold),
+              );
+            },
+          ),
+          const Divider(),
+          // TTS (đọc to) — Phase 2C
+          Consumer(
+            builder: (context, ref, _) {
+              final supported = ref.watch(ttsSupportedProvider);
+              if (!supported) {
+                return const ListTile(
+                  leading: Icon(Icons.volume_off),
+                  title: Text('Đọc to (TTS)'),
+                  subtitle: Text('Nền tảng này không hỗ trợ đọc to.'),
+                );
+              }
+              final rate = ref.watch(ttsRateProvider);
+              final pitch = ref.watch(ttsPitchProvider);
+              return Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.volume_up),
+                    title: const Text('Đọc to (TTS)'),
+                    subtitle: Text(
+                      'Tốc độ ${(rate * 100).round()}% · '
+                      'Cao độ ${pitch.toStringAsFixed(1)}×',
+                    ),
+                  ),
+                  Slider(
+                    value: rate,
+                    min: 0.0,
+                    max: 1.0,
+                    divisions: 10,
+                    label: 'Tốc độ ${(rate * 100).round()}%',
+                    onChanged: (value) =>
+                        ref.read(ttsRateProvider.notifier).setRate(value),
+                  ),
+                  Slider(
+                    value: pitch,
+                    min: 0.5,
+                    max: 2.0,
+                    divisions: 15,
+                    label: 'Cao độ ${pitch.toStringAsFixed(1)}×',
+                    onChanged: (value) =>
+                        ref.read(ttsPitchProvider.notifier).setPitch(value),
+                  ),
+                ],
+              );
+            },
+          ),
+          const Divider(),
           // About
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: const Text('Thông tin ứng dụng'),
-            subtitle: const Text('Vietnamese Braille v1.1.0'),
+            subtitle: const Text('$kAppName v$kAppVersion'),
             onTap: () => _showAbout(context),
           ),
           const Divider(),
@@ -78,8 +143,8 @@ class SettingsScreen extends ConsumerWidget {
   void _showAbout(BuildContext context) {
     showAboutDialog(
       context: context,
-      applicationName: 'Vietnamese Braille',
-      applicationVersion: '1.1.0',
+      applicationName: kAppName,
+      applicationVersion: kAppVersion,
       applicationLegalese:
           'Ứng dụng chuyển đổi văn bản tiếng Việt sang chữ Braille Unicode.',
       children: [

@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import 'core/app_theme.dart';
 import 'presentation/providers/theme_provider.dart';
+import 'presentation/screens/batch_screen.dart';
+import 'presentation/screens/braille_to_text_screen.dart';
 import 'presentation/screens/home_screen.dart';
 import 'presentation/screens/history_screen.dart';
 import 'presentation/screens/settings_screen.dart';
@@ -25,6 +27,11 @@ final _router = GoRouter(
       path: '/settings',
       builder: (context, state) => const SettingsScreen(),
     ),
+    GoRoute(
+      path: '/braille-to-text',
+      builder: (context, state) => const BrailleToTextScreen(),
+    ),
+    GoRoute(path: '/batch', builder: (context, state) => const BatchScreen()),
     GoRoute(
       path: '/learn',
       builder: (context, state) => const LearningScreen(),

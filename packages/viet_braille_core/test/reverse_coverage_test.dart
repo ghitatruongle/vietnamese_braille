@@ -30,7 +30,9 @@ void main() {
         'gì',
         'giảng giải',
         'múa',
-        'hòa',
+        // 'hoà' theo chuẩn từ điển Hoàng Phê: âm đệm 'o' không nhận dấu,
+        // dấu thanh đặt ở nguyên âm chính 'a' (quy tắc mới Phase 2A.1).
+        'hoà',
         'khỏe',
         'thủy',
         'việt đường',
@@ -75,7 +77,7 @@ void main() {
       for (final input in samples) {
         final braille = forward.convert(input);
         final decoded = reverse.convert(braille);
-        expect(decoded, isNotEmpty, reason: input);
+        expect(decoded, input, reason: input);
       }
     });
 

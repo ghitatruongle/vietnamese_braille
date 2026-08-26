@@ -5,16 +5,31 @@ int _toneTargetIndex(
   List<String> vowels, {
   required bool hasFollowingConsonant,
 }) {
-  // Vowel mang dấu phụ là trung tâm của các vần iê/yê, uô, ươ, uâ...
+  // Nguyên âm mang dấu phụ là trung tâm của các vần iê/yê, uô, ươ, uâ...
   const preferredNuclei = {'ê', 'ơ', 'ô', 'â', 'ă'};
   for (var index = vowels.length - 1; index >= 0; index--) {
     if (preferredNuclei.contains(vowels[index])) return index;
   }
 
   final cluster = vowels.join();
-  if (hasFollowingConsonant &&
-      (cluster == 'oa' || cluster == 'oe' || cluster == 'uy')) {
-    return vowels.length - 1;
+
+  // 'uy' hai chữ: vần mở giữ dấu ở u (mùi, xui); có âm cuối thì dấu rơi
+  // vào bán nguyên âm y (suýt, tuýt).
+  if (cluster == 'uy') {
+    return hasFollowingConsonant ? vowels.length - 1 : 0;
+  }
+
+  // Âm đệm 'o' trước nguyên âm chính 'a': dấu thanh nằm ở 'a' — đúng cho
+  // vần mở (hòa, xoà), vần có âm cuối (toàn, hoàn) và vần đuôi bán nguyên
+  // âm i/y (xoài, ngoài, ngoái, ngoáy). Theo Từ điển tiếng Việt (Hoàng
+  // Phê) đây là cách đặt dấu chuẩn của các vần 'oa'.
+  //
+  // Lưu ý phân biệt với cụm đầu 'u': âm đệm 'ư' được mã hóa bằng ô của
+  // 'u' thường (của, mùa = [u, a]) nên cụm 'u*' PHẢI giữ dấu ở chữ đầu
+  // để bước tái tạo dấu sừng phía sau hoạt động đúng — không áp dụng
+  // quy tắc này cho 'u'.
+  if (vowels.first == 'o' && vowels.length >= 2 && vowels[1] == 'a') {
+    return 1;
   }
 
   // Các vần mở hòa, khỏe, thủy và ia, ua, ưa, ai, ao, oi... mang thanh
